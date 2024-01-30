@@ -6,7 +6,7 @@ This project involves the design and development of a web application to predict
 ## Team Members
 - Nikolas Velazquez - 1819671
 - Gleici Pereira - 2097712
-- 
+- Hassaan Haqqani - 2073980
 - 
 
 ## Components and Functionalities

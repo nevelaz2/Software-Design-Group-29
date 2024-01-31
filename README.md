@@ -9,6 +9,16 @@ This project involves the design and development of a web application to predict
 - Hassaan Haqqani - 2073980
 - 
 
+## Technology Stacks
+- Frontend:
+Our frontend development utilizes a combination of HTML for structure, CSS for styling, and JavaScript for interactivity. We enhance responsiveness and user experience with Bootstrap and manage components efficiently using ReactJS.
+
+- Backend:
+For backend development, MySQL serves as our database management system, while Node.js runs our server-side logic. These technologies together ensure secure and efficient data management and server-side processing.
+
+By leveraging this technology stack, we aim to develop a robust and scalable software application that meets the project requirements and adheres to modern software design principles and high-level architecture.
+
+
 ## Components and Functionalities
 The web application must include the following components and functionalities:
 
@@ -46,5 +56,6 @@ The web application must include the following components and functionalities:
 ## Notes
 - This project emphasizes software design principles and architecture.
 - Additional features and modifications will be discussed and implemented during development.
+- Application wireframe available at https://www.canva.com/design/DAF7VAitNK8/eRT4rkNJLIiUHO7LldwlEw/edit.
 
 

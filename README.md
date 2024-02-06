@@ -7,7 +7,7 @@ This project involves the design and development of a web application to predict
 - Nikolas Velazquez - 1819671
 - Gleici Pereira - 2097712
 - Hassaan Haqqani - 2073980
-- 
+- Khang Huynh - 2031306
 
 ## Technology Stacks
 - Frontend:

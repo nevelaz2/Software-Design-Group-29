@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Coogs Energy Site by Group 29, login.html/signup.html by Hassaan Haqqani -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coogs Enterprises Sign Up</title>
+    <link rel="stylesheet" href="stylesmain.css">
+ </head>
+<body>
+<!-- Navbar section, with placeholder links for soon to be made pages, refer to these classes for styling top navbar/logo-->
+    <header>
+        <nav class="navbar"> 
+            <div class="navbar__container">
+                <a href="/" id="navbar__logo">
+                    <img src="https://media.discordapp.net/attachments/1200959223190790306/1201777322881978368/coogs-energy.png?ex=65d447d9&is=65c1d2d9&hm=8ba61cd85f2e84685cc35618534c76473e30840aae197537eedae0d652f0f5be&=&format=webp&quality=lossless&width=602&height=602" alt="Coogs Energy Logo">
+                </a>
+                <ul class="navbar__menu"> 
+                    <li class="navbar__item">
+                        <a href="index.html" class="navbar__links">Home</a>
+                    </li>
+                    <li class="navbar__item">
+                        <a href="#about" class="navbar__links">About</a>
+                    </li>
+                    <li class="navbar__item">
+                        <a href="login.html" class="navbar__links">Login</a>
+                    </li>   
+                    <li class="navbar__item">
+                        <a href="signup.html" class="navbar__links">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+<!-- Main login card, contains username/password prompts, signup /login button-->
+    <div class="main-content">
+        <div class="login-card">
+            <h2 class="login-header">Create Account Here</h2>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-signup">Sign Up</button>
+                </div>
+                <div class="links-container">
+                     <a href="login.html" class="signin-account">Already have an account? Sign in</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <!-- Footer content here -->
+    </footer>
+</body>
+</html>

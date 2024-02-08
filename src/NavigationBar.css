@@ -1,0 +1,31 @@
+.sidebar {
+    width: 15%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%; 
+    background-color: #021B3E; 
+    padding-top: 3.5rem; 
+}
+  
+.sidebar .navbar-nav {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em;
+    gap: 3em;
+}
+
+.sidebar .nav-link {
+    padding: .5rem 1rem;
+    color: rgba(255, 255, 255, 0.5); /* Adjust text color */
+}
+
+.sidebar .nav-link.active {
+    color: #fff;
+}
+
+.logo{
+    width: 15em;
+    height: 15em;
+}
+  

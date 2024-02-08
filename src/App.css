@@ -1,0 +1,13 @@
+.App {
+  text-align: center;
+}
+
+.profile-page, .quote-form, .quote-history{
+  text-align: center;
+  width: 115%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+

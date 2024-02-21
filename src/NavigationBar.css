@@ -15,17 +15,19 @@
     gap: 3em;
 }
 
-.sidebar .nav-link {
-    padding: .5rem 1rem;
-    color: rgba(255, 255, 255, 0.5); /* Adjust text color */
-}
+.sidebar .nav-link, .sidebar .nav-link.active {
+    padding: 0.2em 2em;
+    color: #FFD4A5;
+    text-decoration: none;
+    font-weight: bold;
 
-.sidebar .nav-link.active {
-    color: #fff;
 }
 
 .logo{
-    width: 15em;
-    height: 15em;
+    width: 12em;
+    height: 12em;
 }
-  
+
+.icons{
+    padding-right: 1em;
+}

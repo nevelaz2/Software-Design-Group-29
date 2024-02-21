@@ -8,7 +8,7 @@
 html, body {
     width: 100%;
     height: 100%;
-    background-image: url("https://cdn.discordapp.com/attachments/1201612857633161367/1203751737664610406/Screen_Shot_2024-02-04_at_11.19.27_AM.png?ex=65e4b12a&is=65d23c2a&hm=55f1483e1e00afd0bff9272c37542f09ce3cdd499eabe21d454f101dd4362df6&"); 
+    background-image: url('https://cdn.discordapp.com/attachments/1201612857633161367/1203751737664610406/Screen_Shot_2024-02-04_at_11.19.27_AM.png?ex=65e4b12a&is=65d23c2a&hm=55f1483e1e00afd0bff9272c37542f09ce3cdd499eabe21d454f101dd4362df6&'); 
     background-size: cover;
     background-position: center;
 }

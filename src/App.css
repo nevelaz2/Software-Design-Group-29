@@ -4,7 +4,7 @@
 
 .profile-page, .quote-form, .quote-history{
   text-align: center;
-  width: 115%;
+  width: 100%;
   height: 100vh;
   display: flex;
   flex-direction: column;

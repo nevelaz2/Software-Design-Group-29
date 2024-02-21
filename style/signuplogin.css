@@ -8,7 +8,7 @@
 html, body {
     width: 100%;
     height: 100%;
-    background-image: url('https://media.discordapp.net/attachments/1201612857633161367/1203751737664610406/Screen_Shot_2024-02-04_at_11.19.27_AM.png?ex=65d23c2a&is=65bfc72a&hm=e92abd884d7f43f503d960ad0692ddff67cb4ad2cc74c181de014e60983837cf&=&format=webp&quality=lossless&width=1073&height=602'); 
+    background-image: url("assets/background-cover.png"); 
     background-size: cover;
     background-position: center;
 }

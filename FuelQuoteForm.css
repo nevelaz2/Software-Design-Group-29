@@ -1,0 +1,181 @@
+.quote-form {
+    align-items: center;
+}
+
+.quote-form #container {
+    background-color: rgb(246, 243, 243);
+
+    height: 550px;
+    width: 850px;
+
+    position: absolute;
+    top: 50%;
+    left: 57%;
+    transform: translate(-50%, -50%);
+}
+
+.quote-form #container #title {
+    font-weight:normal;
+    font-size: 22px;
+
+    position: absolute;
+    top: 35px;
+    left: 75px;
+}
+
+/* Gallons Requested */
+.quote-form #gallons-container {
+    text-align: start;
+
+    width: min-content;
+
+    position: absolute;
+    top: 125px;
+    left: 75px;
+}
+
+.quote-form #gallons-container * {
+    margin: 0;
+}
+
+.quote-form #gallons-container #gallons-text {
+    margin-bottom: 5px;
+}
+
+.quote-form #gallons-container #gallons-input {
+    border: none;
+    border-radius: 5px;
+
+    height: 30px;
+    width: 300px;
+}
+
+/* Location */
+.quote-form #location-container {
+    text-align: start;
+
+    width: min-content;
+
+    position: absolute;
+    top: 225px;
+    left: 75px;
+}
+
+.quote-form #location-container * {
+    margin: 0;
+}
+
+.quote-form #location-container #location-text {
+    margin-bottom: 5px;
+}
+
+.quote-form #location-container #location-select {
+    border: none;
+    border-radius: 5px;
+
+    height: 30px;
+    width: 300px;
+}
+
+/* Profit Margin */
+.quote-form #profit-container {
+    text-align: start;
+
+    width: min-content;
+
+    position: absolute;
+    top: 325px;
+    left: 75px;
+}
+
+.quote-form #profit-container * {
+    margin: 0;
+}
+
+.quote-form #profit-container #profit-text {
+    margin-bottom: 5px;
+}
+
+.quote-form #profit-container #profit-input {
+    border: none;
+    border-radius: 5px;
+
+    height: 30px;
+    width: 300px;
+}
+
+/* Existing Customer */
+.quote-form #existing-customer-container {
+    text-align: start;
+
+    width: max-content;
+
+    position: absolute;
+    top: 125px;
+    left: 500px;
+}
+
+.quote-form #existing-customer-container * {
+    margin: 0;
+}
+
+.quote-form #existing-customer-container #existing-customer-text {
+    margin-bottom: 5px;
+}
+
+.quote-form #existing-customer-container div {
+    display: inline;
+
+    border-radius: 50%;
+
+    margin-right: 25px;
+}
+
+/* City */
+.quote-form #city-container {
+    text-align: start;
+
+    width: min-content;
+
+    position: absolute;
+    top: 225px;
+    left: 500px;
+}
+
+.quote-form #city-container * {
+    margin: 0;
+}
+
+.quote-form #city-container #city-text {
+    margin-bottom: 5px;
+}
+
+.quote-form #city-container #city-select {
+    border: none;
+    border-radius: 5px;
+
+    height: 30px;
+    width: 300px;
+}
+
+/* submit */
+.quote-form #container #submit {
+    border: none;
+    border-radius: 35px;
+
+    background-color: rgb(12, 179, 12);
+
+    font-size: 15px;
+
+    color: white;
+
+    position: absolute;
+    top: 460px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    padding: 7.5px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+  

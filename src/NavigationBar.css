@@ -4,23 +4,32 @@
     top: 0;
     left: 0;
     height: 100%; 
-    background-color: #021B3E; 
-    padding-top: 3.5rem; 
+    background-color: #021B3E;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar .container-fluid {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3em 0; 
+    z-index: 9999 !important; 
 }
   
 .sidebar .navbar-nav {
     display: flex;
     flex-direction: column;
-    padding: 0.5em;
-    gap: 3em;
+    z-index: 9999 !important; 
 }
 
 .sidebar .nav-link, .sidebar .nav-link.active {
-    padding: 0.2em 2em;
+    padding: 1.2em 2em;
     color: #FFD4A5;
     text-decoration: none;
-    font-weight: bold;
-
+    font-size: 1em;
 }
 
 .logo{

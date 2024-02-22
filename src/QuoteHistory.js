@@ -1,13 +1,56 @@
 import React from 'react';
-import './App.css';
+import {Container, Table} from 'react-bootstrap';
+
+import './QuoteHistory.css';
 
 const QuoteHistory = () => {
   return (
-    <div className='quote-history'>
-      <h2>Quote History Page</h2>
-      <p>This is the quote history page.</p>
-      <p>This is the quote history page. Test</p>
-    </div>
+    <Container fluid className="quote-history">
+      <h2>Latest</h2>
+      <Table responsive striped hover variant="dark">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>State</th>
+            <th>City</th>
+            <th>Gallons</th>
+            <th>Profit Margin</th>
+            <th>Total</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {Array.from({ length: 7 }).map((_, index) => (
+              <td key={index}>Table cell {index}</td>
+            ))}
+          </tr>
+          <tr>
+            {Array.from({ length: 7 }).map((_, index) => (
+              <td key={index}>Table cell {index}</td>
+            ))}
+          </tr>
+          <tr>
+            {Array.from({ length: 7 }).map((_, index) => (
+              <td key={index}>Table cell {index}</td>
+            ))}
+          </tr>
+          <tr>
+            {Array.from({ length: 7 }).map((_, index) => (
+              <td key={index}>Table cell {index}</td>
+            ))}
+          </tr>
+          <tr>
+            {Array.from({ length: 7 }).map((_, index) => (
+              <td key={index}>Table cell {index}</td>
+            ))}
+          </tr>
+        </tbody>
+
+      </Table>
+
+    </Container>
+
   );
 };
 

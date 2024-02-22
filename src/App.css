@@ -1,10 +1,5 @@
-.App {
-  text-align: center;
-}
-
-.profile-page, .quote-form, .quote-history{
-  text-align: center;
-  width: 100%;
+profile-page, .quote-form, .quote-history{
+  width: 115%;       /* Sidebar takes 15% of total width */
   height: 100vh;
   display: flex;
   flex-direction: column;

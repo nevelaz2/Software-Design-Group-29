@@ -1,5 +1,5 @@
 import React from 'react';
-import { Nav, Navbar } from 'react-bootstrap';
+import { Nav, Navbar, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom'; 
 import './NavigationBar.css';
 
@@ -7,18 +7,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { faGasPump } from '@fortawesome/free-solid-svg-icons'
 import { faClockRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 
 
 const NavigationBar = ({ activeTab }) => {
     return (
       <Navbar bg="dark" expand="lg" className="sidebar">
-       
-          <Navbar.Brand href="/profile" className="logo-container">
+       <Container fluid>
+          <Navbar.Brand href="/profile">
               <img src="/logo.png" className="d-inline-block align-top logo" alt="CoogsEnergy Logo"/>
           </Navbar.Brand>
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="flex-column">
+
+          <Navbar.Collapse>
+            <Nav className="" id="responsive-navbar-nav">
               <Nav.Link as={Link} to="/profile" active={activeTab === 'profile'}>
                 <FontAwesomeIcon icon={faUser} className="icons" /> Profile 
               </Nav.Link>
@@ -30,6 +32,14 @@ const NavigationBar = ({ activeTab }) => {
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
+
+          <Nav>
+              {/*Placeholder for Log out link*/}
+              <Nav.Link as={Link} to="/profile" active={activeTab === 'profile'}>
+                <FontAwesomeIcon icon={faRightFromBracket} className="icons"/>Log Out
+              </Nav.Link>
+            </Nav>
+        </Container>
         
       </Navbar>
     );

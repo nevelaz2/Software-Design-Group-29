@@ -14,10 +14,6 @@ function InfoBox(Props) {
     top: `${Props.y}px`
   };
 
-  let textStyles = {
-    color: "red"
-  }
-
   return (
     <div className={Props.name} style={containerStyles}>
       <h1 style={

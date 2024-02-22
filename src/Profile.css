@@ -44,14 +44,15 @@
     background-color: rgb(19, 152, 197);
     
     color: white;
-
+    
     font-size: 15px;
-
+    font-weight: bold;
+    
     position: absolute;
-    top: 75%;
+    top: 76.5%;
     left: 55%;
 
-    padding: 15px;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding: 17.5px;
+    padding-top: 4px;
+    padding-bottom: 4px;
 }

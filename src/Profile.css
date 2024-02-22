@@ -39,7 +39,7 @@
 
 .profile-page .button {
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
 
     background-color: rgb(19, 152, 197);
     
@@ -48,7 +48,7 @@
     font-size: 15px;
 
     position: absolute;
-    top: 77.5%;
+    top: 75%;
     left: 55%;
 
     padding: 12.5px;

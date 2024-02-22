@@ -16,17 +16,28 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 3em 0; 
-    z-index: 9999 !important; 
 }
   
 .sidebar .navbar-nav {
     display: flex;
     flex-direction: column;
-    z-index: 9999 !important; 
+}
+
+a.navbar-brand {
+    color: #E5B357;
+    text-decoration: none;
+    text-transform: uppercase;
+    text-align: center;
+    margin: 0;
+}
+
+a.navbar-brand h4{
+    margin-block-start: 0;
+    margin-block-start: 0;
 }
 
 .sidebar .nav-link, .sidebar .nav-link.active {
-    padding: 1.2em 2em;
+    padding: 1.2em 1em;
     color: #FFD4A5;
     text-decoration: none;
     font-size: 1em;

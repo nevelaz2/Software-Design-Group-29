@@ -17,6 +17,7 @@ const NavigationBar = ({ activeTab }) => {
        <Container fluid>
           <Navbar.Brand href="/profile">
               <img src="/logo.png" className="d-inline-block align-top logo" alt="CoogsEnergy Logo"/>
+              <h4>Hello, username!</h4>
           </Navbar.Brand>
 
           <Navbar.Collapse>

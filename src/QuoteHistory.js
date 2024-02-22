@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Table, Row, Col, Form, InputGroup, Button} from 'react-bootstrap';
+import {Container, Table, Row, Col, Form} from 'react-bootstrap';
 import './QuoteHistory.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

@@ -15,7 +15,7 @@
 }
 
 .profile-page .container {
-    background-color: rgba(0,158,242,255);
+    background-color: rgb(246, 243, 243);
 
     height: 450px;
     width: 850px;
@@ -41,7 +41,7 @@
     border: none;
     border-radius: 10px;
 
-    background-color: rgb(19, 152, 197);
+    background-color: rgba(0,158,242,255);
     
     color: white;
     

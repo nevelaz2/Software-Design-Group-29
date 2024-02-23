@@ -1,8 +1,33 @@
-.quote-history{
+.quote-history-container{
     background-color: #F6F4F1 !important;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.quote-history-form, .quote-history-table{
+    background-color: white;
+    width: 80em;
+    margin-bottom: 4em;
+}
+
+
+.quote-history-form .row{
+    height: 6em;
+    justify-content: space-around;
     align-items: center;
 }
 
-.history-table{
-    background-color: white;
+tbody tr{
+    height: 4em;
+}
+
+table tr{
+    text-align: center;
+    vertical-align: middle;
+    border-bottom-width: 0;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd)>* {
+    background-color:  #fffaf3 !important; 
 }

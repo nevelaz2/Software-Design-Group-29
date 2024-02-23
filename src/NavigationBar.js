@@ -13,11 +13,11 @@ import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 const NavigationBar = ({ activeTab }) => {
     return (
-      <Navbar bg="dark" expand="lg" className="sidebar">
+      <Navbar className="sidebar">
        <Container fluid>
           <Navbar.Brand href="/profile">
               <img src="/logo.png" className="d-inline-block align-top logo" alt="CoogsEnergy Logo"/>
-              <h4>Hello, username!</h4>
+              <h5>Hello, username!</h5>
           </Navbar.Brand>
 
           <Navbar.Collapse>

@@ -29,5 +29,5 @@ table tr{
 }
 
 .table-striped > tbody > tr:nth-of-type(odd)>* {
-    background-color:  #fffaf3 !important; 
+    background-color:  #F6F4F1; 
 }

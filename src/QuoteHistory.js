@@ -2,14 +2,10 @@ import React from 'react';
 import {Container, Row, Col, Form, Table, Button} from 'react-bootstrap';
 import './QuoteHistory.css';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCalendarDays } from '@fortawesome/free-solid-svg-icons'
-
-<FontAwesomeIcon icon={faCalendarDays} />
-
 const QuoteHistory = () => {
   return (
     <Container fluid className="quote-history-container">
+
       {/* Filter area */}
       <Row>
         <Col>
@@ -45,8 +41,8 @@ const QuoteHistory = () => {
       </Row>
           
 
+      {/*History data*/}
       <Row>
-        {/*History data*/}
         <Col>
           <h4 className="text-left mb-4">Latest</h4>
           <Table responsive striped hover className="quote-history-table">
@@ -112,12 +108,7 @@ const QuoteHistory = () => {
                 ))}
             </tr>
           </tbody>
-
         </Table>
-        
-        
-        
-        
         
         </Col>
       </Row>

@@ -16,30 +16,35 @@ const NavigationBar = ({ activeTab }) => {
       <Navbar className="sidebar">
        <Container fluid>
           <Navbar.Brand href="/profile">
-              <img src="/logo.png" className="d-inline-block align-top logo" alt="CoogsEnergy Logo"/>
-              <h5>Hello, username!</h5>
+              <img src="/logo.png" className="logo" alt="CoogsEnergy Logo"/>
+              <h5>Hello, username!</h5> 
           </Navbar.Brand>
 
           <Navbar.Collapse>
-            <Nav className="" id="responsive-navbar-nav">
-              <Nav.Link as={Link} to="/profile" active={activeTab === 'profile'}>
-                <FontAwesomeIcon icon={faUser} className="icons" /> Profile 
-              </Nav.Link>
-              <Nav.Link as={Link} to="/fuel-quote" active={activeTab === 'fuel-quote'}>
-                <FontAwesomeIcon icon={faGasPump} className="icons" />Fuel Quote
-              </Nav.Link>
-              <Nav.Link as={Link} to="/quote-history" active={activeTab === 'quote-history'}>
-                <FontAwesomeIcon icon={faClockRotateLeft} className="icons" />Quote History
-              </Nav.Link>
+            <Nav id="responsive-navbar-nav">
+              <div className="user-links">
+                <Nav.Link className="mb-3" as={Link} to="/profile" active={activeTab === 'profile'}>
+                  <FontAwesomeIcon icon={faUser} className="icons" /> Profile 
+                </Nav.Link>
+                <Nav.Link className="mb-3" as={Link} to="/fuel-quote" active={activeTab === 'fuel-quote'}>
+                  <FontAwesomeIcon icon={faGasPump} className="icons" />Fuel Quote
+                </Nav.Link>
+                <Nav.Link className="mb-5" as={Link} to="/quote-history" active={activeTab === 'quote-history'}>
+                  <FontAwesomeIcon icon={faClockRotateLeft} className="icons" />Quote History
+                </Nav.Link>
+              </div>
+
+
+              <div className="log-out">
+                {/*Placeholder for Log out link*/}
+                <Nav.Link className="pt-5" as={Link} to="/profile" active={activeTab === 'profile'}>
+                  <FontAwesomeIcon icon={faRightFromBracket} className="icons"/>Log Out
+                </Nav.Link>
+              </div>
             </Nav>
           </Navbar.Collapse>
 
-          <Nav>
-              {/*Placeholder for Log out link*/}
-              <Nav.Link as={Link} to="/profile" active={activeTab === 'profile'}>
-                <FontAwesomeIcon icon={faRightFromBracket} className="icons"/>Log Out
-              </Nav.Link>
-            </Nav>
+          
         </Container>
         
       </Navbar>

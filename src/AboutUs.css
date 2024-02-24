@@ -1,0 +1,55 @@
+body{
+    color: white;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+  }
+
+#Title{
+    position: relative;
+    align-items: center;
+    margin: auto;
+    top: 5rem;
+    font-size: 2rem;
+}
+
+#TitleText{
+    text-align: center;
+    text-shadow: black 0px 0px 15px;
+}
+
+#aboutText{
+    font-size: 1.1rem;
+    margin-top: 120px;
+}
+
+#SubTitleText{
+    text-shadow: black 5px 5px 5px;
+}
+
+.mainBlock {
+    z-index: 1;
+}
+
+.subBlock{
+    position: relative;
+    margin: auto;
+    width: 50%;
+    height: auto;
+    margin-bottom: 40px;
+}
+
+.image-right{
+    margin-left: 20px;
+    float: right;
+    width: 25rem;
+    height: 15rem;
+}
+
+.image-left{
+    margin-right: 20px;
+    float: left;
+    width: 25rem;
+    height: 15rem;
+}

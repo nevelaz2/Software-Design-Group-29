@@ -8,7 +8,7 @@ import NavigationBar from './NavigationBar';
 // import './NavigationBar.css'
 import './App.css';
 
-import WL_1_NavBar from './WL_1_NavBar'
+import HorizontalNavbar from './HorizontalNavbar'
 import Home from './Home'
 import AboutUs from './AboutUs'
 import Login from './Login'
@@ -24,7 +24,7 @@ const App = () => {
           <Route path="/fuel-quote" element={<FuelQuoteForm/>} />
           <Route path="/quote-history" element={<QuoteHistory/>} />
         </Routes> */}
-        <WL_1_NavBar />
+        <HorizontalNavbar />
         <Routes>
           <Route path="/home" element={<Home/>}/>
           <Route path="/aboutus" element={<AboutUs/>}/>

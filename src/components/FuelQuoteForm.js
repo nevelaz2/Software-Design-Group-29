@@ -1,6 +1,6 @@
 import React from 'react';
-import './App.css';
-import './FuelQuoteForm.css';
+import '../styles/App.css';
+import '../styles/FuelQuoteForm.css';
 
 const FuelQuoteForm = () => {
   return (

@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 // import QuoteHistory from './QuoteHistory'; 
 // import Sidebar from './Sidebar';
 // import './Sidebar.css'
-import './App.css';
+import '../styles/App.css';
 
 import NavigationBar from './NavigationBar'
 import Home from './Home'

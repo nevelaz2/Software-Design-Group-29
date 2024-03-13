@@ -1,6 +1,6 @@
 import React from 'react';
 import {Container, Row, Col, Form, Table, Button} from 'react-bootstrap';
-import './QuoteHistory.css';
+import '../styles/QuoteHistory.css';
 
 const QuoteHistory = () => {
   return (

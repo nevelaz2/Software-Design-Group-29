@@ -1,7 +1,7 @@
 import React from 'react';
 import { Nav, Navbar, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom'; 
-import './Sidebar.css';
+import '../styles/Sidebar.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
@@ -16,7 +16,7 @@ const Sidebar = ({ activeTab }) => {
       <Navbar className="sidebar">
        <Container fluid>
           <Navbar.Brand href="/profile">
-              <img src="/logo.png" className="logo" alt="CoogsEnergy Logo"/>
+              <img src="./assets/logo.png" className="logo" alt="CoogsEnergy Logo"/>
               <h5>Hello, username!</h5> 
           </Navbar.Brand>
 

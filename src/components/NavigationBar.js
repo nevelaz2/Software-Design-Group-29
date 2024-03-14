@@ -5,15 +5,17 @@ import '../styles/NavigationBar.css'
 
 const NavigationBar = () => {
   return (
-    <Navbar expand="lg" className="fixed-top">
-      <Container fluid className="px-1 px-md-2 py-lg-1">
-        <Navbar.Brand href="/home">
-            <img src="./assets/logo.png" className="align-top logo-small" alt="CoogsEnergy Logo"/>
+    <Navbar expand="lg" className="fixed-top px-3 px-md-5 py-3">
+      <Container fluid>
+        <Navbar.Brand href="/">
+            <img src="./assets/logo.png" className="logo-small" alt="CoogsEnergy Logo"/>
         </Navbar.Brand>
 
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav pullright className="ms-auto">
-            <Nav.Link as={Link} to="/home">Home</Nav.Link>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+
+        <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
+          <Nav className="text-center">
+            <Nav.Link as={Link} to="/">Home</Nav.Link>
             <Nav.Link as={Link} to="/aboutus">About</Nav.Link>
             <Nav.Link as={Link} to="/login">Login</Nav.Link>
             <Nav.Link as={Link} to="/signup">Sign Up</Nav.Link>

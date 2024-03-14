@@ -3,10 +3,17 @@
     background-color: #021B3E;
 }
 
+.navbar-brand{
+    object-fit: contain;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    font-size: 0%;
+}
+
 .nav-link{
     color: white;
     font-weight: 600;
-    margin-right: 1.5em;
+    margin-left: 1.5em;
 }
 
 .nav-link:hover{
@@ -22,7 +29,6 @@
 }
 
 .logo-small {
-    margin-left: 4rem;
     width: 2rem;
     height: 2rem;
     transform: scale(2.5)

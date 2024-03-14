@@ -1,4 +1,3 @@
-import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 // import Profile from './Profile'; 
@@ -9,6 +8,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import '../styles/App.css';
 
 import NavigationBar from './NavigationBar'
+import Hero from './Hero'
 import Home from './Home'
 import AboutUs from './AboutUs'
 import Login from './Login'
@@ -24,9 +24,10 @@ const App = () => {
           <Route path="/fuel-quote" element={<FuelQuoteForm/>} />
           <Route path="/quote-history" element={<QuoteHistory/>} />
         </Routes> */}
-        <NavigationBar />
+        <NavigationBar/>
+        <Hero/>
         <Routes>
-          <Route path="/home" element={<Home/>}/>
+          <Route path="/" element={<Home/>}/>
           <Route path="/aboutus" element={<AboutUs/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/signup" element={<SignUp/>}/>

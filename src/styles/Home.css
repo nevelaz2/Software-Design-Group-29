@@ -4,9 +4,19 @@
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1;
-  }
+}
   
+.logo{
+  width: 25em;
+  height: 25em;
+}
+
+
+
+/* Media Queries */
+@media screen and (min-width: 768px){
   .logo{
-    width: 25em;
-    height: 25em;
+      width: 40em;
+      height: 40em;
   }
+}

@@ -10,7 +10,7 @@
     font-size: 0%;
 }
 
-.nav-link{
+.nav-link, .nav-link:visited{
     color: white;
     font-weight: 600;
     margin-left: 1.5em;
@@ -18,6 +18,10 @@
 
 .nav-link:hover{
     color: #D6B276;
+}
+
+a.nav-link:active{
+    background-color: #D6B276;
 }
 
 .navbar-toggler:focus{

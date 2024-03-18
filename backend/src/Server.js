@@ -4,6 +4,7 @@ const Cors = require("cors");
 const Mongoose = require("mongoose");
 
 const { CreateUserData } = require("./LoginModule.js");
+const ProfileRouter = require("./ProfileModule.js"); // Import the ProfileModule router
 
 const Server = Express();
 const Port = 3001;
@@ -18,9 +19,10 @@ Mongoose.connect(DataBaseURI).then(() => {
 
     Server.listen(Port, "localhost", () => {
         console.log(`Listening on port ${Port}`);
-    })
+    });
 }).catch(Error => {
     console.log("Error:", Error);
-})
+});
 
 Server.post("/createuserdata", CreateUserData);
+Server.use(ProfileRouter); //  the ProfileModule router 

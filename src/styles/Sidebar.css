@@ -10,7 +10,7 @@
     align-items: center;
 }
 
-.sidebar .container-fluid, #responsive-navbar-nav {
+.sidebar .container-fluid, .sidebar #responsive-navbar-nav {
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -23,7 +23,7 @@
     flex-direction: column;
 }
 
-.navbar-brand{
+.sidebar .navbar-brand{
     margin-right: 0;
     padding-top: 0;
     padding-bottom: 0;
@@ -31,7 +31,7 @@
     align-items: center;
 }
 
-.navbar-brand h5{
+.sidebar .navbar-brand h5{
     color: #E5B357;
     text-transform: uppercase;
     text-align: center;
@@ -45,11 +45,11 @@
     text-align: left;
 }
 
-.logo{
+.navbar-brand .portal-logo{
     width: 12em;
     height: 12em;
 }
 
-.icons{
+.sidebar .icons{
     margin-right: 1em;
 }

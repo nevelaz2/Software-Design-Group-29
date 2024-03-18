@@ -11,25 +11,25 @@ import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 
 
-const Sidebar = ({ activeTab }) => {
+const Sidebar = () => {
     return (
       <Navbar className="sidebar">
        <Container fluid>
-          <Navbar.Brand href="/profile">
-              <img src="./assets/logo.png" className="logo" alt="CoogsEnergy Logo"/>
+          <Navbar.Brand href="/user">
+              <img src="./assets/logo.png"  className="portal-logo" alt="CoogsEnergy Logo"/>
               <h5>Hello, username!</h5> 
           </Navbar.Brand>
 
           <Navbar.Collapse>
             <Nav id="responsive-navbar-nav">
               <div className="user-links">
-                <Nav.Link className="mb-3" as={Link} to="/profile" active={activeTab === 'profile'}>
+                <Nav.Link className="mb-3" as={Link} to="/user/profile">
                   <FontAwesomeIcon icon={faUser} className="icons" /> Profile 
                 </Nav.Link>
-                <Nav.Link className="mb-3" as={Link} to="/fuel-quote" active={activeTab === 'fuel-quote'}>
+                <Nav.Link className="mb-3" as={Link} to="/user/fuel-quote">
                   <FontAwesomeIcon icon={faGasPump} className="icons" />Fuel Quote
                 </Nav.Link>
-                <Nav.Link className="mb-5" as={Link} to="/quote-history" active={activeTab === 'quote-history'}>
+                <Nav.Link className="mb-5" as={Link} to="/user/quote-history">
                   <FontAwesomeIcon icon={faClockRotateLeft} className="icons" />Quote History
                 </Nav.Link>
               </div>
@@ -37,7 +37,7 @@ const Sidebar = ({ activeTab }) => {
 
               <div className="log-out">
                 {/*Placeholder for Log out link*/}
-                <Nav.Link className="pt-5" as={Link} to="/profile" active={activeTab === 'profile'}>
+                <Nav.Link className="pt-5" as={Link} to="/user">
                   <FontAwesomeIcon icon={faRightFromBracket} className="icons"/>Log Out
                 </Nav.Link>
               </div>

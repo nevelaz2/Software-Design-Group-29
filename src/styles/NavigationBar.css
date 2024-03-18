@@ -20,9 +20,6 @@
     color: #D6B276;
 }
 
-a.nav-link:active{
-    background-color: #D6B276;
-}
 
 .navbar-toggler:focus{
     box-shadow: none;

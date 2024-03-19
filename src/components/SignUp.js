@@ -2,6 +2,32 @@ import React, { Fragment } from "react";
 import { useRef } from "react";
 import "../styles/SignUpLogin.css";
 
+const CheckDataExists = async (Data, URL) => {
+  URL += "?";
+
+  Object.keys(Data).forEach(Key => {
+    URL += Key.toString() + "=" + Data[Key].toString() + "&";
+  })
+
+  URL = URL.substring(0, URL.length - 1);
+
+  try {
+    const Response = await fetch(URL);
+    const Data = await Response.text();
+    const ParsedData = JSON.parse(Data);
+
+    if (ParsedData.found === "true") {
+      console.log(Response);
+      return {UsernameExists: true, Username: ParsedData.username};
+    } 
+
+    return {UsernameExists: false};
+
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
 const CreateNewData = async (Data, URL) => {
   const RequestOptions = {
     method: "POST",
@@ -27,15 +53,19 @@ const SignUp = () => {
   const Password = useRef(null);
 
   const HandleSignUp = async (Event) => {
-    console.log("Hey");
-
     Event.preventDefault();
 
-    CreateNewData({
-      userId: null,
-      username: Username.current.value, 
-      password: Password.current.value
-    }, "http://localhost:3001/createuserdata");
+    const ResponseObject = await CheckDataExists({username: Username.current.value}, "http://localhost:3001/finduser");
+
+    if (ResponseObject.UsernameExists === false) {
+      CreateNewData({
+        userId: null, 
+        username: Username.current.value, 
+        password: Password.current.value}, 
+        "http://localhost:3001/createuserdata");
+    } else {
+      console.log("This username already exists");
+    }
   }
 
   return (

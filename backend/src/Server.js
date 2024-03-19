@@ -3,13 +3,13 @@ const BodyParser = require("body-parser");
 const Cors = require("cors");
 const Mongoose = require("mongoose");
 
-const { CreateUserData } = require("./LoginModule.js");
+const LoginRouter = require("./LoginModule.js");
 const ProfileRouter = require("./ProfileModule.js"); // Import the ProfileModule router
 
 const Server = Express();
 const Port = 3001;
 
-const DataBaseURI = "mongodb+srv://username:password@atlascluster.ckxw4ub.mongodb.net/clusterName?retryWrites=true&w=majority&appName=AtlasCluster";
+const DataBaseURI = "mongodb+srv://Khang:khangiantp00l@atlascluster.ckxw4ub.mongodb.net/Testing2?retryWrites=true&w=majority&appName=AtlasCluster";
 
 Server.use(Cors());
 Server.use(BodyParser.json());
@@ -24,5 +24,5 @@ Mongoose.connect(DataBaseURI).then(() => {
     console.log("Error:", Error);
 });
 
-Server.post("/createuserdata", CreateUserData);
+Server.use(LoginRouter); 
 Server.use(ProfileRouter); //  the ProfileModule router 

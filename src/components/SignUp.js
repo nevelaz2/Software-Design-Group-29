@@ -27,9 +27,15 @@ const SignUp = () => {
   const Password = useRef(null);
 
   const HandleSignUp = async (Event) => {
+    console.log("Hey");
+
     Event.preventDefault();
 
-    CreateNewData({username: Username.current.value, password: Password.current.value}, "http://localhost:3001/createuserdata");
+    CreateNewData({
+      userId: null,
+      username: Username.current.value, 
+      password: Password.current.value
+    }, "http://localhost:3001/createuserdata");
   }
 
   return (

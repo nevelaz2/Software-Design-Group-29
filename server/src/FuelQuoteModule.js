@@ -10,7 +10,7 @@ const { default: mongoose, Mongoose } = require('mongoose');
 // Creates a new Fuel Quote
 router.post('/quote', async (req, res) => {
     try {
-        const { userId, gallonsRequested, deliveryDate, pricePerGallon, totalPrice } = req.body;
+        const { userId, gallonsRequested, deliveryDate, pricePerGallon } = req.body;
 
         // Input data validation
         if (!userId || !gallonsRequested || !deliveryDate) {
@@ -21,7 +21,7 @@ router.post('/quote', async (req, res) => {
 
 
         // Total Price
-        totalPrice = (pricePerGallon * gallonsRequested);
+        let totalPrice = (pricePerGallon * gallonsRequested);
 
         // Saves fuel quote
         const newFuelQuote = new FuelQuoteData({

@@ -1,7 +1,6 @@
 const express = require("express");
 const BodyParser = require("body-parser");
 const Cors = require("cors");
-const Mongoose = require("mongoose");
 const request = require("supertest");
 const FuelQuoteModule = require("./FuelQuoteModule");
 const LoginModule = require("./LoginModule");
@@ -12,7 +11,7 @@ const Server = express();
 const Port = 3001;
 
 const DataBaseURI =
-  "mongodb+srv://Nikolas:Nikolas@atlascluster.ckxw4ub.mongodb.net/Testing2?retryWrites=true&w=majority&appName=AtlasCluster";
+  "mongodb+srv://username:password@atlascluster.ckxw4ub.mongodb.net/Testing2?retryWrites=true&w=majority&appName=AtlasCluster";
 let serverInstance;
 
 Server.use(Cors());
@@ -59,9 +58,8 @@ describe('FuelQuoteModule API', () => {
             .send({
                 userId: "65f939da08b0fabfa3f161d6",
                 gallonsRequested: 100,
-                deliveryDate: "2024-03-25T08:00:00.000Z",
+                deliveryDate: "2024-03-25",
                 pricePerGallon: 2.5,
-                totalprice: 250
             })
         console.log(response.text)
         expect(response.status).toBe(200);

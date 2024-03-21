@@ -8,6 +8,6 @@ const QuoteSchema = new mongoose.Schema({
     totalPrice: { type: Number, required: false},
 })
 
-const FuelQuoteData = mongoose.model('FuelQuoteData', QuoteSchema);
+const FuelQuoteData = mongoose.model('FuelQuoteData', QuoteSchema, 'FuelQuoteData');
 
 module.exports = FuelQuoteData;

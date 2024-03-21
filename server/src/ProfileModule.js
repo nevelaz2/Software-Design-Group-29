@@ -13,7 +13,7 @@ router.get('/profile/:username', async (req, res) => {
         }
         // Exclude the password when sending back the user profile
         const { password, ...profileWithoutPassword } = user.toObject();
-        res.json(profileWithoutPassword);
+        res.status(200).json(profileWithoutPassword);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -36,7 +36,7 @@ router.put('/profile/:username', async (req, res) => {
         if (password) user.password = password;
 
         await user.save();
-        res.send('User profile updated successfully');
+        res.status(200).send('User profile updated successfully');
     } catch (error) {
         res.status(500).send(error.message);
     }

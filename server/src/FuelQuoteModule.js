@@ -4,6 +4,7 @@
 const express = require('express');
 const router = express.Router();
 const FuelQuoteData = require("../Data/FuelQuoteData.js"); 
+const { default: mongoose, Mongoose } = require('mongoose');
 
 
 // Creates a new Fuel Quote
@@ -24,15 +25,15 @@ router.post('/quote', async (req, res) => {
 
         // Saves fuel quote
         const newFuelQuote = new FuelQuoteData({
-            userId,
-            gallonsRequested,
-            deliveryDate,
-            pricePerGallon,
-            totalPrice,
+            userId: userId,
+            gallonsRequested: gallonsRequested,
+            deliveryDate: deliveryDate,
+            pricePerGallon: pricePerGallon,
+            totalPrice: totalPrice,
         });
 
         await newFuelQuote.save();
-        res.send('Quote created successfully!');
+        res.status(200).send('Quote created successfully!');
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -44,12 +45,10 @@ router.post('/quote', async (req, res) => {
 router.get('/quote/history/:userId', async (req, res) => {
     try {
 
-        const userId = req.params.userId;
-
         // Displays quotes for userId
-        const fuelQuotes = await FuelQuoteData.find({ userId });
+        const fuelQuotes = await FuelQuoteData.findOne({ userId: req.params.userId });
 
-        res.json(fuelQuotes);
+        res.status(200).json(fuelQuotes);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -77,7 +76,7 @@ router.get('/quote/filter', async (req, res) => {
         // Performs query
         const fuelQuotes = await FuelQuoteData.find(filter);
 
-        res.json(fuelQuotes);
+        res.status(200).json(fuelQuotes);
     } catch (error) {
         res.status(500).send(error.message);
     }

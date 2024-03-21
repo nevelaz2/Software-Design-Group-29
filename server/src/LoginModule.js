@@ -22,7 +22,7 @@ Router.post("/createuserdata", async (Request, Response) => {
 
         await NewUser.save();
 
-        Response.send("User data has been created");
+        Response.status(200).send("User data has been created");
     } catch (Error) {
         console.log(Error);
         Response.status(500).send("An error occurred while creating user data");

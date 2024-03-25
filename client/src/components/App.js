@@ -1,36 +1,18 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+// import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-// import Profile from './Profile'; 
-// import FuelQuoteForm from './FuelQuoteForm'; 
-// import QuoteHistory from './QuoteHistory'; 
-// import Sidebar from './Sidebar';
-// import './Sidebar.css'
-import '../styles/App.css';
+import PublicView from '../views/PublicView';
+import UserPortal from '../views/UserPortal';
+// import '../styles/App.css';
 
-import NavigationBar from './NavigationBar'
-import Hero from './Hero'
-import Home from './Home'
-import AboutUs from './AboutUs'
-import Login from './Login'
-import SignUp from './SignUp'
 
 const App = () => {
   return (
     <Router>
       <div>
-        {/* <Sidebar activeTab="profile"/>
         <Routes>
-          <Route path="/profile" element={<Profile/>} />
-          <Route path="/fuel-quote" element={<FuelQuoteForm/>} />
-          <Route path="/quote-history" element={<QuoteHistory/>} />
-        </Routes> */}
-        <NavigationBar/>
-        <Hero/>
-        <Routes>
-          <Route path="/" element={<Home/>}/>
-          <Route path="/aboutus" element={<AboutUs/>}/>
-          <Route path="/login" element={<Login/>}/>
-          <Route path="/signup" element={<SignUp/>}/>
+          <Route path="*" element={<PublicView/>}/>
+          <Route path="/user/*" element={<UserPortal/>}/>
         </Routes>
       </div>
     </Router>

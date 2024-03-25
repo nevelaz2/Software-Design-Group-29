@@ -10,12 +10,12 @@ const UserData = require("../Data/UserData.js");
 
 Router.post("/createuserdata", async (Request, Response) => {
     try {
-        const {username, password} = Request.body;
+        const {userId, username, password} = Request.body;
 
         const HashedPassword = await Bcrypt.hash(password, SaltRounds);
 
         const NewUser = new UserData({
-            userId: new Mongoose.Types.ObjectId(),
+            userId: userId,
             username: username,
             password: HashedPassword
         })

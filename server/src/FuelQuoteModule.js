@@ -1,13 +1,13 @@
 // Gleici Pereira 
-// Includes fuel quote form, fuel quote history, and quotes filtering (extra). Filtering by date, or gallons requested. Quote history contains all information from quote form.
+// Includes fuel quote form, fuel quote history, and quotes filtering (extra). Filtering by date, or gallons requested.
 
 const express = require('express');
 const router = express.Router();
 const FuelQuoteData = require("../Data/FuelQuoteData.js"); 
-const { default: mongoose, Mongoose } = require('mongoose');
 
 
-// Creates a new Fuel Quote
+
+// Creates a new Quote
 router.post('/quote', async (req, res) => {
     try {
         const { userId, gallonsRequested, deliveryDate, pricePerGallon } = req.body;
@@ -17,7 +17,8 @@ router.post('/quote', async (req, res) => {
             return res.status(400).send('Missing required fields');
         }
 
-        // Calculates suggested price per gallon (Using pricing module)
+        // pricePerGallon placeholder
+        // Calculates suggested price per gallon using PricingModule
 
 
         // Total Price
@@ -65,7 +66,9 @@ router.get('/quote/filter', async (req, res) => {
 
         // Creates filter
         const filter = {};
-        if (userId) filter.userId = userId;
+        if (userId) {
+            filter.userId = userId;
+        }
         if (startDate && endDate) {
             filter.deliveryDate = { $gte: new Date(startDate), $lte: new Date(endDate) };
         }

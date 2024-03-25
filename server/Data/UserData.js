@@ -3,7 +3,7 @@ const Mongoose = require("mongoose");
 const Schema = Mongoose.Schema;
 
 const UserSchema = new Schema({
-    userId: { type: Mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    userId: req.body.userId,
     username: { type: String, required: true },
     password: { type: String, required: true },
     name: { type: String, required: false },

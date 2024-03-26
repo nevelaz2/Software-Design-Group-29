@@ -15,7 +15,6 @@ Router.post("/createuserdata", async (Request, Response) => {
         const HashedPassword = await Bcrypt.hash(password, SaltRounds);
 
         const NewUser = new UserData({
-            userId: userId,
             username: username,
             password: HashedPassword
         })
@@ -40,7 +39,7 @@ Router.get("/finduser", async (Request, Response) => {
         }
     } catch (Error) {
         console.log("Error occurred in finduser");
-        Response.status(500).send(Error.toString());
+        Response.status(500).send(Error.message);
     }
 })
 
@@ -58,7 +57,7 @@ Router.get(("/compare-password"), async (Request, Response) => {
             Response.status(200).send("false");
         }
     } catch (Error) {
-        Response.status(500).send(Error.toString());
+        Response.status(500).send(Error.message);
     }
 })
 

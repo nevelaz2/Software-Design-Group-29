@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const QuoteSchema = new mongoose.Schema({
-    userId: req.body.userId,
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'Users', required: true },
     gallonsRequested: { type: Number, required: true},
     deliveryDate: { type: Date, required: true},
     pricePerGallon: { type: Number, required: false},

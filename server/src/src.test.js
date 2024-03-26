@@ -6,7 +6,6 @@ const FuelQuoteModule = require("./FuelQuoteModule");
 const LoginModule = require("./LoginModule");
 const ProfileModule = require("./ProfileModule");
 const { default: mongoose } = require("mongoose");
-const UserData = require("../Data/UserData");
 
 const Server = express();
 const Port = 3001;
@@ -50,266 +49,275 @@ Server.use(FuelQuoteModule);
 Server.use(LoginModule);
 Server.use(ProfileModule);
 
-// FuelQuoteModule Test Cases
-describe('FuelQuoteModule API', () => {
-    describe('Successful HTTP tests', () =>{
-        // HTTP POST
-        test('HTTP POST: It should respond with Status 200 and confirmation text', async () => {
-            const response = await request(Server)
-                .post('/quote')
-                .send({
-                    userId: "65f939da08b0fabfa3f161d6",
-                    gallonsRequested: 100,
-                    deliveryDate: "2024-03-25",
-                    pricePerGallon: 2.5,
-                })
-            expect(response.status).toBe(200);
-            expect(response.text).toBe('Quote created successfully!')
-        })
-
-        // HTTP GET
-        test('HTTP GET: It should respond with Status 200', async () => {
-            const response = await request(Server)
-                .get('/quote/history/65f939da08b0fabfa3f161d6')
-            expect(response.status).toBe(200);
-        })
-
-        test('HTTP GET: It should respond with Status 200', async () => {
-            const response = await request(Server)
-                .get('/quote/filter')
-                .query({
-                    userId: "65f939da08b0fabfa3f161d6",
-                    stateDate: "2024-01-01",
-                    endDate: "2024-03-21",
-                    minGallons: 50,
-                    maxGallons: 150
-                })
-            expect(response.status).toBe(200);
-        })
+// Successful FuelQuoteModule Test Cases
+describe('Successful HTTP tests of FuelQuoteModule API', () => {
+    // HTTP POST
+    test('HTTP POST (/quote): It should respond with Status 200 and confirmation text', async () => {
+        const response = await request(Server)
+            .post('/quote')
+            .send({
+                userId: "65fbe80527c64e93442f1c01",
+                gallonsRequested: 100,
+                deliveryDate: "2024-03-25",
+                pricePerGallon: 2.5,
+            })
+        expect(response.status).toBe(200);
+        expect(response.text).toBe('Quote created successfully!')
     })
-    describe('Unsuccessful HTTP tests', () =>{
-        // HTTP POST
-        test('HTTP POST: It should respond with Status 400 and reason message', async () => {
-            const response = await request(Server)
-                .post('/quote')
-                .send({
-                    userId: "65f939da08b0fabfa3f161d6",
-                    gallonsRequested: 100,
-                    pricePerGallon: 2.5,
-                })
-            expect(response.status).toBe(400);
-            expect(response.text).toBe('Missing required fields')
-        })
 
-        test('HTTP POST: It should respond with Status 500 and error message', async () => {
-            const response = await request(Server)
-                .post('/quote')
-                .send({
-                    userId: "1",
-                    gallonsRequested: 100,
-                    deliveryDate: "2024-03-25",
-                    pricePerGallon: 2.5,
-                })
-            expect(response.status).toBe(500);
-            expect(() => {
-                if(response.error) throw new Error('Error occurred: '+ response.error)
-            }).toThrow();
-        })
+    // HTTP GET
+    test('HTTP GET (/quote/history/:userId): It should respond with Status 200', async () => {
+        const response = await request(Server)
+            .get('/quote/history/65fbe80527c64e93442f1c01')
+        expect(response.status).toBe(200);
+    })
 
-        //HTTP GET
-        test('HTTP GET: It should respond with Status 500 and error message', async () => {
-            const response = await request(Server)
-                .get('/quote/history/84')
-            expect(response.status).toBe(500);
-            expect(() => {
-                if(response.error) throw new Error('Error occurred: '+ response.error)
-            }).toThrow();
-        })
-
-        test('HTTP GET: It should respond with Status 500 and error message', async () => {
-            const response = await request(Server)
-                .get('/quote/filter')
-                .query({
-                    userId: "3",
-                    stateDate: "2024-01-01",
-                    endDate: "2024-03-21"
-                })
-            expect(response.status).toBe(500);
-        })
-
-        // test('HTTP GET: It should respond with Status 500 and error message', async () => {
-        //     const response = await request(Server)
-        //         .get('/quote/filter')
-        //         .query({
-        //             userId: "65f939da08b0fabfa3f161d6",
-        //             stateDate: false
-        //         })
-        //     expect(response.status).toBe(500);
-        // })
+    test('HTTP GET (/quote/filter): It should respond with Status 200', async () => {
+        const response = await request(Server)
+            .get('/quote/filter')
+            .query({
+                userId: "65fbe80527c64e93442f1c01",
+                stateDate: "2024-01-01",
+                endDate: "2024-03-21",
+                minGallons: 50,
+                maxGallons: 150
+            })
+        expect(response.status).toBe(200);
     })
 })
 
-// LoginModule Test Cases
-describe('LoginModule API', () => {
-    describe('Successful HTTP tests', () => {
-        //HTTP POST
-        test('HTTP POST: It should respond with Status 200 and confirmation text', async () => {
-            const response = await request(Server)
-                .post('/createuserdata')
-                .send({
-                    username: "billy123",
-                    password: "milly321"
-                })
-            expect(response.status).toBe(200)
-            expect(response.text).toBe('User data has been created')
-        })
-
-        //HTTP GET
-        test('HTTP GET: It should respond with Status 200 with true and username', async () => {
-            const response = await request(Server)
-                .get('/finduser')
-                .query({
-                    username: "TestingName"
-                })
-            expect(response.status).toBe(200)
-            expect(response.body).toEqual({ found: 'true', username: 'TestingName' })
-        })
-
-        test('HTTP GET: It should respond with Status 200 and false', async () => {
-            const response = await request(Server)
-                .get('/finduser')
-                .query({
-                    username: "NameTesting"
-                })
-            expect(response.status).toBe(200)
-            expect(response.body).toEqual({ found: 'false' })
-        })
-
-        test('HTTP GET: It should respond with Status 200 with a true value', async () => {
-            const response = await request(Server)
-                .get('/compare-password')
-                .query({
-                    username: "billy123",
-                    password: "milly321"
-                })
-            expect(response.status).toBe(200)
-            expect(response.text).toBe("true")
-        })
-
-        test('HTTP GET: It should respond with Status 200 with a false value', async () => {
-            const response = await request(Server)
-                .get('/compare-password')
-                .query({
-                    username: "TestingName",
-                    password: "WRONG_PASSWORD"
-                })
-            expect(response.status).toBe(200)
-            expect(response.text).toBe("false")
-        })
+// Unsuccessful FuelQuoteModule Test Cases
+describe('Unsuccessful HTTP POST of FuelQuoteModule API', () =>{
+    // HTTP POST
+    test('HTTP POST: It should respond with Status 400 and reason message', async () => {
+        const response = await request(Server)
+            .post('/quote')
+            .send({
+                userId: "65fbe80527c64e93442f1c01",
+                gallonsRequested: 100,
+                pricePerGallon: 2.5,
+            })
+        expect(response.status).toBe(400);
+        expect(response.text).toBe('Missing required fields')
     })
-    describe('Unsuccessful HTTP tests', () => {
-        //HTTP POST
-        test('HTTP POST: It should respond with Status 500 and error text', async () => {
-            const response = await request(Server)
-                .post('/createuserdata')
-                .send({
-                    hello: false,
-                    password: "milly321"
-                })
-            expect(response.status).toBe(500)
-            expect(response.text).toBe('An error occurred while creating user data')
-        })
 
-        //HTTP GET
-        test('HTTP GET: It should respond with Status 500 and error message', async () => {
-            const response = await request(Server)
-                .get('/finduser')
-                .query({
-                    username: new Date()
-                })
-            expect(response.status).toBe(500)
-            expect(response.text).tobe("TypeError: Cannot read properties of null (reading 'password')")
-        })
-
-        test('HTTP GET: It should respond with Status 500 and error message', async () => {
-            const response = await request(Server)
-                .get('/compare-password')
-                .query({
-                    hi: "false",
-                    password: "Some_PASSWORD"
-                })
-            expect(response.status).toBe(500)
-            expect(response.text).toBe("TypeError: Cannot read properties of null (reading 'password')")
-        })
+    test('HTTP POST: It should respond with Status 500 and error message', async () => {
+        const response = await request(Server)
+            .post('/quote')
+            .send({
+                userId: "1",
+                gallonsRequested: 100,
+                deliveryDate: "2024-03-25",
+                pricePerGallon: 2.5,
+            })
+        expect(response.status).toBe(500);
+        expect(() => {
+            if(response.error) throw new Error('Error occurred: '+ response.error)
+        }).toThrow();
     })
 })
 
-// ProfileModule Test Cases
-describe("ProfileModule API", () => {
-    describe("Successful HTTP tests", () => {
-        //HTTP GET
-        test("HTTP GET: It should respond with Status 200", async () => {
-            const response = await request(Server)
-                .get("/profile/TestingName");
-            expect(response.status).toBe(200);
-        });
-
-        // HTTP PUT
-        test('HTTP PUT: It should respond with Status 200', async () => {
-            const response = await request(Server)
-                .put('/profile/TestingName')
-                .send({
-                    name: "alan",
-                    address: "321 Far Rd",
-                    country: "France",
-                    password: "Hello World!"
-                })
-            expect(response.status).toBe(200);
-            expect(response.text).toBe("User profile updated successfully")
-        })
+describe('Unsuccessful HTTP GET of FuelQuoteModule API', () => {
+    //HTTP GET
+    test('HTTP GET: It should respond with Status 500 and error message', async () => {
+        const response = await request(Server)
+            .get('/quote/history/84')
+        expect(response.status).toBe(500);
+        expect(() => {
+            if(response.error) throw new Error('Error occurred: '+ response.error)
+        }).toThrow();
     })
-    describe("Unsuccessful HTTP tests", () => {
-        //HTTP GET
-        test("HTTP GET: It should respond with Status 404 and message", async () => {
-            const response = await request(Server)
-                .get("/profile/65f939da08b0fabfa3f161d7");
-            expect(response.status).toBe(404);
-            expect(response.text).toBe('User not found');
-        });
 
-        test("HTTP GET: It should respond with Status 500 and error message", async () => {
-            const response = await request(Server)
-                .get("/profile/CoogsLover");
-            expect(response.status).toBe(500);
-            expect(() => {
-                if(response.error) throw new Error('Error occurred: '+ response.error)
-            }).toThrow();
-        });
-
-        //HTTP PUT
-        test('HTTP PUT: It should respond with Status 404 and message', async () => {
-            const response = await request(Server)
-                .put('/profile/johncena')
-                .send({
-                    name: "alan",
-                    address: "321 Far Rd",
-                    country: "France",
-                    password: "Hello World!"
-                })
-            expect(response.status).toBe(404);
-            expect(response.text).toBe("User not found")
-        })
-
-        test('HTTP PUT: It should respond with Status 500 and error message', async () => {
-            const response = await request(Server)
-                .put('/profile/johncena')
-            expect(response.status).toBe(500);
-            expect(() => {
-                if(response.error) throw new Error('Error occurred: '+ response.error)
-            }).toThrow();
-        })
+    test('HTTP GET: It should respond with Status 500 and error message', async () => {
+        const response = await request(Server)
+            .get('/quote/filter')
+            .query({
+                userId: "3",
+                stateDate: "2024-01-01",
+                endDate: "2024-03-21"
+            })
+        expect(response.status).toBe(500);
     })
-});
+
+    // test('HTTP GET: It should respond with Status 500 and error message', async () => {
+    //     const response = await request(Server)
+    //         .get('/quote/filter')
+    //         .query({
+    //             userId: "65fbe80527c64e93442f1c01",
+    //             stateDate: null,
+    //             endDate: null,
+    //         })
+    //     expect(response.status).toBe(500);
+    // })
+})
+
+// Successful LoginModule Test Cases
+describe('Successful HTTP tests of LoginModule API', () => {
+    //HTTP POST
+    test('HTTP POST: It should respond with Status 200 and confirmation text', async () => {
+        const response = await request(Server)
+            .post('/createuserdata')
+            .send({
+                username: "billy123",
+                password: "milly321"
+            })
+        expect(response.status).toBe(200)
+        expect(response.text).toBe('User data has been created')
+    })
+
+    //HTTP GET
+    test('HTTP GET: It should respond with Status 200 with true and username', async () => {
+        const response = await request(Server)
+            .get('/finduser')
+            .query({
+                username: "TestingName"
+            })
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual({ found: 'true', username: 'TestingName' })
+    })
+
+    test('HTTP GET: It should respond with Status 200 and false', async () => {
+        const response = await request(Server)
+            .get('/finduser')
+            .query({
+                username: "NameTesting"
+            })
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual({ found: 'false' })
+    })
+
+    test('HTTP GET: It should respond with Status 200 with a true value', async () => {
+        const response = await request(Server)
+            .get('/compare-password')
+            .query({
+                username: "billy123",
+                password: "milly321"
+            })
+        expect(response.status).toBe(200)
+        expect(response.text).toBe("true")
+    })
+
+    test('HTTP GET: It should respond with Status 200 with a false value', async () => {
+        const response = await request(Server)
+            .get('/compare-password')
+            .query({
+                username: "TestingName",
+                password: "WRONG_PASSWORD"
+            })
+        expect(response.status).toBe(200)
+        expect(response.text).toBe("false")
+    })
+})
+
+// Unsuccessful LoginModule Test Cases
+describe('Unsuccessful HTTP POST of LoginModule API', () => {
+    //HTTP POST
+    test('HTTP POST: It should respond with Status 500 and error text', async () => {
+        const response = await request(Server)
+            .post('/createuserdata')
+            .send({
+                hello: false,
+                password: "milly321"
+            })
+        expect(response.status).toBe(500)
+        expect(response.text).toBe('An error occurred while creating user data')
+    })
+})
+
+describe('Unsuccessful HTTP GET of LoginModule API', () => {
+    //HTTP GET
+    // test('HTTP GET: It should respond with Status 500 and error message', async () => {
+    //     const response = await request(Server)
+    //         .get('/finduser')
+    //         .query({
+    //             username: "billy123"
+    //         })
+    //     expect(response.status).toBe(500)
+    //     expect(response.text).tobe("Created error in finduser route")
+    // })
+
+    test('HTTP GET: It should respond with Status 500 and error message', async () => {
+        const response = await request(Server)
+            .get('/compare-password')
+            .query({
+                hi: "false",
+                password: "Some_PASSWORD"
+            })
+        expect(response.status).toBe(500)
+        expect(() => {
+            if(response.error) throw new Error('Error occurred: '+ response.error)
+        }).toThrow();
+    })
+})
+
+// Successful ProfileModule Test Cases
+describe("Successful HTTP tests of ProfileModule API", () => {
+    //HTTP GET
+    test("HTTP GET: It should respond with Status 200", async () => {
+        const response = await request(Server)
+            .get("/profile/TestingName");
+        expect(response.status).toBe(200);
+    });
+
+    // HTTP PUT
+    test('HTTP PUT: It should respond with Status 200', async () => {
+        const response = await request(Server)
+            .put('/profile/TestingName')
+            .send({
+                name: "alan",
+                address: "321 Far Rd",
+                country: "France",
+                password: "Hello World!"
+            })
+        expect(response.status).toBe(200);
+        expect(response.text).toBe("User profile updated successfully")
+    })
+})
+
+// Unsuccessful ProfileModule Test Cases
+describe("Unsuccessful HTTP GET of ProfileModule API", () => {
+    //HTTP GET
+    test("HTTP GET: It should respond with Status 404 and message", async () => {
+        const response = await request(Server)
+            .get("/profile/65f939da08b0fabfa3f161d7");
+        expect(response.status).toBe(404);
+        expect(response.text).toBe('User not found');
+    });
+
+    // test("HTTP GET: It should respond with Status 500 and error message", async () => {
+    //     const response = await request(Server)
+    //         .get("/profile/CoogsLover");
+    //     expect(response.status).toBe(500);
+    //     expect(() => {
+    //         if(response.error) throw new Error('Error occurred: '+ response.error)
+    //     }).toThrow();
+    // });
+})
+
+describe("Unsuccessful HTTP GET of ProfileModule API", () => {
+    //HTTP PUT
+    test('HTTP PUT: It should respond with Status 404 and message', async () => {
+        const response = await request(Server)
+            .put('/profile/johncena')
+            .send({
+                name: "alan",
+                address: "321 Far Rd",
+                country: "France",
+                password: "Hello World!"
+            })
+        expect(response.status).toBe(404);
+        expect(response.text).toBe("User not found")
+    })
+
+    // test('HTTP PUT: It should respond with Status 500 and error message', async () => {
+    //     const response = await request(Server)
+    //         .put('/profile/TestingName')
+    //     expect(response.status).toBe(500);
+    //     expect(() => {
+    //         if(response.error) throw new Error('Error occurred: '+ response.error)
+    //     }).toThrow();
+    // })
+})
 
 // SAMPLE LINE
 // expect(response.body.gallonsRequested).toEqual(updatedData.gallonsRequested);

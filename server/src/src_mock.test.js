@@ -11,7 +11,7 @@ const Server = express();
 const Port = 3002;
 
 const DataBaseURI =
-  "mongodb+srv://Nikolas:Nikolas@atlascluster.ckxw4ub.mongodb.net/Testing2?retryWrites=true&w=majority&appName=AtlasCluster";
+  "mongodb+srv://username:password@atlascluster.ckxw4ub.mongodb.net/Testing2?retryWrites=true&w=majority&appName=AtlasCluster";
 let serverInstance;
 
 Server.use(Cors());
@@ -56,7 +56,7 @@ jest.mock('../Data/UserData', () => ({
 }));
 
 describe('Unsuccessful HTTP GET of LoginModule API', () => {
-    test('HTTP GET: It should respond with Status 500 and error message', async () => {
+    test('HTTP GET (/finduser): It should respond with Status 500 and error message', async () => {
         const response = await request(Server)
             .get('/finduser')
             .query({
@@ -70,7 +70,7 @@ describe('Unsuccessful HTTP GET of LoginModule API', () => {
 })
 
 describe('Unsuccessful HTTP GET of ProfileModule API', () => {
-    test("HTTP GET: It should respond with Status 500 and error message", async () => {
+    test("HTTP GET (/profile/:username): It should respond with Status 500 and error message", async () => {
         const response = await request(Server)
             .get("/profile/CoogsLover");
         expect(response.status).toBe(500);
@@ -81,7 +81,7 @@ describe('Unsuccessful HTTP GET of ProfileModule API', () => {
 })
 
 describe('Unsuccessful HTTP PUT of ProfileModule API', () => {
-    test('HTTP PUT: It should respond with Status 500 and error message', async () => {
+    test('HTTP PUT (/profile/:username): It should respond with Status 500 and error message', async () => {
         const response = await request(Server)
             .put('/profile/TestingName')
         expect(response.status).toBe(500);

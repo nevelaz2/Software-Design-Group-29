@@ -69,6 +69,7 @@ router.get('/quote/filter', async (req, res) => {
         if (userId) {
             filter.userId = userId;
         }
+        
         if (startDate && endDate) {
             filter.deliveryDate = { $gte: new Date(startDate), $lte: new Date(endDate) };
         }

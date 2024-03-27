@@ -10,7 +10,7 @@ const ProfileRouter = require("./ProfileModule.js"); // Import the ProfileModule
 const Server = Express();
 const Port = 3001;
 
-const DataBaseURI = "mongodb+srv://Nikolas:Nikolas@atlascluster.ckxw4ub.mongodb.net/Testing2?retryWrites=true&w=majority&appName=AtlasCluster";
+const DataBaseURI = "mongodb+srv://username:password@atlascluster.ckxw4ub.mongodb.net/Testing2?retryWrites=true&w=majority&appName=AtlasCluster";
 
 Server.use(Cors());
 Server.use(BodyParser.json());

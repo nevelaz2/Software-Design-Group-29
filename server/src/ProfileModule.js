@@ -4,6 +4,9 @@ const express = require('express');
 const router = express.Router();
 const UserData = require("../Data/UserData.js"); // Assuming UserData is in the correct path
 
+const Bcrypt = require("bcrypt");
+const SaltRounds = 10; // For Bcrypt - hashing passwords
+
 // Retrieve User Profile
 router.get('/profile/:username', async (req, res) => {
     try {
@@ -33,7 +36,10 @@ router.put('/profile/:username', async (req, res) => {
         if (name) user.name = name;
         if (address) user.address = address;
         if (country) user.country = country;
-        if (password) user.password = password;
+        if (password){
+            const HashedPassword = await Bcrypt.hash(password, SaltRounds);
+            user.password = HashedPassword;
+        } 
 
         await user.save();
         res.status(200).send('User profile updated successfully');

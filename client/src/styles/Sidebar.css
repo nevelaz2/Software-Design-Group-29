@@ -1,3 +1,5 @@
+/* User portal sidebar navigation */
+
 .sidebar {
     width: 15vw;
     height: 100vh; 
@@ -10,7 +12,7 @@
     align-items: center;
 }
 
-.sidebar .container-fluid, .sidebar #responsive-navbar-nav {
+.sidebar > .container-fluid, .sidebar #responsive-navbar-nav {
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -18,10 +20,10 @@
     margin: 3em 0;
 }
   
-.sidebar .navbar-nav {
+/* .sidebar .navbar-nav {
     display: flex;
     flex-direction: column;
-}
+} */
 
 .sidebar .navbar-brand{
     margin-right: 0;
@@ -31,23 +33,26 @@
     align-items: center;
 }
 
-.sidebar .navbar-brand h5{
-    color: #E5B357;
-    text-transform: uppercase;
+.navbar-brand > h5{
+    color: #FFD4A5;
     text-align: center;
+    text-transform: uppercase;
 }
 
-.sidebar .nav-link, .sidebar .nav-link.active {
-  
-    color: #FFD4A5;
+.sidebar .nav-link {
+    color: #EAEAEA;
     text-decoration: none;
     font-size: 1em;
     text-align: left;
 }
 
-.navbar-brand .portal-logo{
-    width: 12em;
-    height: 12em;
+.nav-link:hover{
+    color: #D6B276;
+}
+
+.portal-logo{
+    width: 10em;
+    height: 10em;
 }
 
 .sidebar .icons{

@@ -36,15 +36,15 @@ The web application must include the following components and functionalities:
 
 4. **Fuel Quote Form with Pricing Module:**
    - Provides a form with the following fields:
-     - Gallons Requested (numeric, required)
-     - Delivery Address (Non-editable, comes from client profile)
-     - Delivery Date (Calendar, date picker)
+     - Gallons Requested (numeric, required).
+     - Delivery Address (Non-editable, comes from client profile).
+     - Delivery Date (Calendar, date picker).
      - Client history (existing customer with previous purchase or new).
      - Company profit margin (%).
    - Calculates fuel rates based on the provided criteria.
-     - Suggested Price per gallon (numeric non-editable / calculated by Pricing Module)
+     - Suggested Price per gallon (numeric non-editable / calculated by Pricing Module).
    - Displays total cost.
-     - Total Amount Due (numeric non-editable / calculated as (gallons * price))
+     - Total Amount Due (numeric non-editable / calculated as (gallons * price)).
 	
 5. **Fuel Quote Filter:**
    - Allows clients to filter quotes by date, or gallons requested.

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Nav, Navbar, Container } from 'react-bootstrap';
+import { Nav, Navbar, Container } from "react-bootstrap";
 import { Link } from 'react-router-dom'; 
-import '../styles/Sidebar.css';
+import "../styles/Sidebar.css";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
@@ -17,7 +17,7 @@ const Sidebar = () => {
        <Container fluid>
           <Navbar.Brand href="/user">
               <img src="./assets/logo.png"  className="portal-logo" alt="CoogsEnergy Logo"/>
-              <h5>Hello, username!</h5> 
+              <h5>Hi, username!</h5> 
           </Navbar.Brand>
 
           <Navbar.Collapse>

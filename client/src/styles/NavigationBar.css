@@ -7,11 +7,10 @@
     object-fit: contain;
     padding-top: 0%;
     padding-bottom: 0%;
-    font-size: 0%;
 }
 
-.nav-link, .nav-link:visited{
-    color: white;
+.navigation-bar .nav-link{
+    color: #EAEAEA;
     font-weight: 600;
     margin-left: 1.5em;
 }

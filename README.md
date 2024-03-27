@@ -14,7 +14,7 @@ This project involves the design and development of a web application to predict
 Our frontend development utilizes a combination of HTML for structure, CSS for styling, and JavaScript for interactivity. We enhance responsiveness and user experience with Bootstrap and manage components efficiently using ReactJS.
 
 - Backend:
-For backend development, MySQL serves as our database management system, while Node.js runs our server-side logic. These technologies together ensure secure and efficient data management and server-side processing.
+For backend development, we use JavaScript, Node.js, and Express.js as our framework. MongoDB serves as our non-relational database, chosen for its flexibility, scalability, and seamless integration with JavaScript via Mongoose. Jest ensures code coverage, enhancing the reliability of our codebase. Together, these technologies enable secure, efficient, and scalable server-side processing for our project. 
 
 By leveraging this technology stack, we aim to develop a robust and scalable software application that meets the project requirements and adheres to modern software design principles and high-level architecture.
 
@@ -23,28 +23,35 @@ By leveraging this technology stack, we aim to develop a robust and scalable sof
 The web application must include the following components and functionalities:
 
 1. **Login:**
-   - Allow clients to log in.
-   - Provide registration for new clients.
+   - Allows clients to log in.
+   - Provides registration for new clients.
 
 2. **Client Registration:**
    - Initially, username and password.
 
 3. **Client Profile Management:**
    - Clients must complete their profiles after registration by logging in.
+   - Input fields such as Full Name (50 char), Address 1 (100 char), City (100 char), State (Drop Down), and Zipcode (5 char) will be required. Others, such as Address 2 (100 char), and Zipcode 4 last digits will be optional. 
    - Manage client information and preferences.
 
 4. **Fuel Quote Form with Pricing Module:**
-   - Provide a form for clients to input:
-     - Client location (in-state or out-of-state).
+   - Provides a form with the following fields:
+     - Gallons Requested (numeric, required)
+     - Delivery Address (Non-editable, comes from client profile)
+     - Delivery Date (Calendar, date picker)
      - Client history (existing customer with previous purchase or new).
-     - Gallons requested.
      - Company profit margin (%).
-   - Calculate fuel rates based on the provided criteria.
-   - Display the total cost to the client.
+   - Calculates fuel rates based on the provided criteria.
+     - Suggested Price per gallon (numeric non-editable / calculated by Pricing Module)
+   - Displays total cost.
+     - Total Amount Due (numeric non-editable / calculated as (gallons * price))
+	
+5. **Fuel Quote Filter:**
+   - Allows clients to filter quotes by date, or gallons requested.
 
-5. **Fuel Quote History:**
-   - Maintain a history of fuel quotes for each client.
-   - Allow clients to view their past quotes.
+6. **Fuel Quote History:**
+   - Maintains a history of fuel quotes for each client.
+   - Allows clients to view their past quotes.
 
 ## Instructions 
 - Users should log in to access the application's functionalities.

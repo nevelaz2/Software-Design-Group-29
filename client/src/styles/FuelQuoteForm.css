@@ -1,9 +1,10 @@
 .quote-form {
     align-items: center;
+    
 }
 
 .quote-form #container {
-    background-color: rgb(246, 243, 243);
+    background-color: whitesmoke;
 
     height: 550px;
     width: 850px;

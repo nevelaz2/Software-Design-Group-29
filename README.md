@@ -63,6 +63,6 @@ The web application must include the following components and functionalities:
 ## Notes
 - This project emphasizes software design principles and architecture.
 - Additional features and modifications will be discussed and implemented during development.
-- Application wireframe available at https://www.canva.com/design/DAF7VAitNK8/CoW5e_XtWarT4-8fR-Q45g/view?utm_content=DAF7VAitNK8&utm_campaign=designshare&utm_medium=link&utm_source=editor.
+- Application can be accessed at https://group-29-coogs-energy-enterprise.netlify.app/.
 
 

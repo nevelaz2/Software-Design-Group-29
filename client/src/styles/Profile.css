@@ -1,25 +1,13 @@
-#profile-info {
-    font-size: 25px;
-
-    width: max-content;
-
-    position: absolute; 
-    top: 40px;
-    left: 305px;
-
-    z-index: 1;
-}
-
 .profile-page {
     align-items: center;
+    /* background-color: #F6F4F1; */
+    background-color: white;
 }
 
 .profile-page .container {
-    background-color: rgb(246, 243, 243);
-
+    background-color: whitesmoke;
     height: 450px;
     width: 850px;
-
     position: absolute;
     top: 50%;
     left: 57%;
@@ -33,25 +21,19 @@
 
 .profile-page .info-container p {
     color: grey;
-    
     font-size: 13.5px;
 }
 
 .profile-page .button {
     border: none;
     border-radius: 10px;
-
     background-color: rgba(0,158,242,255);
-    
     color: white;
-    
     font-size: 15px;
     font-weight: bold;
-    
     position: absolute;
     top: 76.5%;
     left: 55%;
-
     padding: 17.5px;
     padding-top: 4px;
     padding-bottom: 4px;

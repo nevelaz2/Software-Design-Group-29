@@ -8,8 +8,6 @@ function InfoBox(Props) {
     flexDirection: "column",
     alignItems: "start",
     justifyContent: "start",
-    
-    position: "absolute",
     left: `${Props.x}px`,
     top: `${Props.y}px`
   };
@@ -27,25 +25,44 @@ function InfoBox(Props) {
 const Profile = () => {
   return (
     <>
-      <h1 id="profile-info"> Profile Information </h1>
       <div className='profile-page'>
         <div className="container">
-          <InfoBox title="Name" name="info-container" x={50} y={50}>
-            <p> Name Placeholder </p>
-          </InfoBox>
+          <h4 id="profile-info" className="m-5 lead"> Profile Information </h4>
 
-          <InfoBox title="Address" name="info-container" x={50} y={135}>
-            <p> Address Placeholder </p>
-            <p> Country Placeholder </p>
-          </InfoBox>
+          <div className="d-flex justify-content-around mt-5 mx-5">
+            <div className="col-6">
+              <InfoBox title="Name" name="info-container" x={50} y={50}>
+                <p> Full name </p>
+              </InfoBox>
+            </div>
+            <div className="col-6">
+              <InfoBox title="Address" name="info-container" x={50} y={135}>
+                <div className="d-flex flex-row">
+                  <p className="pr-4" > Address 1 </p>
+                  <p > Address 2 </p>
+                </div>
+              </InfoBox>
+            </div>
+          </div>
 
-          <InfoBox title="Username" name="info-container" x={50} y={240}>
-            <p> Your Username Placeholder </p>
-          </InfoBox>
-
-          <InfoBox title="Password" name="info-container" x={50} y={325}>
-            <p> Password Placeholder </p>
-          </InfoBox>
+          <div className="d-flex justify-content-between mt-5 mx-5">
+            <div className="col-3">
+              <InfoBox title="City" name="info-container" x={50} y={240}>
+                <p> City </p>
+              </InfoBox>
+            </div>
+            <div className="col-3">
+              <InfoBox title="State" name="info-container" x={50} y={325}>
+                <p> State </p>
+              </InfoBox>
+            </div>
+            <div className="col-3">
+              <InfoBox title="Zipcode" name="info-container" x={50} y={240}>
+                <p> ZIP Code </p>
+              </InfoBox>
+            </div>
+          </div>
+      
         </div>
 
         <button className="button"> Edit </button>

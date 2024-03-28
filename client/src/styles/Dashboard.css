@@ -1,0 +1,13 @@
+/* Dashboard */
+
+#dash-overlay{
+  background-color: #D6B276;
+  height: 100vh;
+  width: 100%;
+}
+
+.dash-img{
+  height: inherit;
+  object-fit: cover;
+  opacity: 0.5;
+}

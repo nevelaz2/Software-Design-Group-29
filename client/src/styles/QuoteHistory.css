@@ -1,12 +1,12 @@
 .quote-history-container{
-    background-color: #F6F4F1 !important;
+    background-color: white;
     flex-direction: column;
     align-items: center;
 
 }
 
 .quote-history-form, .quote-history-table{
-    background-color: white;
+    background-color: whitesmoke;
     width: 80em;
     margin-bottom: 4em;
 }
@@ -28,6 +28,10 @@ table tr{
     border-bottom-width: 0;
 }
 
+table thead{
+    background-color: #FFD4A5;
+}
+
 .table-striped > tbody > tr:nth-of-type(odd)>* {
-    background-color:  #F6F4F1; 
+    background-color:  whitesmoke; 
 }

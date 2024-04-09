@@ -1,0 +1,15 @@
+/* Button */
+
+.profile-modal-button{
+    width: 5em;
+    height: auto;
+    background-color: #021B3E;
+    border: none;
+}
+
+.profile-modal-button:hover{
+    background-color: #021B3E !important;
+}
+
+
+/* Edit Form */

@@ -1,4 +1,5 @@
 import React from 'react';
+import ProfileModal from './ProfileModal';
 import '../styles/App.css';
 import '../styles/Profile.css';
 
@@ -21,6 +22,7 @@ function InfoBox(Props) {
     </div>
   );
 }
+
 
 const Profile = () => {
   return (
@@ -45,7 +47,7 @@ const Profile = () => {
             </div>
           </div>
 
-          <div className="d-flex justify-content-between mt-5 mx-5">
+          <div className="d-flex justify-content-between m-5">
             <div className="col-3">
               <InfoBox title="City" name="info-container" x={50} y={240}>
                 <p> City </p>
@@ -62,10 +64,13 @@ const Profile = () => {
               </InfoBox>
             </div>
           </div>
-      
+
+          <div className="text-center">
+            <ProfileModal/> 
+          </div>
+          
         </div>
 
-        <button className="button"> Edit </button>
       </div>
     </>
   );

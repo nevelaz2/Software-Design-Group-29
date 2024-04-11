@@ -11,7 +11,7 @@ const Server = express();
 const Port = 3002;
 
 const DataBaseURI =
-  "mongodb+srv://username:password@atlascluster.ckxw4ub.mongodb.net/Testing2?retryWrites=true&w=majority&appName=AtlasCluster";
+  "mongodb+srv://Nikolas:Nikolas@atlascluster.ckxw4ub.mongodb.net/Testing2?retryWrites=true&w=majority&appName=AtlasCluster";
 let serverInstance;
 
 Server.use(Cors());
@@ -49,7 +49,7 @@ Server.use(FuelQuoteModule);
 Server.use(LoginModule);
 Server.use(ProfileModule);
 
-jest.mock('../Data/UserData', () => ({
+jest.mock('../Data/UserCredentialsData', () => ({
     findOne: jest.fn(() => {
         throw new Error('Intentional error in finduser route');
     })

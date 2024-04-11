@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const QuoteSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'Users', required: true },
-    gallonsRequested: { type: Number, required: true},
-    deliveryDate: { type: Date, required: true},
-    pricePerGallon: { type: Number, required: false},
-    totalPrice: { type: Number, required: false},
+    UserID: { type: mongoose.Schema.Types.ObjectId, ref: 'Users', required: true },
+    GallonsRequested: { type: Number, required: true},
+    DeliveryDate: { type: Date, required: true},
+    PricePerGallon: { type: Number, required: false},
+    TotalPrice: { type: Number, required: false},
 })
 
 const FuelQuoteData = mongoose.model('FuelQuoteData', QuoteSchema, 'FuelQuoteData');

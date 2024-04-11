@@ -11,7 +11,7 @@ const Server = express();
 const Port = 3001;
 
 const DataBaseURI =
-  "mongodb+srv://username:password@atlascluster.ckxw4ub.mongodb.net/Testing2?retryWrites=true&w=majority&appName=AtlasCluster";
+  "mongodb+srv://Nikolas:Nikolas@atlascluster.ckxw4ub.mongodb.net/Testing2?retryWrites=true&w=majority&appName=AtlasCluster";
 let serverInstance;
 
 Server.use(Cors());
@@ -55,7 +55,7 @@ describe('Successful HTTP tests of FuelQuoteModule API', () => {
         const response = await request(Server)
             .post('/quote')
             .send({
-                userId: "65fbe80527c64e93442f1c01",
+                userId: "66171aa3ba32b8415ae70aa3",
                 gallonsRequested: 100,
                 deliveryDate: "2024-03-25",
                 pricePerGallon: 2.5,
@@ -66,7 +66,7 @@ describe('Successful HTTP tests of FuelQuoteModule API', () => {
 
     test('HTTP GET (/quote/history/:userId): It should respond with Status 200', async () => {
         const response = await request(Server)
-            .get('/quote/history/65fbe80527c64e93442f1c01')
+            .get('/quote/history/66171aa3ba32b8415ae70aa3')
         expect(response.status).toBe(200);
     })
 
@@ -74,7 +74,7 @@ describe('Successful HTTP tests of FuelQuoteModule API', () => {
         const response = await request(Server)
             .get('/quote/filter')
             .query({
-                userId: "65fbe80527c64e93442f1c01",
+                userId: "66171aa3ba32b8415ae70aa3",
                 startDate: "2024-01-01",
                 endDate: "2024-03-21",
                 minGallons: 50,
@@ -100,7 +100,7 @@ describe('Unsuccessful HTTP POST of FuelQuoteModule API', () =>{
         const response = await request(Server)
             .post('/quote')
             .send({
-                userId: "65fbe80527c64e93442f1c01",
+                userId: "66171aa3ba32b8415ae70aa3",
                 gallonsRequested: 100,
                 pricePerGallon: 2.5,
             })
@@ -163,17 +163,17 @@ describe('Successful HTTP tests of LoginModule API', () => {
         const response = await request(Server)
             .get('/finduser')
             .query({
-                username: "TestingName"
+                username: "billy123"
             })
         expect(response.status).toBe(200)
-        expect(response.body).toEqual({ found: 'true', username: 'TestingName' })
+        expect(response.body).toEqual({ found: 'true', username: 'billy123' })
     })
 
     test('HTTP GET (/finduser): It should respond with Status 200 and false', async () => {
         const response = await request(Server)
             .get('/finduser')
             .query({
-                username: "NameTesting"
+                username: "TestingName"
             })
         expect(response.status).toBe(200)
         expect(response.body).toEqual({ found: 'false' })
@@ -183,8 +183,8 @@ describe('Successful HTTP tests of LoginModule API', () => {
         const response = await request(Server)
             .get('/compare-password')
             .query({
-                username: "billy123",
-                password: "milly321"
+                username: "JB",
+                password: "Hello World!"
             })
         expect(response.status).toBe(200)
         expect(response.text).toBe("true")
@@ -194,7 +194,7 @@ describe('Successful HTTP tests of LoginModule API', () => {
         const response = await request(Server)
             .get('/compare-password')
             .query({
-                username: "TestingName",
+                username: "billy123",
                 password: "WRONG_PASSWORD"
             })
         expect(response.status).toBe(200)
@@ -235,17 +235,20 @@ describe('Unsuccessful HTTP GET of LoginModule API', () => {
 describe("Successful HTTP tests of ProfileModule API", () => {
     test("HTTP GET (/profile/:username): It should respond with Status 200", async () => {
         const response = await request(Server)
-            .get("/profile/TestingName");
+            .get("/profile/billy123");
         expect(response.status).toBe(200);
     });
 
     test('HTTP PUT (/profile/:username): It should respond with Status 200', async () => {
         const response = await request(Server)
-            .put('/profile/TestingName')
+            .put('/profile/billy123')
             .send({
-                name: "alan",
-                address: "321 Far Rd",
-                country: "France",
+                fullname: "alan meow",
+                address1: "321 Far Rd",
+                address2: "Apt 103",
+                city: "Houston",
+                state: "TX",
+                zip: 77356,
                 password: "Hello World!"
             })
         expect(response.status).toBe(200);
@@ -254,7 +257,7 @@ describe("Successful HTTP tests of ProfileModule API", () => {
 
     test('HTTP PUT (/profile/:username): It should respond with Status 200', async () => {
         const response = await request(Server)
-            .put('/profile/TestingName')
+            .put('/profile/billy123')
             .send({})   //Sends empty data
         expect(response.status).toBe(200);
         expect(response.text).toBe("User profile updated successfully")

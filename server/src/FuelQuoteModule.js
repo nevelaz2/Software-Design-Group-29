@@ -26,11 +26,11 @@ router.post('/quote', async (req, res) => {
 
         // Saves fuel quote
         const newFuelQuote = new FuelQuoteData({
-            userId: userId,
-            gallonsRequested: gallonsRequested,
-            deliveryDate: deliveryDate,
-            pricePerGallon: pricePerGallon,
-            totalPrice: totalPrice,
+            UserID: userId,
+            GallonsRequested: gallonsRequested,
+            DeliveryDate: deliveryDate,
+            PricePerGallon: pricePerGallon,
+            TotalPrice: totalPrice,
         });
 
         await newFuelQuote.save();
@@ -47,7 +47,7 @@ router.get('/quote/history/:userId', async (req, res) => {
     try {
 
         // Displays quotes for userId
-        const fuelQuotes = await FuelQuoteData.findOne({ userId: req.params.userId });
+        const fuelQuotes = await FuelQuoteData.findOne({ UserID: req.params.userId });
 
         res.status(200).json(fuelQuotes);
     } catch (error) {
@@ -67,14 +67,14 @@ router.get('/quote/filter', async (req, res) => {
         // Creates filter
         const filter = {};
         if (userId) {
-            filter.userId = userId;
+            filter.UserID = userId;
         }
         
         if (startDate && endDate) {
-            filter.deliveryDate = { $gte: new Date(startDate), $lte: new Date(endDate) };
+            filter.DeliveryData = { $gte: new Date(startDate), $lte: new Date(endDate) };
         }
         if (minGallons && maxGallons) {
-            filter.gallonsRequested = { $gte: minGallons, $lte: maxGallons };
+            filter.GallonsRequested = { $gte: minGallons, $lte: maxGallons };
         }
 
         // Performs query

@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>32/32</span>
+                <span class='fraction'>44/44</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>20/20</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>29/29</span>
+                <span class='fraction'>38/38</span>
             </div>
         
             
@@ -114,8 +114,20 @@
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
 <a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -140,9 +152,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -153,10 +171,14 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -170,6 +192,7 @@
 const express = require('express');
 const router = express.Router();
 const UserData = require("../Data/UserData.js"); // Assuming UserData is in the correct path
+const UserCred = require("../Data/UserCredentialsData.js")
 &nbsp;
 const Bcrypt = require("bcrypt");
 const SaltRounds = 10; // For Bcrypt - hashing passwords
@@ -177,7 +200,7 @@ const SaltRounds = 10; // For Bcrypt - hashing passwords
 // Retrieve User Profile
 router.get('/profile/:username', async (req, res) =&gt; {
     try {
-        const user = await UserData.findOne({ username: req.params.username });
+        const user = await UserCred.findOne({ Username: req.params.username });
         if (!user) {
             return res.status(404).send('User not found');
         }
@@ -192,23 +215,33 @@ router.get('/profile/:username', async (req, res) =&gt; {
 // Update User Profile
 router.put('/profile/:username', async (req, res) =&gt; {
     try {
-        const { name, address, country, password } = req.body;
-        const user = await UserData.findOne({ username: req.params.username });
+        const { fullname: name, address1, address2, city, state, zip, password } = req.body;
+        const user = await UserCred.findOne({ Username: req.params.username });
         // Not sure if 404 error catches are needed but just in case.
         if (!user) {
             return res.status(404).send('User not found');
         }
+        const { UserID } = user.toObject();
+        const user_info = await UserData.findOne({ _id: UserID.toString() });
+        // console.log(user_info)
+        if(!user_info){
+            return res.status(404).send('User_Info not found');
+        }
 &nbsp;
         // Update and save the user profile
-        if (name) user.name = name;
-        if (address) user.address = address;
-        if (country) user.country = country;
+        if (name) user_info.FullName = name;
+        if (address1) user_info.Address1 = address1;
+        if (address2) user_info.Address2 = address2;
+        if (city) user_info.City = city;
+        if (state) user_info.State = state;
+        if (zip) user_info.Zip = zip;
         if (password){
             const HashedPassword = await Bcrypt.hash(password, SaltRounds);
-            user.password = HashedPassword;
+            user.Password = HashedPassword;
         } 
 &nbsp;
         await user.save();
+        await user_info.save();
         res.status(200).send('User profile updated successfully');
     } catch (error) {
         res.status(500).send(error.message);
@@ -223,7 +256,7 @@ module.exports = router;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-04-10T22:04:43.776Z
+                at 2024-04-11T02:08:39.119Z
             </div>
         <script src="../prettify.js"></script>
         <script>

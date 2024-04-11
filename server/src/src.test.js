@@ -279,12 +279,32 @@ describe("Unsuccessful HTTP GET of ProfileModule API", () => {
         const response = await request(Server)
             .put('/profile/johncena')
             .send({
-                name: "alan",
-                address: "321 Far Rd",
-                country: "France",
+                fullname: "alan meow",
+                address1: "321 Far Rd",
+                address2: "Apt 103",
+                city: "Houston",
+                state: "TX",
+                zip: 77356,
                 password: "Hello World!"
             })
         expect(response.status).toBe(404);
         expect(response.text).toBe("User not found")
+    })
+})
+
+describe("Unsuccessful HTTP GET of ProfileModule API", () => {
+    test('HTTP PUT (/profile/:username): It should respond with Status 404 and message', async () => {
+        const response = await request(Server)
+            .put('/profile/sebby')
+            .send({
+                fullname: "jack",
+                address1: "123 Pizza Rd",
+                address2: "Apt 103",
+                city: "Orlando",
+                state: "FL",
+                zip: 81654,
+            })
+        expect(response.status).toBe(404);
+        expect(response.text).toBe("User_Info not found")
     })
 })

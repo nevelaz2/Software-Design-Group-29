@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1712786683795" clover="3.2.0">
-  <project timestamp="1712786683796" name="All files">
-    <metrics statements="103" coveredstatements="103" conditionals="31" coveredconditionals="31" methods="8" coveredmethods="8" elements="142" coveredelements="142" complexity="0" loc="103" ncloc="103" packages="2" files="5" classes="5"/>
+<coverage generated="1712801319138" clover="3.2.0">
+  <project timestamp="1712801319138" name="All files">
+    <metrics statements="117" coveredstatements="117" conditionals="39" coveredconditionals="39" methods="8" coveredmethods="8" elements="164" coveredelements="164" complexity="0" loc="117" ncloc="117" packages="2" files="6" classes="6"/>
     <package name="Data">
-      <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <metrics statements="14" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="FuelQuoteData.js" path="C:\Users\nikol\Desktop\Software Design group-project\server\Data\FuelQuoteData.js">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="2" type="stmt"/>
@@ -11,17 +11,25 @@
         <line num="11" count="2" type="stmt"/>
         <line num="13" count="2" type="stmt"/>
       </file>
-      <file name="UserData.js" path="C:\Users\nikol\Desktop\Software Design group-project\server\Data\UserData.js">
+      <file name="UserCredentialsData.js" path="C:\Users\nikol\Desktop\Software Design group-project\server\Data\UserCredentialsData.js">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
-        <line num="15" count="1" type="stmt"/>
+      </file>
+      <file name="UserData.js" path="C:\Users\nikol\Desktop\Software Design group-project\server\Data\UserData.js">
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
       </file>
     </package>
     <package name="src">
-      <metrics statements="94" coveredstatements="94" conditionals="31" coveredconditionals="31" methods="8" coveredmethods="8"/>
+      <metrics statements="103" coveredstatements="103" conditionals="39" coveredconditionals="39" methods="8" coveredmethods="8"/>
       <file name="FuelQuoteModule.js" path="C:\Users\nikol\Desktop\Software Design group-project\server\src\FuelQuoteModule.js">
         <metrics statements="32" coveredstatements="32" conditionals="15" coveredconditionals="15" methods="3" coveredmethods="3"/>
         <line num="4" count="2" type="stmt"/>
@@ -65,65 +73,74 @@
         <line num="5" count="2" type="stmt"/>
         <line num="7" count="2" type="stmt"/>
         <line num="9" count="2" type="stmt"/>
-        <line num="11" count="2" type="stmt"/>
+        <line num="10" count="2" type="stmt"/>
         <line num="12" count="2" type="stmt"/>
         <line num="13" count="2" type="stmt"/>
-        <line num="15" count="2" type="stmt"/>
-        <line num="17" count="2" type="stmt"/>
-        <line num="22" count="2" type="stmt"/>
-        <line num="24" count="1" type="stmt"/>
-        <line num="26" count="1" type="stmt"/>
-        <line num="27" count="1" type="stmt"/>
-        <line num="31" count="2" type="stmt"/>
-        <line num="32" count="3" type="stmt"/>
-        <line num="33" count="3" type="stmt"/>
-        <line num="35" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="36" count="1" type="stmt"/>
-        <line num="38" count="1" type="stmt"/>
-        <line num="41" count="1" type="stmt"/>
-        <line num="42" count="1" type="stmt"/>
-        <line num="46" count="2" type="stmt"/>
-        <line num="47" count="3" type="stmt"/>
-        <line num="48" count="3" type="stmt"/>
-        <line num="50" count="3" type="stmt"/>
-        <line num="52" count="2" type="stmt"/>
-        <line num="54" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="55" count="1" type="stmt"/>
-        <line num="57" count="1" type="stmt"/>
-        <line num="60" count="1" type="stmt"/>
-        <line num="64" count="2" type="stmt"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="18" count="2" type="stmt"/>
+        <line num="24" count="2" type="stmt"/>
+        <line num="28" count="2" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="38" count="2" type="stmt"/>
+        <line num="39" count="3" type="stmt"/>
+        <line num="40" count="3" type="stmt"/>
+        <line num="42" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="43" count="1" type="stmt"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="49" count="1" type="stmt"/>
+        <line num="53" count="2" type="stmt"/>
+        <line num="54" count="3" type="stmt"/>
+        <line num="55" count="3" type="stmt"/>
+        <line num="57" count="3" type="stmt"/>
+        <line num="61" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="62" count="1" type="stmt"/>
+        <line num="64" count="1" type="stmt"/>
+        <line num="67" count="1" type="stmt"/>
+        <line num="71" count="2" type="stmt"/>
       </file>
       <file name="ProfileModule.js" path="C:\Users\nikol\Desktop\Software Design group-project\server\src\ProfileModule.js">
-        <metrics statements="29" coveredstatements="29" conditionals="12" coveredconditionals="12" methods="2" coveredmethods="2"/>
+        <metrics statements="38" coveredstatements="38" conditionals="20" coveredconditionals="20" methods="2" coveredmethods="2"/>
         <line num="3" count="2" type="stmt"/>
         <line num="4" count="2" type="stmt"/>
         <line num="5" count="2" type="stmt"/>
-        <line num="7" count="2" type="stmt"/>
+        <line num="6" count="2" type="stmt"/>
         <line num="8" count="2" type="stmt"/>
-        <line num="11" count="2" type="stmt"/>
-        <line num="12" count="3" type="stmt"/>
+        <line num="9" count="2" type="stmt"/>
+        <line num="12" count="2" type="stmt"/>
         <line num="13" count="3" type="stmt"/>
-        <line num="14" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="15" count="1" type="stmt"/>
-        <line num="18" count="1" type="stmt"/>
+        <line num="14" count="3" type="stmt"/>
+        <line num="15" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="1" type="stmt"/>
         <line num="19" count="1" type="stmt"/>
-        <line num="21" count="1" type="stmt"/>
-        <line num="26" count="2" type="stmt"/>
-        <line num="27" count="4" type="stmt"/>
-        <line num="28" count="4" type="stmt"/>
-        <line num="29" count="4" type="stmt"/>
-        <line num="31" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="32" count="1" type="stmt"/>
-        <line num="36" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="37" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="38" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="39" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="40" count="1" type="stmt"/>
-        <line num="41" count="1" type="stmt"/>
-        <line num="44" count="2" type="stmt"/>
-        <line num="45" count="2" type="stmt"/>
-        <line num="47" count="1" type="stmt"/>
-        <line num="51" count="2" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="27" count="2" type="stmt"/>
+        <line num="28" count="5" type="stmt"/>
+        <line num="29" count="5" type="stmt"/>
+        <line num="30" count="5" type="stmt"/>
+        <line num="32" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="35" count="3" type="stmt"/>
+        <line num="36" count="3" type="stmt"/>
+        <line num="38" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="43" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="44" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="45" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="46" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="47" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="48" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="49" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="50" count="1" type="stmt"/>
+        <line num="51" count="1" type="stmt"/>
+        <line num="54" count="2" type="stmt"/>
+        <line num="55" count="2" type="stmt"/>
+        <line num="56" count="2" type="stmt"/>
+        <line num="58" count="1" type="stmt"/>
+        <line num="62" count="2" type="stmt"/>
       </file>
     </package>
   </project>

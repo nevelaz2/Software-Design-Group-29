@@ -126,7 +126,14 @@
 <a name='L61'></a><a href='#L61'>61</a>
 <a name='L62'></a><a href='#L62'>62</a>
 <a name='L63'></a><a href='#L63'>63</a>
-<a name='L64'></a><a href='#L64'>64</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -135,23 +142,30 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -166,7 +180,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -177,7 +191,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -198,49 +212,56 @@ const SaltRounds = 10; // For Bcrypt - hashing passwords
 const Router = Express.Router();
 &nbsp;
 const UserData = require("../Data/UserData.js");
+const UserCred = require("../Data/UserCredentialsData.js");
 &nbsp;
 Router.post("/createuserdata", async (Request, Response) =&gt; {
     try {
-        const {userId, username, password} = Request.body;
+        const {username, password} = Request.body;
 &nbsp;
         const HashedPassword = await Bcrypt.hash(password, SaltRounds);
 &nbsp;
-        const NewUser = new UserData({
-            username: username,
-            password: HashedPassword
+        const NewUser = new UserCred({
+            UserID: new Mongoose.Types.ObjectId(),
+            Username: username,
+            Password: HashedPassword
+        })
+&nbsp;
+        const newUserInfo = new UserData({
+            _id: NewUser.UserID
         })
 &nbsp;
         await NewUser.save();
+        await newUserInfo.save();
 &nbsp;
         Response.status(200).send("User data has been created");
     } catch (Error) {
-        console.log(Error);
+        // console.log(Error);
         Response.status(500).send("An error occurred while creating user data");
     }
 })
 &nbsp;
 Router.get("/finduser", async (Request, Response) =&gt; {
     try {
-        const User = await UserData.findOne({username: Request.query.username});
+        const User = await UserCred.findOne({Username: Request.query.username});
 &nbsp;
         if (User) {
-            Response.status(200).send({found: "true", username: User.username});
+            Response.status(200).send({found: "true", username: User.Username});
         } else {
             Response.status(200).send({found: "false"});
         }
     } catch (Error) {
-        console.log("Error occurred in finduser");
+        // console.log("Error occurred in finduser");
         Response.status(500).send(Error.message);
     }
 })
 &nbsp;
 Router.get(("/compare-password"), async (Request, Response) =&gt; {
     try {
-        const User = await UserData.findOne({username: Request.query.username});
+        const User = await UserCred.findOne({Username: Request.query.username});
 &nbsp;
-        const PasswordMatches = await Bcrypt.compare(Request.query.password, User.password);
+        const PasswordMatches = await Bcrypt.compare(Request.query.password, User.Password);
 &nbsp;
-        console.log(Request.query.password, User.password);
+        // console.log(Request.query.password, User.Password);
 &nbsp;
         if (PasswordMatches) {
             Response.status(200).send("true");
@@ -259,7 +280,7 @@ module.exports = Router;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-04-10T22:04:43.776Z
+                at 2024-04-11T02:08:39.119Z
             </div>
         <script src="../prettify.js"></script>
         <script>

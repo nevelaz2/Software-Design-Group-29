@@ -1,0 +1,8 @@
+.quote-modal-button{
+    background-color: #021B3E;
+    border: none; 
+}
+
+.quote-modal-button:hover{
+    background-color: #021B3E !important;
+}

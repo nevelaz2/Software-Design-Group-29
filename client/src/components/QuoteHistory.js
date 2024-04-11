@@ -1,12 +1,13 @@
 import React from 'react';
-import {Container, Row, Col, Form, Table, Button} from 'react-bootstrap';
+import {Container, Row, Col, Table} from 'react-bootstrap';
+import FuelQuoteModal from './FuelQuoteModal';
 import '../styles/QuoteHistory.css';
 
 const QuoteHistory = () => {
   return (
-    <Container fluid className="quote-history-container">
+    <Container fluid className='quote-history-container' >
 
-      {/* Filter area */}
+      {/* Filter area
       <Row>
         <Col>
           <h4 className="text-left mb-4">Filter</h4>
@@ -38,13 +39,23 @@ const QuoteHistory = () => {
             </Row>
           </Form>
         </Col>
-      </Row>
-          
+      </Row> */}
 
-      {/*History data*/}
-      <Row>
-        <Col>
-          <h4 className="text-left mb-4">Latest</h4>
+      {/* New Quote */}
+      <Row className='justify-content-center mt-5'>
+        <Col lg={8}>
+          <h4 className='text-left mt-5 mb-3'>New Quote</h4>
+          <div>
+            <FuelQuoteModal/>
+          </div>
+        </Col>
+      </Row>
+
+          
+      {/*Quote History*/}
+      <Row className="justify-content-center mt-5">
+        <Col lg={8}>
+          <h4 className="text-left my-5">Quote History</h4>
           <Table responsive striped hover className="quote-history-table">
           <thead>
             <tr>

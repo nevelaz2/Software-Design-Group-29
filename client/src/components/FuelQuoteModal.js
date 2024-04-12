@@ -80,7 +80,7 @@ function ProfileModal() {
                 <Form.Label>Gallons Requested</Form.Label>
                 <Form.Control required type="number" name="gallonsRequested" placeholder='Enter Amount' value={formData.gallonsRequested} onChange={handleChange} />
               </Form.Group>
-              <Form.Group as={Col} md="4" controlId="validationCustom02">
+              <Form.Group as={Col} md="4" controlId="profitMargin">
                 <Form.Label>Profit Margin</Form.Label>
                 <Form.Control required type="number" name="profitMargin" placeholder='%' value={formData.profitMargin} onChange={handleChange} />
               </Form.Group>         
@@ -91,28 +91,28 @@ function ProfileModal() {
             </Row>
 
             <Row className="mb-3 mt-3 mx-3">
-                <Form.Group as={Col} md="6" controlId="deliveryAddress">
+                <Form.Group as={Col} md="6" controlId="deliveryAddress1">
                     <Form.Label>Address 1</Form.Label>
                     <Form.Control placeholder="Address" disabled/>
                 </Form.Group>
-                <Form.Group as={Col} md="6" controlId="deliveryAddress">
+                <Form.Group as={Col} md="6" controlId="deliveryAddress2">
                     <Form.Label>Address 2</Form.Label>
                     <Form.Control placeholder="Apt, Floor, etc." disabled/>
                 </Form.Group>
             </Row>
 
             <Row className="mb-5 mx-3">
-                <Form.Group as={Col} md={6} controlId="deliveryAddress">
+                <Form.Group as={Col} md={6} controlId="city">
                     <Form.Label>City</Form.Label>
                     <Form.Control placeholder="City" disabled/>
                 </Form.Group>
-                <Form.Group as={Col} md="3" controlId="deliveryAddress">
+                <Form.Group as={Col} md="3" controlId="state">
                     <Form.Label>State</Form.Label>
                     <Form.Select disabled>
                         <option>Select</option>
                     </Form.Select>
                 </Form.Group>
-                <Form.Group as={Col} md="3" controlId="deliveryAddress">
+                <Form.Group as={Col} md="3" controlId="zip">
                     <Form.Label>Zip</Form.Label>
                     <Form.Control placeholder="Zip" disabled/>
                 </Form.Group>

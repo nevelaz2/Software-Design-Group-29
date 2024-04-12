@@ -33,7 +33,7 @@ const Sidebar = () => {
 
               <div className="log-out">
                 {/*Placeholder for Log out link*/}
-                <Nav.Link className="pt-5" as={Link} to="/user">
+                <Nav.Link className="pt-5" as={Link} to="/">
                   <FontAwesomeIcon icon={faRightFromBracket} className="icons"/>Log Out
                 </Nav.Link>
               </div>

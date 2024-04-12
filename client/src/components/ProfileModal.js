@@ -6,95 +6,156 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import '../styles/ProfileModal.css';
 
-function ProfileModal() {
-
-  // Modal setup
+function ProfileModal({ username, fetchProfile }) {  // Added props for username and fetchProfile
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const [validated, setValidated] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(''); // State to handle error messages
+
+  // State hooks for form fields
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [address1, setAddress1] = useState('');
+  const [address2, setAddress2] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [zip, setZip] = useState('');
+
+  const handleClose = () => {
+    setShow(false);
+    setErrorMessage('');  // Clear error messages on close
+  };
   const handleShow = () => setShow(true);
 
-
-  // Input validation
-  const [validated, setValidated] = useState(false);
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
+    if (!form.checkValidity()) {
       event.stopPropagation();
+    } else {
+      const profileData = {
+        fullname: `${firstName} ${lastName}`,
+        address1,
+        address2,
+        city,
+        state,
+        zip,
+      };
+
+      try {
+        const response = await fetch(`http://localhost:3001/profile/${username}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(profileData),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to update profile');
+        }
+
+        // Re-fetch profile data to update the UI
+        fetchProfile();
+        setShow(false);  // Close the modal on success
+      } catch (error) {
+        console.error('Error updating profile:', error);
+        setErrorMessage(error.message);
+      }
     }
     setValidated(true);
   };
 
-
-  // Profile modal
   return (
     <>
-      <Button className="rounded-pill mt-5 profile-modal-button" variant="primary" onClick={handleShow}>Edit</Button>
+      <Button className="rounded-pill mt-5 profile-modal-button" variant="primary" onClick={handleShow}>Edit Profile</Button>
 
       <Modal centered size='lg' show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Profile</Modal.Title>
         </Modal.Header>
-
         <Modal.Body>
+          {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
-            <Row className="mb-5 mt-3 mx-3">
-              <Form.Group as={Col} md="6" controlId="validationCustom01">
+            <Row className="mb-3">
+              <Form.Group as={Col} controlId="firstName">
                 <Form.Label>First name</Form.Label>
-                <Form.Control required type="text" placeholder="First name"/>
-                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                <Form.Control
+                  required
+                  type="text"
+                  placeholder="First name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
               </Form.Group>
-              <Form.Group as={Col} md="6" controlId="validationCustom02">
+              <Form.Group as={Col} controlId="lastName">
                 <Form.Label>Last name</Form.Label>
-                <Form.Control required type="text" placeholder="Last name"/>
-                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                <Form.Control
+                  required
+                  type="text"
+                  placeholder="Last name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
               </Form.Group>
             </Row>
-
-            <Row className="mb-5 mt-3 mx-3">
-                <Form.Group as={Col} md="6" controlId="validationCustom02">
-                  <Form.Label>Address 1</Form.Label>
-                  <Form.Control required type="text" placeholder="Address"/>
-                  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group as={Col} md="6" controlId="validationCustom02">
-                  <Form.Label>Address 2</Form.Label>
-                  <Form.Control type="text" placeholder="Optional"/>
-                  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                </Form.Group>
+            <Row className="mb-3">
+              <Form.Group as={Col} controlId="address1">
+                <Form.Label>Address 1</Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  placeholder="Address 1"
+                  value={address1}
+                  onChange={(e) => setAddress1(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group as={Col} controlId="address2">
+                <Form.Label>Address 2</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Address 2 (Optional)"
+                  value={address2}
+                  onChange={(e) => setAddress2(e.target.value)}
+                />
+              </Form.Group>
             </Row>
-
-            <Row className="mb-5 mt-3 mx-3">
-              <Form.Group as={Col} md="6" controlId="validationCustom03">
+            <Row className="mb-3">
+              <Form.Group as={Col} controlId="city">
                 <Form.Label>City</Form.Label>
-                <Form.Control type="text" placeholder="City" required />
-                <Form.Control.Feedback type="invalid">
-                    Please provide a valid city.
-                </Form.Control.Feedback>
+                <Form.Control
+                  required
+                  type="text"
+                  placeholder="City"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                />
               </Form.Group>
-              <Form.Group as={Col} md="3" controlId="validationCustom04">
+              <Form.Group as={Col} controlId="state">
                 <Form.Label>State</Form.Label>
-                <Form.Select id="state" placeholder="State" required>
-                  <option>Select</option>
-                </Form.Select>
-                <Form.Control.Feedback type="invalid">
-                Please provide a valid state.
-                </Form.Control.Feedback>
+                <Form.Control
+                  required
+                  type="text"
+                  placeholder="State"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                />
               </Form.Group>
-              <Form.Group as={Col} md="3" controlId="validationCustom05">
+              <Form.Group as={Col} controlId="zip">
                 <Form.Label>Zip</Form.Label>
-                <Form.Control type="text" placeholder="Zip" required />
-                <Form.Control.Feedback type="invalid">
-                    Please provide a valid zip.
-                </Form.Control.Feedback>
+                <Form.Control
+                  required
+                  type="text"
+                  placeholder="Zip"
+                  value={zip}
+                  onChange={(e) => setZip(e.target.value)}
+                />
               </Form.Group>
             </Row>
-                
             <div className="text-center">
-                {/* <Button variant='secondary' className="rounded-pill" onClick={handleClose}>Cancel</Button> */}
-                <Button variant="primary" onClick={handleClose} className="rounded-pill m-4">Submit</Button>
+              <Button variant='secondary' className="rounded-pill" onClick={handleClose}>Cancel</Button>
+              <Button type="submit" variant="success" className="rounded-pill">Save Changes</Button>
             </div>
-                
           </Form>
         </Modal.Body>
       </Modal>

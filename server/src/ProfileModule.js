@@ -59,4 +59,31 @@ router.put('/profile/:username', async (req, res) => {
     }
 });
 
+
+// Fetch user's address 
+router.get('/user/:userId/address', async (req, res) => {
+    try {
+      const user = await UserCred.findOne({ UserID: req.params.userId });
+      if (!user) {
+        return res.status(404).send('User not found.');
+      }
+      const { UserID } = user.toObject();
+      const userInfo = await UserData.findOne({ _id: UserID.toString() });
+      if (!userInfo) {
+        return res.status(404).send('User info not found');
+      }
+      const { Address1, Address2, City, State, Zip } = userInfo;
+      res.json({
+        address1: Address1,
+        address2: Address2,
+        city: City,
+        state: State,
+        zip: Zip
+      });
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  });
+
+
 module.exports = router;

@@ -61,10 +61,8 @@ const FuelQuotes = () => {
             <tr>
               <th>ID</th>
               <th>Date</th>
-              <th>State</th>
-              <th>City</th>
+              <th>Location</th>
               <th>Gallons</th>
-              <th>Profit Margin</th>
               <th>Total</th>
               <th>Action</th>
             </tr>
@@ -72,49 +70,37 @@ const FuelQuotes = () => {
           <tbody>
             <tr>
               <td>1</td>
-                {Array.from({ length: 7 }).map((_, index) => (
+                {Array.from({ length: 5 }).map((_, index) => (
                   <td key={index}>Table cell {index}</td>
                 ))}
             </tr>
             <tr>
               <td>2</td>
-                {Array.from({ length: 7 }).map((_, index) => (
+                {Array.from({ length: 5 }).map((_, index) => (
                   <td key={index}>Table cell {index}</td>
                 ))}
             </tr>
             <tr>
               <td>3</td>
-                {Array.from({ length: 7 }).map((_, index) => (
+                {Array.from({ length: 5 }).map((_, index) => (
                   <td key={index}>Table cell {index}</td>
                 ))}
             </tr>
             <tr>
               <td>4</td>
-                {Array.from({ length: 7 }).map((_, index) => (
+                {Array.from({ length: 5 }).map((_, index) => (
                   <td key={index}>Table cell {index}</td>
                 ))}
             </tr>
             <tr>
               <td>5</td>
-                {Array.from({ length: 7 }).map((_, index) => (
+                {Array.from({ length: 5 }).map((_, index) => (
                   <td key={index}>Table cell {index}</td>
                 ))}
             </tr>
             <tr>
               <td>6</td>
-                {Array.from({ length: 7 }).map((_, index) => (
-                  <td key={index}>Table cell {index}</td>
-                ))}
-            </tr>
-            <tr>
-              <td>7</td>
-                {Array.from({ length: 7 }).map((_, index) => (
-                  <td key={index}>Table cell {index}</td>
-                ))}
-            </tr>
-            <tr>
-              <td>8</td>
-                {Array.from({ length: 7 }).map((_, index) => (
+                {Array.from({ length: 5 }).map((_, index) => (
                   <td key={index}>Table cell {index}</td>
                 ))}
             </tr>

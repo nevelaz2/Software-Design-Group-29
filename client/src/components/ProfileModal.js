@@ -55,6 +55,8 @@ function ProfileModal({ username, fetchProfile }) {  // Added props for username
           throw new Error(errorData.message || 'Failed to update profile');
         }
 
+        // Reset form fields
+
         // Re-fetch profile data to update the UI
         fetchProfile();
         setShow(false);  // Close the modal on success

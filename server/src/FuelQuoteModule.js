@@ -1,27 +1,25 @@
 // Gleici Pereira 
-// Includes fuel quote form, fuel quote history, and quotes filtering (extra). Filtering by date, or gallons requested.
+// Includes fuel quote form, fuel quote history.
 
 const express = require('express');
 const router = express.Router();
 const FuelQuoteData = require("../Data/FuelQuoteData.js"); 
 
 
-
 // Creates a new Quote
 router.post('/quote', async (req, res) => {
     try {
-        const { userId, gallonsRequested, deliveryDate, pricePerGallon } = req.body;
+        const { userId, gallonsRequested, deliveryDate, hasHistory} = req.body;
 
         // Input data validation
-        if (!userId || !gallonsRequested || !deliveryDate) {
+        if (!gallonsRequested || !deliveryDate || !hasHistory) {
             return res.status(400).send('Missing required fields');
         }
 
-        // pricePerGallon placeholder
-        // Calculates suggested price per gallon using PricingModule
+        // Call PricingModule with required parameters to calculate suggested pricePerGallon
 
 
-        // Total Price
+        // Total Price (suggested priceperGallon returned from PricingModule)
         let totalPrice = (pricePerGallon * gallonsRequested);
 
         // Saves fuel quote
@@ -29,7 +27,7 @@ router.post('/quote', async (req, res) => {
             UserID: userId,
             GallonsRequested: gallonsRequested,
             DeliveryDate: deliveryDate,
-            PricePerGallon: pricePerGallon,
+            HasHistory: hasHistory,
             TotalPrice: totalPrice,
         });
 
@@ -57,34 +55,34 @@ router.get('/quote/history/:userId', async (req, res) => {
 
 
 
-// Quotes filtering (extra)
-router.get('/quote/filter', async (req, res) => {
-    try {
+// // Quotes filtering 
+// router.get('/quote/filter', async (req, res) => {
+//     try {
 
-        // Filter parameters from query string
-        const { userId, startDate, endDate, minGallons, maxGallons } = req.query;
+//         // Filter parameters from query string
+//         const { userId, startDate, endDate, minGallons, maxGallons } = req.query;
 
-        // Creates filter
-        const filter = {};
-        if (userId) {
-            filter.UserID = userId;
-        }
+//         // Creates filter
+//         const filter = {};
+//         if (userId) {
+//             filter.UserID = userId;
+//         }
         
-        if (startDate && endDate) {
-            filter.DeliveryData = { $gte: new Date(startDate), $lte: new Date(endDate) };
-        }
-        if (minGallons && maxGallons) {
-            filter.GallonsRequested = { $gte: minGallons, $lte: maxGallons };
-        }
+//         if (startDate && endDate) {
+//             filter.DeliveryData = { $gte: new Date(startDate), $lte: new Date(endDate) };
+//         }
+//         if (minGallons && maxGallons) {
+//             filter.GallonsRequested = { $gte: minGallons, $lte: maxGallons };
+//         }
 
-        // Performs query
-        const fuelQuotes = await FuelQuoteData.find(filter);
+//         // Performs query
+//         const fuelQuotes = await FuelQuoteData.find(filter);
 
-        res.status(200).json(fuelQuotes);
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-});
+//         res.status(200).json(fuelQuotes);
+//     } catch (error) {
+//         res.status(500).send(error.message);
+//     }
+// });
 
 
 module.exports = router;

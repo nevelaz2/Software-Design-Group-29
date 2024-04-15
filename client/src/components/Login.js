@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
-import { useRef } from "react";
+import { Navigate } from "react-router-dom";
+import { useRef, useState } from "react";
 import '../styles/SignUpLogin.css'
 
 const ReturnURL = (Data, URL) => {
@@ -55,6 +56,7 @@ const ComparePassword = async (Data) => {
 const Login = () => {
   const Username = useRef(null);
   const Password = useRef(null);
+  const [ShouldRedirect, SetShouldRedirect] = useState(false);
 
   const HandleSubmit = async (Event) => {
     Event.preventDefault();
@@ -70,14 +72,18 @@ const Login = () => {
 
       if (PasswordMatches === true) {
         console.log("Logging in");
+        SetShouldRedirect(true);
+
       } else {
         console.log("Wrong password");
+        SetShouldRedirect(false);
       }
     }
   }
 
   return (
     <Fragment>
+      {ShouldRedirect && <Navigate to="/user"/>}
       <div className="main-content">
         <div className="login-card">
           <h2 className="login-header">Login Here</h2>

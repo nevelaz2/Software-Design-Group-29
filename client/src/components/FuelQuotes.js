@@ -1,12 +1,13 @@
 import React from 'react';
-import {Container, Row, Col, Form, Table, Button} from 'react-bootstrap';
-import '../styles/QuoteHistory.css';
+import {Container, Row, Col, Table} from 'react-bootstrap';
+import FuelQuoteModal from './FuelQuoteModal';
+import '../styles/FuelQuotes.css';
 
-const QuoteHistory = () => {
+const FuelQuotes = () => {
   return (
-    <Container fluid className="quote-history-container">
+    <Container fluid className='quote-history-container' >
 
-      {/* Filter area */}
+      {/* Filter area
       <Row>
         <Col>
           <h4 className="text-left mb-4">Filter</h4>
@@ -38,22 +39,30 @@ const QuoteHistory = () => {
             </Row>
           </Form>
         </Col>
-      </Row>
-          
+      </Row> */}
 
-      {/*History data*/}
-      <Row>
-        <Col>
-          <h4 className="text-left mb-4">Latest</h4>
+      {/* Create Quote */}
+      <Row className='justify-content-center mt-5'>
+        <Col lg={8}>
+          <h4 className='text-left mt-5 mb-3'>New Quote</h4>
+          <div>
+            <FuelQuoteModal/>
+          </div>
+        </Col>
+      </Row>
+
+          
+      {/*Quote History*/}
+      <Row className="justify-content-center mt-5">
+        <Col lg={8}>
+          <h4 className="text-left my-5">Quote History</h4>
           <Table responsive striped hover className="quote-history-table">
           <thead>
             <tr>
               <th>ID</th>
               <th>Date</th>
-              <th>State</th>
-              <th>City</th>
+              <th>Location</th>
               <th>Gallons</th>
-              <th>Profit Margin</th>
               <th>Total</th>
               <th>Action</th>
             </tr>
@@ -61,49 +70,37 @@ const QuoteHistory = () => {
           <tbody>
             <tr>
               <td>1</td>
-                {Array.from({ length: 7 }).map((_, index) => (
+                {Array.from({ length: 5 }).map((_, index) => (
                   <td key={index}>Table cell {index}</td>
                 ))}
             </tr>
             <tr>
               <td>2</td>
-                {Array.from({ length: 7 }).map((_, index) => (
+                {Array.from({ length: 5 }).map((_, index) => (
                   <td key={index}>Table cell {index}</td>
                 ))}
             </tr>
             <tr>
               <td>3</td>
-                {Array.from({ length: 7 }).map((_, index) => (
+                {Array.from({ length: 5 }).map((_, index) => (
                   <td key={index}>Table cell {index}</td>
                 ))}
             </tr>
             <tr>
               <td>4</td>
-                {Array.from({ length: 7 }).map((_, index) => (
+                {Array.from({ length: 5 }).map((_, index) => (
                   <td key={index}>Table cell {index}</td>
                 ))}
             </tr>
             <tr>
               <td>5</td>
-                {Array.from({ length: 7 }).map((_, index) => (
+                {Array.from({ length: 5 }).map((_, index) => (
                   <td key={index}>Table cell {index}</td>
                 ))}
             </tr>
             <tr>
               <td>6</td>
-                {Array.from({ length: 7 }).map((_, index) => (
-                  <td key={index}>Table cell {index}</td>
-                ))}
-            </tr>
-            <tr>
-              <td>7</td>
-                {Array.from({ length: 7 }).map((_, index) => (
-                  <td key={index}>Table cell {index}</td>
-                ))}
-            </tr>
-            <tr>
-              <td>8</td>
-                {Array.from({ length: 7 }).map((_, index) => (
+                {Array.from({ length: 5 }).map((_, index) => (
                   <td key={index}>Table cell {index}</td>
                 ))}
             </tr>
@@ -117,4 +114,4 @@ const QuoteHistory = () => {
   )
 };
 
-export default QuoteHistory;
+export default FuelQuotes;

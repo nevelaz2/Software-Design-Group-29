@@ -6,6 +6,7 @@ import "../styles/Sidebar.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { faGasPump } from '@fortawesome/free-solid-svg-icons'
+import { faClockRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 
@@ -28,6 +29,9 @@ const Sidebar = () => {
                 <Nav.Link className="mb-3" as={Link} to="/user/fuel-quotes">
                   <FontAwesomeIcon icon={faGasPump} className="icons" />Fuel Quotes
                 </Nav.Link>
+                <Nav.Link className="mb-3" as={Link} to="/user/quote-history">
+                  <FontAwesomeIcon icon={faClockRotateLeft} className="icons" />Quote History
+                </Nav.Link>
               </div>
 
 
@@ -40,11 +44,11 @@ const Sidebar = () => {
             </Nav>
           </Navbar.Collapse>
 
-          
+
         </Container>
-        
+
       </Navbar>
     );
 };
-  
+
 export default Sidebar;

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-// import {useHistory} from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Col from 'react-bootstrap/Col';
@@ -114,7 +113,7 @@ function FuelQuoteModal({userId}) {
   // Fuel Quote Form
   return (
     <>
-      <Button className="quote-modal-button" variant="primary" size='lg' onClick={handleShow}>Create Quote</Button>
+      <Button className="quote-modal-button" variant="primary" size='lg' onClick={handleShow}>Get Quote</Button>
 
       <Modal centered size='lg' show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -189,12 +188,12 @@ function FuelQuoteModal({userId}) {
                 </Col>
             </Row>
 
-                
+
             <div className="text-center">
                 {/* <Button variant='secondary' className="rounded-pill" onClick={handleClose}>Cancel</Button> */}
                 <Button variant="primary" onClick={handleClose} className="rounded-pill m-4">Submit</Button>
             </div>
-                
+
           </Form>
         </Modal.Body>
       </Modal>

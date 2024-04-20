@@ -60,7 +60,7 @@ const FuelQuoteForm = () => {
         <h1 id="title"> Quote Details </h1>
         <div id="container">
           <Form onSubmit={handleSubmit}>
-            <Form.Group as={Row} controlId="gallonsRequested">
+            <Form.Group as={Col} controlId="gallonsRequested">
               <Form.Label column sm={4}> Gallons Requested </Form.Label>
               <Col sm={4}>
                 <Form.Control type="number" name="gallonsRequested" value={formData.gallonsRequested} onChange={handleChange} />

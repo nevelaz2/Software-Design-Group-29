@@ -1,21 +1,6 @@
-.quote-history-container{
-    background-color: white;
-    flex-direction: column;
-    align-items: center;
-
-}
-
 .quote-history-form, .quote-history-table{
-    background-color: whitesmoke;
-    width: 80em;
+    width: 100%;
     margin-bottom: 4em;
-}
-
-
-.quote-history-form .row{
-    height: 6em;
-    justify-content: space-around;
-    align-items: center;
 }
 
 tbody tr{

@@ -57,6 +57,7 @@ const Login = () => {
   const Username = useRef(null);
   const Password = useRef(null);
   const [ShouldRedirect, SetShouldRedirect] = useState(false);
+  const [SubmitText, SetSubmitText] = useState("");
 
   const HandleSubmit = async (Event) => {
     Event.preventDefault();
@@ -77,6 +78,7 @@ const Login = () => {
       } else {
         console.log("Wrong password");
         SetShouldRedirect(false);
+        SetSubmitText("Invalid username or password");
       }
     }
   }
@@ -106,6 +108,7 @@ const Login = () => {
           </form>
         </div>
       </div>
+      <p id="submit-text"> {SubmitText} </p>
     </Fragment>
   );
 };

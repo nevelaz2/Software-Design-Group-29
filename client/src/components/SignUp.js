@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import "../styles/SignUpLogin.css";
 
 const CheckDataExists = async (Data, URL) => {
@@ -51,20 +51,39 @@ const CreateNewData = async (Data, URL) => {
 const SignUp = () => {
   const Username = useRef(null);
   const Password = useRef(null);
+  const [SubmitText, SetSubmitText] = useState("");
 
   const HandleSignUp = async (Event) => {
     Event.preventDefault();
 
-    const ResponseObject = await CheckDataExists({username: Username.current.value}, "http://localhost:3001/finduser");
+    if (Username.current.value.length === 0 || Username.current.value.length > 12) {
+      SetSubmitText("Username must be between 1 to 12 characters long");
 
-    if (ResponseObject.UsernameExists === false) {
-      CreateNewData({
-        userId: null, 
-        username: Username.current.value, 
-        password: Password.current.value}, 
-        "http://localhost:3001/createuserdata");
+    } else if (Password.current.value.length < 8 || Password.current.value.length > 25) {
+      SetSubmitText("Password must be between 8 to 25 characters long");
+
     } else {
-      console.log("This username already exists");
+      try {
+        const ResponseObject = await CheckDataExists({username: Username.current.value}, "http://localhost:3001/finduser");
+    
+        if (ResponseObject.UsernameExists === false) {
+          CreateNewData({
+            userId: null, 
+            username: Username.current.value, 
+            password: Password.current.value}, 
+            "http://localhost:3001/createuserdata"
+          );
+    
+          SetSubmitText("Account successfully created!");
+    
+        } else {
+          console.log("This username already exists");
+    
+          SetSubmitText("Username already exists - please choose another username.");
+        }
+      } catch (Error) {
+        console.log(Error);
+      }
     }
   }
 
@@ -92,6 +111,8 @@ const SignUp = () => {
           </form>
         </div>
       </div>
+
+      <p id="submit-text"> {SubmitText} </p>
     </Fragment>
   );
 };

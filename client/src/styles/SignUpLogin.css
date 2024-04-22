@@ -75,18 +75,3 @@
 .btn-signup:hover {
     background: #4837ff;
 }
-
-#submit-text {
-    position: fixed;
-
-    top: 17.5%;
-    left: 50%;
-
-    transform: translate(-50%, -50%);
-
-    font-size: 1.5rem;
-
-    color: white;
-
-    z-index: 999;
-}

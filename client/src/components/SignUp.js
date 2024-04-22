@@ -51,39 +51,22 @@ const CreateNewData = async (Data, URL) => {
 const SignUp = () => {
   const Username = useRef(null);
   const Password = useRef(null);
-  const [SubmitText, SetSubmitText] = useState("");
 
   const HandleSignUp = async (Event) => {
     Event.preventDefault();
 
-    if (Username.current.value.length === 0 || Username.current.value.length > 12) {
-      SetSubmitText("Username must be between 1 to 12 characters long");
+    const ResponseObject = await CheckDataExists({username: Username.current.value}, "http://localhost:3001/finduser");
 
-    } else if (Password.current.value.length < 8 || Password.current.value.length > 25) {
-      SetSubmitText("Password must be between 8 to 25 characters long");
+    if (ResponseObject.UsernameExists === false) {
+      CreateNewData({
+        userId: null, 
+        username: Username.current.value, 
+        password: Password.current.value}, 
+        "http://localhost:3001/createuserdata"
+      );
 
     } else {
-      try {
-        const ResponseObject = await CheckDataExists({username: Username.current.value}, "http://localhost:3001/finduser");
-    
-        if (ResponseObject.UsernameExists === false) {
-          CreateNewData({
-            userId: null, 
-            username: Username.current.value, 
-            password: Password.current.value}, 
-            "http://localhost:3001/createuserdata"
-          );
-    
-          SetSubmitText("Account successfully created!");
-    
-        } else {
-          console.log("This username already exists");
-    
-          SetSubmitText("Username already exists - please choose another username.");
-        }
-      } catch (Error) {
-        console.log(Error);
-      }
+      console.log("This username already exists");
     }
   }
 
@@ -111,8 +94,6 @@ const SignUp = () => {
           </form>
         </div>
       </div>
-
-      <p id="submit-text"> {SubmitText} </p>
     </Fragment>
   );
 };

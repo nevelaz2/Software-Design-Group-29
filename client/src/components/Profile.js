@@ -29,7 +29,7 @@ const Profile = () => {
     <>
       <div className='profile-page'>
         <div className="container">
-          <h4 id="profile-info" className="m-5 lead"> Profile Information </h4>
+          <h4 id="profile-info" className="m-5"> Profile Information </h4>
 
           <div className="d-flex justify-content-around mt-5 mx-5">
             <div className="col-6">

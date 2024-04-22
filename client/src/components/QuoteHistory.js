@@ -16,7 +16,7 @@ const QuoteHistory = () => {
         {/*Quote History*/}
         <Row className="justify-content-center mt-5">
           <Col lg={8}>
-            <h4 className="text-left my-5">Quote History</h4>
+            <h4 className="my-5">Quote History</h4>
             <Table responsive striped hover className="quote-history-table">
               <thead>
                 <tr>

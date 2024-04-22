@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
-// import Modal from 'react-bootstrap/Modal';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import FuelQuoteModal from './FuelQuoteModal';
+import FuelQuoteModal from './GetQuoteModal';
 import '../styles/App.css';
-import '../styles/FuelQuoteModal.css';
 import '../styles/FuelQuotes.css';
 
 const FuelQuotes = (userId) => {
@@ -158,11 +156,15 @@ const FuelQuotes = (userId) => {
         </div>}
 
 
-      <Row className="justify-content-center mt-5">
+      <Row className="justify-content-center mt-5 mx-3">
           <Col lg={8}>
-            <h4 className="text-left my-5">New Quote</h4>
-            <Form noValidate validated={validated} onSubmit={handleSubmit} className='quote-form'>
-            <Row className="mb-5 mt-3 mx-3">
+            <div className='d-flex justify-content-between my-5'>
+              <h4>New Quote</h4>
+              <FuelQuoteModal/>
+            </div>
+            
+            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            <Row className="mb-5 mt-3">
               {/* Quote Details */}
               <Form.Group as={Col} md="6" controlId="gallonsRequested">
                 <Form.Label>Gallons Requested</Form.Label>
@@ -178,7 +180,7 @@ const FuelQuotes = (userId) => {
 
             {/* Delivery Address */}
             {/* Should come from User Profile. Get state to store in quote table. */}
-            <Row className="mb-3 mt-3 mx-3">
+            <Row className="my-3">
                 <Form.Group as={Col} md="6" controlId="deliveryAddress1">
                     <Form.Label>Address 1</Form.Label>
                     <Form.Control placeholder="Address" value={userAddress.address1} disabled/>
@@ -188,7 +190,7 @@ const FuelQuotes = (userId) => {
                     <Form.Control placeholder="Apt, Floor, etc." value={userAddress.address2} disabled/>
                 </Form.Group>
             </Row>
-            <Row className="mb-5 mx-3">
+            <Row className="mb-5">
                 <Form.Group as={Col} md={6} controlId="deliveryCity">
                     <Form.Label>City</Form.Label>
                     <Form.Control placeholder="City" value={userAddress.city} disabled/>
@@ -206,7 +208,7 @@ const FuelQuotes = (userId) => {
             </Row>
 
             {/* Customer History */}
-            <Row className="mb-2 mx-3">
+            <Row className="mb-2">
                 <Col md="6">
                     <fieldset>
                         <Form.Group>
@@ -224,7 +226,6 @@ const FuelQuotes = (userId) => {
             <div className="text-center">
                 {/* <Button variant='secondary' className="rounded-pill" onClick={handleClose}>Cancel</Button> */}
                 <Button variant="primary" onClick={handleClose} className="rounded-pill m-4">Submit</Button>
-                <FuelQuoteModal/>
             </div>
           </Form>
         </Col>

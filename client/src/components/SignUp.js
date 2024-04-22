@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { useRef } from "react";
 import "../styles/SignUpLogin.css";
+import { Link } from "react-router-dom";
 
 const CheckDataExists = async (Data, URL) => {
   URL += "?";
@@ -87,7 +88,7 @@ const SignUp = () => {
               <button type="submit" class="btn-signup" onClick={HandleSignUp}>Sign Up</button>
             </div>
             <div class="links-container">
-              <a href="login.html" class="signin-account">Already have an account? Sign in</a>
+              <Link to="/login">Already have an account? Sign in</Link>
             </div>
           </form>
         </div>

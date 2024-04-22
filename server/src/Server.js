@@ -3,7 +3,7 @@ const BodyParser = require("body-parser");
 const Cors = require("cors");
 const Mongoose = require("mongoose");
 
-const FuelQuoteModule = require("./FuelQuoteModule.js")
+const FuelQuoteModule = require("./FuelQuoteModule.js");
 const LoginRouter = require("./LoginModule.js");
 const ProfileRouter = require("./ProfileModule.js"); // Import the ProfileModule router
 
@@ -15,16 +15,18 @@ const DataBaseURI = "mongodb+srv://username:password@atlascluster.ckxw4ub.mongod
 Server.use(Cors());
 Server.use(BodyParser.json());
 
-Mongoose.connect(DataBaseURI).then(() => {
+Mongoose.connect(DataBaseURI)
+  .then(() => {
     console.log("Connected to MongoDB");
 
     Server.listen(Port, "localhost", () => {
-        console.log(`Listening on port ${Port}`);
+      console.log(`Listening on port ${Port}`);
     });
-}).catch(Error => {
+  })
+  .catch((Error) => {
     console.log("Error:", Error);
-});
+  });
 
 Server.use(FuelQuoteModule);
-Server.use(LoginRouter); 
-Server.use(ProfileRouter); //  the ProfileModule router 
+Server.use(LoginRouter);
+Server.use(ProfileRouter); //  the ProfileModule router

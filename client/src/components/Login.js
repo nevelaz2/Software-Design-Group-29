@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import '../styles/SignUpLogin.css'
 
@@ -101,7 +101,7 @@ const Login = () => {
               <button onClick={HandleSubmit} type="submit" className="btn-signup">Log In</button>
             </div>
             <div className="links-container">
-              <a href="signup.html" className="signin-account">Need to create an account? Sign Up</a>
+              <Link to="/signup">Need to create an account? Sign Up</Link>
             </div>
           </form>
         </div>

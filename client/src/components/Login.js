@@ -66,6 +66,8 @@ const Login = () => {
 
     if (ResponseObject.UsernameExists === false) {
       console.log("Account does not exist");
+
+      SetSubmitText("Invalid username or password");
     } else {
       console.log("Account does exist");
 
@@ -78,6 +80,7 @@ const Login = () => {
       } else {
         console.log("Wrong password");
         SetShouldRedirect(false);
+
         SetSubmitText("Invalid username or password");
       }
     }
@@ -108,6 +111,7 @@ const Login = () => {
           </form>
         </div>
       </div>
+
       <p id="submit-text"> {SubmitText} </p>
     </Fragment>
   );

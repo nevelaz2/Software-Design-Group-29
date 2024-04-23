@@ -1,6 +1,8 @@
 import React, { Fragment } from "react";
 import { useRef, useState } from "react";
 import "../styles/SignUpLogin.css";
+import { useAuth } from "../contexts/AuthContext";
+import { Link, Navigate } from "react-router-dom";
 
 const CheckDataExists = async (Data, URL) => {
   URL += "?";
@@ -49,9 +51,14 @@ const CreateNewData = async (Data, URL) => {
 }
 
 const SignUp = () => {
+  const { isAuthenticated } = useAuth();
   const Username = useRef(null);
   const Password = useRef(null);
   const [SubmitText, SetSubmitText] = useState("");
+
+  if(isAuthenticated) {
+    return <Navigate to="/user" />
+  }
 
   const HandleSignUp = async (Event) => {
     Event.preventDefault();
@@ -106,7 +113,8 @@ const SignUp = () => {
               <button type="submit" class="btn-signup" onClick={HandleSignUp}>Sign Up</button>
             </div>
             <div class="links-container">
-              <a href="login.html" class="signin-account">Already have an account? Sign in</a>
+              <Link to="/login">Already have an account? Sign in</Link>
+              {/* <a href="login.html" class="signin-account">Already have an account? Sign in</a> */}
             </div>
           </form>
         </div>

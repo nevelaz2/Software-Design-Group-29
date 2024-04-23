@@ -37,10 +37,15 @@ const CheckDataExists = async (Data, URL) => {
 }
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const [formdata, setFormData] = useState({ username: '', password: ''});
   const [ShouldRedirect, SetShouldRedirect] = useState(false);
   const [SubmitText, SetSubmitText] = useState("");
+
+  if(isAuthenticated){
+    console.log("entered");
+    return <Navigate to="/user" />
+  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

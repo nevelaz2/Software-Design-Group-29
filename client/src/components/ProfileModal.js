@@ -42,7 +42,7 @@ function ProfileModal({ username, fetchProfile }) {  // Added props for username
       };
 
       try {
-        const response = await fetch(`http://localhost:3001/profile/${username}`, {
+        const response = await fetch(`http://localhost:3001/user/profile/${username}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

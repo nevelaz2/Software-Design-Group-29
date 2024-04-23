@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
@@ -8,21 +8,19 @@ import FuelQuoteModal from './GetQuoteModal';
 import '../styles/App.css';
 import '../styles/FuelQuotes.css';
 
-const FuelQuotes = (userId) => {
+const FuelQuotes = ({userId}) => {
 
-  // 
-  const [show, setShow] = useState(false);
   const [validated] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Form fields
-  const [formData, setFormData] = useState({
+  // Input form fields
+  const [quoteFormData, setQuoteFormData] = useState({
     gallonsRequested: '',
     deliveryDate: '',
     existingCustomer: false,
   });
 
-  // userAddress state
+  // userAddress 
   const [userAddress, setUserAddress] = useState({
     address1: '',
     address2: '',
@@ -31,21 +29,43 @@ const FuelQuotes = (userId) => {
     zip: '',
   });
 
-  const handleClose = () => {
-    setShow(false);
-    setErrorMessage('');
+  // Fetch user's address
+  useEffect(() => {
+    const fetchUserAddress = async () => {
+      try {
+        const response = await fetch(`/api/user/profile/${userId}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch user address! status: ${response.status}`);
+        }
 
-    // Reset form data 
-    setFormData({
-      gallonsRequested: '',
-      deliveryDate: '',
-      existingCustomer: false,
+        const fetchedUserAddress = await response.json();
+        setUserAddress(fetchedUserAddress);
+      } catch (error) {
+        console.error("Error fetching user's address:", error);
+      }
+    };
+
+    fetchUserAddress(); 
+  }, [userId]);
+
+
+  // Change handlers
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setQuoteFormData(prevData => {
+      return name === 'existingCustomer'
+        ? {
+          ...prevData,
+          existingCustomer: value === 'Yes',
+        }
+        : {
+          ...prevData,
+          [name]: value,
+        };
     });
   };
 
-  const handleShow = () => setShow(true);
-
-  // Handle input submission
+  // Submission handlers
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -58,22 +78,16 @@ const FuelQuotes = (userId) => {
 
     try {
 
-      // Fetch user's address 
-      const fetchedUserAddress = await fetchUserAddress(userId);
-      setUserAddress(fetchedUserAddress);
-
       // Submit form data
       const response = await fetch('/api/quote', {             
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(quoteFormData)
       });
       if (response.ok) {
         alert('Quote created successfully!');
-
-        handleClose();
 
         // Redirect user to /quote page (display quote)
         // history.push('/quote')
@@ -88,66 +102,9 @@ const FuelQuotes = (userId) => {
     }
   };
 
-  const handleChange = (event) => {
-    const { name, value, type, checked } = event.target;
-    setFormData(prevData => ({
-      ...prevData,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-  };
-
-
-  // Fetch user's address
-  async function fetchUserAddress(userId) {
-    try {
-      const response = await fetch(`/api/user/${userId}/address`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch user address');
-      }
-      return await response.json();
-    } catch (error) {
-      throw error;
-    }
-  }
 
   return (
     <Container fluid className='quote-form-container' >
-
-      {/* Filter area
-      <Row>
-        <Col>
-          <h4 className="text-left mb-4">Filter</h4>
-          <Form className="quote-history-form">
-            <Row>
-              <Col lg={2}>
-                <Form.Group as={Col} controlId="filterDate">
-                  <Form.Label>Date</Form.Label>
-                  <Form.Control type="date"  />
-                </Form.Group>
-              </Col>
-              <Col lg={2}>
-                <Form.Group as={Col} controlId="filterLocation">
-                  <Form.Label>Location</Form.Label>
-                  <Form.Control />
-                </Form.Group>
-              </Col>
-              <Col lg={2}>
-                <Form.Group as={Col} controlId="filterGallons">
-                  <Form.Label>Gallons</Form.Label>
-                  <Form.Control type="number"/>
-                </Form.Group>
-              </Col>
-              <Col lg={1}>
-                <Button variant="primary" className="rounded-pill" type="submit">
-                  Search
-                </Button>
-              </Col>
-            </Row>
-          </Form>
-        </Col>
-      </Row> */}
-
-
 
       {/* Error Message */}
       {errorMessage && 
@@ -157,23 +114,25 @@ const FuelQuotes = (userId) => {
 
 
       <Row className="justify-content-center mt-5 mx-3">
-          <Col lg={8}>
-            <div className='d-flex justify-content-between my-5'>
-              <h4>New Quote</h4>
-              <FuelQuoteModal/>
-            </div>
+        <Col lg={8}>
+
+          <div className='d-flex justify-content-between my-5'>
+            <h4>New Quote</h4>
+            <FuelQuoteModal/>
+          </div>
             
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+          <Form noValidate validated={validated} onSubmit={handleSubmit}>
+
+            {/* Quote Details */}
             <Row className="mb-5 mt-3">
-              {/* Quote Details */}
               <Form.Group as={Col} md="6" controlId="gallonsRequested">
                 <Form.Label>Gallons Requested</Form.Label>
-                <Form.Control required type="number" name="gallonsRequested" placeholder='Enter Amount' value={formData.gallonsRequested} onChange={handleChange} />
+                <Form.Control required type="number" name="gallonsRequested" placeholder='Enter Amount' value={quoteFormData.gallonsRequested} onChange={handleChange} />
                 <Form.Control.Feedback type="invalid">Please provide a valid gallons requested.</Form.Control.Feedback>
               </Form.Group>   
               <Form.Group as={Col} md="6" controlId="deliveryDate">
                 <Form.Label>Delivery Date</Form.Label>
-                <Form.Control type="date"/>
+                <Form.Control type="date" name="deliveryDate" value={quoteFormData.deliveryDate} onChange={handleChange} />
                 <Form.Control.Feedback type="invalid">Please provide a valid date.</Form.Control.Feedback>
               </Form.Group>
             </Row>
@@ -207,35 +166,28 @@ const FuelQuotes = (userId) => {
                 </Form.Group>
             </Row>
 
+
             {/* Customer History */}
             <Row className="mb-2">
                 <Col md="6">
                     <fieldset>
-                        <Form.Group>
+                        <Form.Group controlId={"noCustomer"}>
                             <Form.Label>Existing Customer?</Form.Label>
                             <div className='mt-2'>
-                                <Form.Check inline type="radio" label="No" name="existingCustomer" id="noCustomer" checked={!formData.existingCustomer} onChange={handleChange} />
-                                <Form.Check inline type="radio" label="Yes" name="existingCustomer" id="yesCustomer" checked={formData.existingCustomer} onChange={handleChange} />
+                                <Form.Check inline type="radio" label="No" name="existingCustomer" value="No" id="noCustomer" checked={!quoteFormData.existingCustomer} onChange={handleChange} />
+                                <Form.Check inline type="radio" label="Yes" name="existingCustomer" value="Yes" id="yesCustomer" checked={quoteFormData.existingCustomer} onChange={handleChange} />
                             </div>
                         </Form.Group>
                     </fieldset>
                 </Col>
             </Row>
 
-
             <div className="text-center">
-                {/* <Button variant='secondary' className="rounded-pill" onClick={handleClose}>Cancel</Button> */}
-                <Button variant="primary" onClick={handleClose} className="rounded-pill m-4">Submit</Button>
+                <Button variant="primary" className="rounded-pill m-4" onClick={handleSubmit}>Submit</Button>
             </div>
           </Form>
         </Col>
       </Row>
-
-
-
-
-
-
 
     </Container>
 )

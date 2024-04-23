@@ -13,7 +13,7 @@ router.post("/quote", async (req, res) => {
 
     // Input data validation
     if (!gallonsRequested || !deliveryDate || !location || !hasHistory) {
-      return res.status(400).send("Missing required fields");
+      return res.status(400).send("Missing required fields.");
     }
 
     // Call PricingModule

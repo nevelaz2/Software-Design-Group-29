@@ -4,6 +4,7 @@ const QuoteSchema = new mongoose.Schema({
   UserID: { type: mongoose.Schema.Types.ObjectId, ref: "Users", required: true },
   GallonsRequested: { type: Number, required: true },
   DeliveryDate: { type: Date, required: true },
+  Location: { type: String, required: true},
   HasHistory: { type: Boolean, required: true },
   TotalPrice: { type: Number, required: false },
 });

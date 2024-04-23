@@ -3,28 +3,29 @@
 
 const express = require("express");
 const router = express.Router();
+const suggestedPrice = require("./PricingModule.js");
 const FuelQuoteData = require("../Data/FuelQuoteData.js");
 
 // Creates a new Quote
 router.post("/quote", async (req, res) => {
   try {
-    const { userId, gallonsRequested, deliveryDate, hasHistory } = req.body;
+    const { userId, gallonsRequested, deliveryDate, location, hasHistory } = req.body;
 
     // Input data validation
-    if (!gallonsRequested || !deliveryDate || !hasHistory) {
+    if (!gallonsRequested || !deliveryDate || !location || !hasHistory) {
       return res.status(400).send("Missing required fields");
     }
 
-    // Call PricingModule with required parameters to calculate suggested pricePerGallon
-
-    // Total Price (suggested priceperGallon returned from PricingModule)
-    let totalPrice = pricePerGallon * gallonsRequested;
+    // Call PricingModule
+    let suggestedPricePerGallon = suggestedPrice(gallonsRequested, location, hasHistory);
+    let totalPrice = suggestedPricePerGallon * gallonsRequested;
 
     // Saves fuel quote
     const newFuelQuote = new FuelQuoteData({
       UserID: userId,
       GallonsRequested: gallonsRequested,
       DeliveryDate: deliveryDate,
+      Location: location,
       HasHistory: hasHistory,
       TotalPrice: totalPrice,
     });
@@ -35,6 +36,7 @@ router.post("/quote", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
 
 // Fuel Quote History
 router.get("/quote/history/:userId", async (req, res) => {

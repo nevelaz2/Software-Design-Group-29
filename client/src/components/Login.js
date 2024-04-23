@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import '../styles/SignUpLogin.css'
+import { useAuth } from "../contexts/AuthContext";
 
 const ReturnURL = (Data, URL) => {
   URL += "?";
@@ -35,34 +36,21 @@ const CheckDataExists = async (Data, URL) => {
   }
 }
 
-const ComparePassword = async (Data) => {
-  try {
-    const URL = ReturnURL(Data, "http://localhost:3001/compare-password");
-
-    const Response = await fetch(URL);
-    const PasswordMatches = await Response.text();
-
-    if (PasswordMatches === "true") {
-      return true;
-    }
-
-    return false;
-
-  } catch (Error) {
-    throw new Error(Error);
-  }
-}
-
 const Login = () => {
-  const Username = useRef(null);
-  const Password = useRef(null);
+  const { login } = useAuth();
+  const [formdata, setFormData] = useState({ username: '', password: ''});
   const [ShouldRedirect, SetShouldRedirect] = useState(false);
   const [SubmitText, SetSubmitText] = useState("");
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({...formdata, [name]: value});
+  }
 
   const HandleSubmit = async (Event) => {
     Event.preventDefault();
 
-    const ResponseObject = await CheckDataExists({username: Username.current.value}, "http://localhost:3001/finduser");
+    const ResponseObject = await CheckDataExists({username: formdata.username}, "http://localhost:3001/finduser");
 
     if (ResponseObject.UsernameExists === false) {
       console.log("Account does not exist");
@@ -71,16 +59,15 @@ const Login = () => {
     } else {
       console.log("Account does exist");
 
-      const PasswordMatches = await ComparePassword({username: ResponseObject.Username, password: Password.current.value});
+      const PasswordMatches = await login(formdata);
 
       if (PasswordMatches === true) {
         console.log("Logging in");
         SetShouldRedirect(true);
-
       } else {
         console.log("Wrong password");
         SetShouldRedirect(false);
-
+        
         SetSubmitText("Invalid username or password");
       }
     }
@@ -96,11 +83,11 @@ const Login = () => {
           <form id="loginForm">
             <div className="form-group">
               <label for="username">Username</label>
-              <input ref={Username} type="text" id="username" name="username" required />
+              <input onChange={handleInputChange} value={formdata.username} type="text" id="username" name="username" required />
             </div>
             <div className="form-group">
               <label for="password">Password</label>
-              <input ref={Password} type="password" id="password" name="password" required />
+              <input onChange={handleInputChange} value={formdata.password} type="password" id="password" name="password" required />
             </div>
             <div className="form-actions">
               <button onClick={HandleSubmit} type="submit" className="btn-signup">Log In</button>

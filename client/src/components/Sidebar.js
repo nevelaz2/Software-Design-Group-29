@@ -8,8 +8,11 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faGasPump } from "@fortawesome/free-solid-svg-icons";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "../contexts/AuthContext";
 
 const Sidebar = () => {
+  const { logout } = useAuth();
+
   return (
     <Navbar className="sidebar">
       <Container fluid>
@@ -40,7 +43,7 @@ const Sidebar = () => {
 
             <div className="log-out">
               {/*Placeholder for Log out link*/}
-              <Nav.Link className="pt-5" as={Link} to="/">
+              <Nav.Link className="pt-5" as={Link} to="/" onClick={logout}>
                 <FontAwesomeIcon icon={faRightFromBracket} className="icons" />
                 Log Out
               </Nav.Link>

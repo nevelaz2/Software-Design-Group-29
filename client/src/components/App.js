@@ -27,4 +27,6 @@ const App = () => {
   );
 };
 
+export { UserContext };
+
 export default App;

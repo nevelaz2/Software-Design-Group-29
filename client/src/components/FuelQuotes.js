@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
@@ -114,7 +114,12 @@ const FuelQuotes = () => {
           <div className='d-flex justify-content-between my-5'>
             <h4>New Quote</h4>
             {/* <Button variant='primary' onClick={handleSubmit}>Preview Quote</Button> */}
-            <FuelQuoteModal/>
+            <FuelQuoteModal quoteDetails={{
+              GallonsRequested: quoteFormData.gallonsRequested,
+              DeliveryDate: quoteFormData.deliveryDate,
+              ExisitngCustomer: quoteFormData.existingCustomer,
+              Location: user.State
+              }} />
           </div>
 
           <Form noValidate validated={validated} onSubmit={handleSubmit}>

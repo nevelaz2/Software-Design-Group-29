@@ -1,33 +1,46 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import '../styles/GetQuoteModal.css';
+import { useAuth } from '../contexts/AuthContext';
 
-function GetQuoteModal({userId}) {
-
+function GetQuoteModal({ quoteDetails }) {
+  const { user } = useAuth()
+  console.log(quoteDetails)
   const [show, setShow] = useState(false);
   // const [validated] = useState(false);
   // const [errorMessage, setErrorMessage] = useState('');
 
   const [formData, setFormData] = useState({
-    gallonsRequested: '',
-    deliveryDate: '',
-    existingCustomer: false,
+    gallonsRequested: quoteDetails.GallonsRequested,
+    deliveryDate: quoteDetails.DeliveryDate,
+    existingCustomer: quoteDetails.ExisitngCustomer,
+    location: quoteDetails.Location
   });
 
-  // // userAddress state
-  // const [userAddress, setUserAddress] = useState({
-  //   address1: '',
-  //   address2: '',
-  //   city: '',
-  //   state: '',
-  //   zip: '',
-  // });
+  console.log(formData);
 
+  // userAddress state
+  const [userAddress, setUserAddress] = useState({
+    address1: user.Address1,
+    address2: user.Address2,
+    city: user.City,
+    state: user.State,
+    zip: user.Zip,
+  });
+
+  useEffect(() => {
+    setFormData({
+      gallonsRequested: quoteDetails.GallonsRequested,
+      deliveryDate: quoteDetails.DeliveryDate,
+      existingCustomer: quoteDetails.ExisitngCustomer,
+      location: quoteDetails.Location
+    })
+  }, [quoteDetails])
 
   const handleClose = () => {
     setShow(false);
@@ -86,21 +99,6 @@ function GetQuoteModal({userId}) {
     }));
   };
 
-
-  // Fetch user's address
-  // async function fetchUserAddress(userId) {
-  //   try {
-  //     const response = await fetch(`/api/user/${userId}/address`);
-  //     if (!response.ok) {
-  //       throw new Error('Failed to fetch user address');
-  //     }
-  //     return await response.json();
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
-
-
   // Fuel Quote Form
   return (
     <>
@@ -137,7 +135,7 @@ function GetQuoteModal({userId}) {
             <Row className="mb-5 mx-3">
               <Form.Group as={Col} md="6" controlId="hasHistory">
                 <Form.Label>Existing Customer?</Form.Label>
-                <Form.Control type="text" name="hasHistory" placeholder='Yes/No' value={formData.hasHistory} onChange={handleChange} disabled />
+                <Form.Control type="text" name="hasHistory" placeholder='Yes/No' value={formData.existingCustomer ? "Yes" : "No"} onChange={handleChange} disabled />
               </Form.Group>   
               <Form.Group as={Col} md="6" controlId="location">
                 <Form.Label>Location</Form.Label>

@@ -6,6 +6,8 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import '../styles/ProfileModal.css';
 
+import { UserContext } from "./App.js";
+
 function ProfileModal(Props) { 
   const { UserName } = useContext(UserContext);
   

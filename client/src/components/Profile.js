@@ -40,6 +40,8 @@ const Profile = () => {
   useEffect(() => {
     const LoadData = async () => {
       try {
+        console.log(user);
+
         const Response = await fetch(`http://localhost:3001/user/profileinfo/${user.username}`);
 
         const UserData = await Response.json();

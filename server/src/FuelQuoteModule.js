@@ -1,15 +1,21 @@
 // Gleici Pereira
 // Includes fuel quote form, fuel quote history.
 
+// const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
-const suggestedPrice = require("./PricingModule.js");
+
+const UserData = require("../Data/UserData.js");
 const FuelQuoteData = require("../Data/FuelQuoteData.js");
+const calculateSuggestedPrice = require("./PricingModule.js");
 
 // Creates a new Quote
-router.post("/quote", async (req, res) => {
+router.post("/user/quotes", async (req, res) => {
   try {
-    const { userId, gallonsRequested, deliveryDate, location, hasHistory } = req.body;
+
+    const userId = req.query.userId;
+
+    const {gallonsRequested, deliveryDate, location, hasHistory } = req.body;
 
     // Input data validation
     if (!gallonsRequested || !deliveryDate || !location || !hasHistory) {
@@ -17,8 +23,9 @@ router.post("/quote", async (req, res) => {
     }
 
     // Call PricingModule
-    let suggestedPricePerGallon = suggestedPrice(gallonsRequested, location, hasHistory);
+    let suggestedPricePerGallon = calculateSuggestedPrice(gallonsRequested, location, hasHistory);
     let totalPrice = suggestedPricePerGallon * gallonsRequested;
+
 
     // Saves fuel quote
     const newFuelQuote = new FuelQuoteData({
@@ -39,7 +46,7 @@ router.post("/quote", async (req, res) => {
 
 
 // Fuel Quote History
-router.get("/quote/history/:userId", async (req, res) => {
+router.get("/user/quotes/history", async (req, res) => {
   try {
     // Displays quotes for userId
     const fuelQuotes = await FuelQuoteData.findOne({

@@ -13,14 +13,12 @@ const FuelQuotes = ({userId}) => {
   const [validated] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Input form fields
   const [quoteFormData, setQuoteFormData] = useState({
     gallonsRequested: '',
     deliveryDate: '',
     existingCustomer: false,
   });
 
-  // userAddress 
   const [userAddress, setUserAddress] = useState({
     address1: '',
     address2: '',
@@ -29,13 +27,14 @@ const FuelQuotes = ({userId}) => {
     zip: '',
   });
 
+  
   // Fetch user's address
   useEffect(() => {
     const fetchUserAddress = async () => {
       try {
         const response = await fetch(`/api/user/profile/${userId}`);
         if (!response.ok) {
-          throw new Error(`Failed to fetch user address! status: ${response.status}`);
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const fetchedUserAddress = await response.json();
@@ -79,13 +78,19 @@ const FuelQuotes = ({userId}) => {
     try {
 
       // Submit form data
-      const response = await fetch('/api/quote', {             
+      const response = await fetch(`http://localhost:3001/user/quotes?userId=${userId}`, {             
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(quoteFormData)
+        body: JSON.stringify({
+          gallonsRequested: quoteFormData.gallonsRequested, 
+          deliveryDate: quoteFormData.deliveryDate, 
+          location: "TX",
+          hasHistory: quoteFormData.existingCustomer ? true : false
+        })
       });
+
       if (response.ok) {
         alert('Quote created successfully!');
 
@@ -137,8 +142,7 @@ const FuelQuotes = ({userId}) => {
               </Form.Group>
             </Row>
 
-            {/* Delivery Address */}
-            {/* Should come from User Profile. Get state to store in quote table. */}
+            {/* Delivery Address / From user profile */}
             <Row className="my-3">
                 <Form.Group as={Col} md="6" controlId="deliveryAddress1">
                     <Form.Label>Address 1</Form.Label>

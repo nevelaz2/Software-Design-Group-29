@@ -23,6 +23,7 @@ Router.post("/createuserdata", async (Request, Response) => {
 
     const newUserInfo = new UserData({
       _id: NewUser.UserID,
+      username: username,
     });
 
     await NewUser.save();

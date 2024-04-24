@@ -25,8 +25,9 @@ router.get("/user/profile/:username", async (req, res) => {
 
 // Retrieve User Profile
 router.get("/user/profileinfo/:username", async (req, res) => {
+  const username = req.params.username;
   try{
-    const user = await UserData.findOne({ username: req.params.username });
+    const user = await UserData.findOne({ username: username });
     if (!user) {
       return res.status(200).json({userExists: "false"});
     }

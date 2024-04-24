@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
       const PasswordMatches = await Response.text();
 
       if (PasswordMatches === "true") {
-        const URL2 = ReturnURL({username: Data.username}, `http://localhost:3001/user/profileInfo/${Data.username}`)
+        const URL2 = `http://localhost:3001/user/profileInfo/${Data.username}`
         const userResponse = await fetch(URL2);
         const newData = await userResponse.json();
 

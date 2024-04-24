@@ -45,8 +45,7 @@ export const AuthProvider = ({ children }) => {
         console.log(ParsedData);
 
         let userData = {
-          username: "Hello World",
-          userID: 123
+          username: Data.username,
         }
 
         setUser(userData);

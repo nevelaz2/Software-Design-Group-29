@@ -55,9 +55,9 @@ function ProfileModal(Props) {
       };
 
       try {
-        console.log(user);
+        console.log(user.username);
 
-        const response = await fetch(`http://localhost:3001/user/profile/${user}`, {
+        const response = await fetch(`http://localhost:3001/user/profile/${user.username}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

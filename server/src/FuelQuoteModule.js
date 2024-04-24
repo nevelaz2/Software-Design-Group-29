@@ -35,6 +35,7 @@ router.post("/user/quotes", async (req, res) => {
       DeliveryDate: deliveryDate,
       Location: location,
       HasHistory: hasHistory,
+      SuggestedPrice: suggestedPricePerGallon,
       TotalPrice: totalPrice,
     });
 

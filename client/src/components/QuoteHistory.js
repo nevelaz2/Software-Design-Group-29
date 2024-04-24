@@ -38,6 +38,7 @@ const QuoteHistory = () => {
                 <th>Date</th>
                 <th>Location</th>
                 <th>Gallons</th>
+                <th>Suggested Price</th>
                 <th>Total</th>
               </tr>
             </thead>
@@ -49,7 +50,8 @@ const QuoteHistory = () => {
                   <td>{value.DeliveryDate}</td>
                   <td>{value.Location}</td>
                   <td>{value.GallonsRequested}</td>
-                  <td>{value.TotalPrice}</td>
+                  <td>$ {value.SuggestedPrice}</td>
+                  <td>$ {value.TotalPrice}</td>
                 </tr>
               ))}
             </tbody>

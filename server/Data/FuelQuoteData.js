@@ -6,6 +6,7 @@ const QuoteSchema = new mongoose.Schema({
   DeliveryDate: { type: Date, required: true },
   Location: { type: String, required: true},
   HasHistory: { type: Boolean, required: true },
+  SuggestedPrice: { type: Number, required: false},
   TotalPrice: { type: Number, required: false },
 });
 

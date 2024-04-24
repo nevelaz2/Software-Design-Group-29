@@ -19,6 +19,7 @@ const FuelQuotes = () => {
     gallonsRequested: '',
     deliveryDate: '',
     existingCustomer: false,
+    location: 'TX'
   });
 
   const [userAddress, setUserAddress] = useState({
@@ -32,7 +33,6 @@ const FuelQuotes = () => {
   // Modals
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
-  // const [showPreviewModal, setShowPreviewModal] = useState(false);
 
   // Change Handlers
   const handleChange = (event) => {
@@ -72,17 +72,14 @@ const FuelQuotes = () => {
         body: JSON.stringify({
           gallonsRequested: quoteFormData.gallonsRequested, 
           deliveryDate: quoteFormData.deliveryDate, 
-          location: "TX",
+          location: quoteFormData.location,
           hasHistory: quoteFormData.existingCustomer ? true : false
         })
       });
 
       if (response.ok) {
-        // alert('Quote created successfully!');
         setShowSuccessModal(true);
 
-        // Redirect user to /quote page (display quote)
-        // history.push('/quote')
 
       } else {
           setShowErrorModal(true); 
@@ -95,9 +92,6 @@ const FuelQuotes = () => {
     }
   };
 
-  // const closeModal = () => {
-  //   setShowModal(false);
-  // };
 
   return (
     <Container fluid className='quote-form-container' >
@@ -113,12 +107,11 @@ const FuelQuotes = () => {
         <Col lg={8}>
           <div className='d-flex justify-content-between my-5'>
             <h4>New Quote</h4>
-            {/* <Button variant='primary' onClick={handleSubmit}>Preview Quote</Button> */}
             <FuelQuoteModal quoteDetails={{
               GallonsRequested: quoteFormData.gallonsRequested,
               DeliveryDate: quoteFormData.deliveryDate,
               ExisitngCustomer: quoteFormData.existingCustomer,
-              Location: user.State
+              Location: quoteFormData.location
               }} />
           </div>
 

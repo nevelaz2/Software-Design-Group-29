@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 
 const SuccessModal = ({ show, closeModal }) => {
   return (
-    <Modal show={show} onHide={closeModal}>
+    <Modal centered show={show} onHide={closeModal}>
       <Modal.Header closeButton>
         <Modal.Title>Success</Modal.Title>
       </Modal.Header>

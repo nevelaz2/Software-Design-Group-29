@@ -9,17 +9,17 @@ const router = express.Router();
 const UserData = require("../Data/UserData.js");
 const FuelQuoteData = require("../Data/FuelQuoteData.js");
 const calculateSuggestedPrice = require("./PricingModule.js");
+const { default: mongoose } = require("mongoose");
 
 // Creates a new Quote
 router.post("/user/quotes", async (req, res) => {
   try {
-
     const userId = req.query.userId;
 
-    const {gallonsRequested, deliveryDate, location, hasHistory } = req.body;
+    const { gallonsRequested, deliveryDate, location, hasHistory } = req.body;
 
     // Input data validation
-    if (!gallonsRequested || !deliveryDate || !location || !hasHistory) {
+    if (!gallonsRequested || !deliveryDate || !location || hasHistory === null) {
       return res.status(400).send("Missing required fields.");
     }
 
@@ -30,7 +30,7 @@ router.post("/user/quotes", async (req, res) => {
 
     // Saves fuel quote
     const newFuelQuote = new FuelQuoteData({
-      UserID: userId,
+      UserID: new mongoose.Types.ObjectId(userId),
       GallonsRequested: gallonsRequested,
       DeliveryDate: deliveryDate,
       Location: location,
@@ -50,8 +50,9 @@ router.post("/user/quotes", async (req, res) => {
 router.get("/user/quotes/history", async (req, res) => {
   try {
     // Displays quotes for userId
-    const fuelQuotes = await FuelQuoteData.findOne({
-      UserID: req.params.userId,
+    const userId = req.query.userId;
+    const fuelQuotes = await FuelQuoteData.find({
+      UserID: userId,
     });
 
     res.status(200).json(fuelQuotes);

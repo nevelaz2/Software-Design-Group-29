@@ -8,7 +8,7 @@ const UserCred = require("../Data/UserCredentialsData.js");
 const Bcrypt = require("bcrypt");
 const SaltRounds = 10; // For Bcrypt - hashing passwords
 
-// Retrieve User Profile
+// Retrieve User Credentials
 router.get("/user/profile/:username", async (req, res) => {
   try {
     const user = await UserCred.findOne({ Username: req.params.username });
@@ -23,16 +23,20 @@ router.get("/user/profile/:username", async (req, res) => {
   }
 });
 
+// Retrieve User Profile
 router.get("/user/profileinfo/:username", async (req, res) => {
-  const user = await UserData.findOne({ username: req.params.username });
+  try{
+    const user = await UserData.findOne({ username: req.params.username });
+    if (!user) {
+      return res.status(200).json({userExists: "false"});
+    }
 
-  if (!user) {
-    return res.status(200).json({userExists: "false"});
+    const userObj = user.toObject();
+    res.status(200).json(userObj);
+  } catch (error) {
+    res.status(500).send(error.message);
   }
-
-  const userObj = user.toObject();
-
-  res.status(200).json(userObj);
+  
 })
 
 // Update User Profile

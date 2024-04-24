@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
@@ -10,9 +9,10 @@ import SuccessModal from './SuccessModal';
 import ErrorModal from './ErrorModal';
 import '../styles/App.css';
 import '../styles/FuelQuotes.css';
+import { useAuth } from '../contexts/AuthContext';
 
-const FuelQuotes = ({userId}) => {
-
+const FuelQuotes = () => {
+  const { user } = useAuth();
   const [validated] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [quoteFormData, setQuoteFormData] = useState({
@@ -22,39 +22,17 @@ const FuelQuotes = ({userId}) => {
   });
 
   const [userAddress, setUserAddress] = useState({
-    address1: '',
-    address2: '',
-    city: '',
-    state: '',
-    zip: '',
+    address1: user.Address1,
+    address2: user.Address2,
+    city: user.City,
+    state: user.State,
+    zip: user.Zip
   });
 
   // Modals
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   // const [showPreviewModal, setShowPreviewModal] = useState(false);
-
-  
-
-  // Fetch User's address
-  useEffect(() => {
-    const fetchUserAddress = async () => {
-      try {
-        const response = await fetch(`/api/user/profile/${userId}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const fetchedUserAddress = await response.json();
-        setUserAddress(fetchedUserAddress);
-      } catch (error) {
-        console.error("Error fetching user's address:", error);
-      }
-    };
-
-    fetchUserAddress(); 
-  }, [userId]);
-
 
   // Change Handlers
   const handleChange = (event) => {
@@ -86,7 +64,7 @@ const FuelQuotes = ({userId}) => {
     }
     try {
       // Submit form data
-      const response = await fetch(`http://localhost:3001/user/quotes?userId=${userId}`, {             
+      const response = await fetch(`http://localhost:3001/user/quotes?userId=${user.UserID}`, {             
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -174,7 +152,8 @@ const FuelQuotes = ({userId}) => {
                 <Form.Group as={Col} md="3" controlId="deliveryState">
                     <Form.Label>State</Form.Label>
                     <Form.Control as="select" value={userAddress.state} disabled>
-                        <option>Select</option>
+                        {/* <option>Select</option> */}
+                        <option>{userAddress.state}</option>
                     </Form.Control>
                 </Form.Group>
                 <Form.Group as={Col} md="3" controlId="deliveryZip">

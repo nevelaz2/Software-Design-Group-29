@@ -5,8 +5,27 @@ import Row from "react-bootstrap/Row";
 import Table from "react-bootstrap/Table";
 import "../styles/QuoteHistory.css";
 import "../styles/App.css";
+import { useAuth } from "../contexts/AuthContext";
+import { useEffect, useState } from "react";
 
 const QuoteHistory = () => {
+  const { user } = useAuth();
+  const [q_History, setQ_History] = useState({});
+
+  useEffect(() => {
+    fetch(`http://localhost:3001/user/quotes/history?userId=${user.UserID}`)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      setQ_History(data);
+    })
+    .catch((err) => {
+      console.log("Error has occured:", err.message);
+    })
+  }, []);
+
+  //q_History will be `[]` if user has no History
+
   return (
     <Container fluid className="quote-history-container">
       {/*Quote History*/}

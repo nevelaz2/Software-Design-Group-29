@@ -36,23 +36,26 @@ export const AuthProvider = ({ children }) => {
       const Response = await fetch(URL);
       const PasswordMatches = await Response.text();
 
-      console.log("Data", Data.username);
-
       if (PasswordMatches === "true") {
-        const URL2 = ReturnURL({username: Data.username}, "http://localhost:3001/finduser")
+        const URL2 = ReturnURL({username: Data.username}, `http://localhost:3001/user/profileInfo/${Data.username}`)
         const userResponse = await fetch(URL2);
         const newData = await userResponse.json();
 
         let userData = {
-          username: newData.username
+          username: newData.username,
+          UserID: newData._id,
+          Address1: newData.Address1,
+          Address2: newData.Address2,
+          City: newData.City,
+          FullName: newData.FullName,
+          State: newData.State,
+          Zip: newData.Zip,
         }
-
-        console.log("UserDataName", userData.username);
 
         setUser(userData);
         setIsAuthenticated(true);
 
-        localStorage.setItem("user", JSON.stringify(newData.username));
+        localStorage.setItem("user", JSON.stringify(userData));
         localStorage.setItem("isAuthenticated", JSON.stringify(true));
 
         return true;

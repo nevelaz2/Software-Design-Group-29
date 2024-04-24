@@ -11,7 +11,7 @@ import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../contexts/AuthContext";
 
 const Sidebar = () => {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <Navbar className="sidebar">
@@ -22,7 +22,7 @@ const Sidebar = () => {
             className="portal-logo"
             alt="CoogsEnergy Logo"
           />
-          <h5>Hi, username!</h5>
+          <h5>Hi, {user.username}!</h5>
         </Navbar.Brand>
 
         <Navbar.Collapse>

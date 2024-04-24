@@ -4,6 +4,8 @@ import { useRef, useState, useContext } from "react";
 import '../styles/SignUpLogin.css'
 import { useAuth } from "../contexts/AuthContext";
 
+import { UserContext } from "./App.js";
+
 const ReturnURL = (Data, URL) => {
   URL += "?";
 

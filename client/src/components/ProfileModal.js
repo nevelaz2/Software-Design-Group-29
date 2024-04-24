@@ -6,7 +6,11 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import '../styles/ProfileModal.css';
 
+import { useAuth } from "../contexts/AuthContext";
+
 import { UserContext } from "./App.js";
+
+const { user } = useAuth();
 
 function ProfileModal(Props) { 
   const { UserName } = useContext(UserContext);
@@ -56,7 +60,9 @@ function ProfileModal(Props) {
       };
 
       try {
-        const response = await fetch(`http://localhost:3001/user/profile/${UserName}`, {
+        console.log(user);
+
+        const response = await fetch(`http://localhost:3001/user/profile/${user}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

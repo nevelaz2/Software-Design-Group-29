@@ -43,7 +43,6 @@ const Login = () => {
   const [SubmitText, SetSubmitText] = useState("");
 
   if(isAuthenticated){
-    console.log("entered");
     return <Navigate to="/user" />
   }
 

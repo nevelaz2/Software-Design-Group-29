@@ -37,7 +37,19 @@ export const AuthProvider = ({ children }) => {
       const PasswordMatches = await Response.text();
 
       if (PasswordMatches === "true") {
-        setUser({});
+        const URL2 = ReturnURL({username: Data.username}, "http://localhost:3001/finduser")
+        const userResponse = await fetch(URL2);
+        const newData = await userResponse.text();
+        const ParsedData = JSON.parse(newData);
+
+        console.log(ParsedData);
+
+        const userData = {
+          username: "Hello World",
+          userID: 123
+        }
+
+        setUser(userData);
         setIsAuthenticated(true);
 
         localStorage.setItem("user", JSON.stringify(user));
@@ -54,7 +66,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    setUser({});
+    setUser(null);
     setIsAuthenticated(false);
     localStorage.removeItem('user');
     localStorage.removeItem('isAuthenticated');

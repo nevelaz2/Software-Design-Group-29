@@ -23,7 +23,6 @@ function InfoBox(Props) {
   );
 }
 
-
 const Profile = () => {
   return (
     <>

@@ -10,10 +10,13 @@ import { useAuth } from '../contexts/AuthContext';
 
 function GetQuoteModal({ quoteDetails }) {
   const { user } = useAuth()
-  console.log(quoteDetails)
   const [show, setShow] = useState(false);
   // const [validated] = useState(false);
   // const [errorMessage, setErrorMessage] = useState('');
+  const [prices, setPrices] = useState({
+    suggestedPrice: 0,
+    totalDue: 0
+  })
 
   const [formData, setFormData] = useState({
     gallonsRequested: quoteDetails.GallonsRequested,
@@ -21,8 +24,6 @@ function GetQuoteModal({ quoteDetails }) {
     existingCustomer: quoteDetails.ExisitngCustomer,
     location: quoteDetails.Location
   });
-
-  console.log(formData);
 
   // userAddress state
   const [userAddress, setUserAddress] = useState({
@@ -40,6 +41,19 @@ function GetQuoteModal({ quoteDetails }) {
       existingCustomer: quoteDetails.ExisitngCustomer,
       location: quoteDetails.Location
     })
+
+    fetch(`http://localhost:3001/getpricing?gallonsRequested=${quoteDetails.GallonsRequested}&existingCustomer=${quoteDetails.ExisitngCustomer}&Location=${quoteDetails.Location}`)
+    .then((res) => res.json())
+    .then((data) => {
+      setPrices({
+        suggestedPrice: data.suggestedPrice,
+        totalDue: data.totalDue
+      })
+    })
+    .catch((err) => {
+      console.log("An error has occured:", err.message);
+    })
+
   }, [quoteDetails])
 
   const handleClose = () => {
@@ -148,11 +162,11 @@ function GetQuoteModal({ quoteDetails }) {
             <Row className="mb-5 mx-3">
               <Form.Group as={Col} md="6" controlId="suggestedPrice">
                 <Form.Label>Suggested Price </Form.Label>
-                <Form.Control type="text" name="suggestedPrice" placeholder="suggestedPrice" value={formData.suggestedPrice} onChange={handleChange} readOnly  />
+                <Form.Control type="text" name="suggestedPrice" placeholder="suggestedPrice" value={prices.suggestedPrice} onChange={handleChange} readOnly  />
               </Form.Group>   
               <Form.Group as={Col} md="6" controlId="totalPrice">
                 <Form.Label>Total Due</Form.Label>
-                <Form.Control type="text" name="totalPrice" placeholder="totalPrice" value={formData.totalPrice} onChange={handleChange} readOnly  />
+                <Form.Control type="text" name="totalPrice" placeholder="totalPrice" value={prices.totalDue} onChange={handleChange} readOnly  />
               </Form.Group>
             </Row>
 

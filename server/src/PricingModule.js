@@ -17,4 +17,3 @@ const calculateSuggestedPrice = (gallonsRequested, location, hasHistory) => {
 };
 
 module.exports = calculateSuggestedPrice;
-

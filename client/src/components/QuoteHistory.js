@@ -10,13 +10,12 @@ import { useEffect, useState } from "react";
 
 const QuoteHistory = () => {
   const { user } = useAuth();
-  const [q_History, setQ_History] = useState({});
+  const [q_History, setQ_History] = useState([]);
 
   useEffect(() => {
     fetch(`http://localhost:3001/user/quotes/history?userId=${user.UserID}`)
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
       setQ_History(data);
     })
     .catch((err) => {
@@ -44,42 +43,17 @@ const QuoteHistory = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <td key={index}>Table cell {index}</td>
-                ))}
-              </tr>
-              <tr>
-                <td>2</td>
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <td key={index}>Table cell {index}</td>
-                ))}
-              </tr>
-              <tr>
-                <td>3</td>
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <td key={index}>Table cell {index}</td>
-                ))}
-              </tr>
-              <tr>
-                <td>4</td>
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <td key={index}>Table cell {index}</td>
-                ))}
-              </tr>
-              <tr>
-                <td>5</td>
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <td key={index}>Table cell {index}</td>
-                ))}
-              </tr>
-              <tr>
-                <td>6</td>
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <td key={index}>Table cell {index}</td>
-                ))}
-              </tr>
+              {console.log(q_History)}
+              {q_History.map((value, index) => (
+                <tr key={index}>
+                  <td>{value._id}</td>
+                  <td>{value.DeliveryDate}</td>
+                  <td>{value.Location}</td>
+                  <td>{value.GallonsRequested}</td>
+                  <td>{value.TotalPrice}</td>
+                  <td>{1}</td>
+                </tr>
+              ))}
             </tbody>
           </Table>
         </Col>

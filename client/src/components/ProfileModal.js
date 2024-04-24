@@ -8,13 +8,8 @@ import '../styles/ProfileModal.css';
 
 import { useAuth } from "../contexts/AuthContext";
 
-import { UserContext } from "./App.js";
-
-const { user } = useAuth();
-
 function ProfileModal(Props) { 
-  const { UserName } = useContext(UserContext);
-  
+  const { user } = useAuth();
   const [show, setShow] = useState(false);
   const [validated, setValidated] = useState(false);
   const [errorMessage, setErrorMessage] = useState(''); // State to handle error messages

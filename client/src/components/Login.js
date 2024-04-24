@@ -1,10 +1,8 @@
 import React, { Fragment } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { useRef, useState, useContext } from "react";
+import { useState } from "react";
 import '../styles/SignUpLogin.css'
 import { useAuth } from "../contexts/AuthContext";
-
-import { UserContext } from "./App.js";
 
 const ReturnURL = (Data, URL) => {
   URL += "?";
@@ -39,8 +37,6 @@ const CheckDataExists = async (Data, URL) => {
 }
 
 const Login = () => {
-  const { SetUserName } = useContext(UserContext);
-
   const { login, isAuthenticated } = useAuth();
   const [formdata, setFormData] = useState({ username: '', password: ''});
   const [ShouldRedirect, SetShouldRedirect] = useState(false);
@@ -71,7 +67,6 @@ const Login = () => {
 
       if (PasswordMatches === true) {
         console.log("Logging in");
-        SetUserName(ResponseObject.Username);
         SetShouldRedirect(true);
       } else {
         console.log("Wrong password");

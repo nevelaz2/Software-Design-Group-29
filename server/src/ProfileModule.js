@@ -23,6 +23,18 @@ router.get("/user/profile/:username", async (req, res) => {
   }
 });
 
+router.get("/user/profileinfo/:username", async (req, res) => {
+  const user = await UserData.findOne({ username: req.params.username });
+
+  if (!user) {
+    return res.status(200).json({userExists: "false"});
+  }
+
+  const userObj = user.toObject();
+
+  res.status(200).json(userObj);
+})
+
 // Update User Profile
 router.put("/user/profile/:username", async (req, res) => {
   try {
@@ -58,6 +70,7 @@ router.put("/user/profile/:username", async (req, res) => {
       const HashedPassword = await Bcrypt.hash(password, SaltRounds);
       user.Password = HashedPassword;
     }
+    user_info.username = req.params.username;
 
     await user.save();
     await user_info.save();

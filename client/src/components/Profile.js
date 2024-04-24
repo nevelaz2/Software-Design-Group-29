@@ -1,8 +1,10 @@
 import React from 'react';
-import {useState} from "react";
+import { useState, useEffect } from "react";
 import ProfileModal from './ProfileModal';
 import '../styles/App.css';
 import '../styles/Profile.css';
+
+import { useAuth } from "../contexts/AuthContext";
 
 function InfoBox(Props) {
   let containerStyles = {
@@ -25,6 +27,8 @@ function InfoBox(Props) {
 }
 
 const Profile = () => {
+  const { user } = useAuth();
+
   const [firstName, setFirstName] = useState('Full name');
   const [lastName, setLastName] = useState('');
   const [address1, setAddress1] = useState('Address 1');
@@ -32,6 +36,35 @@ const Profile = () => {
   const [city, setCity] = useState('City');
   const [state, setState] = useState('State');
   const [zip, setZip] = useState('ZIP Code');
+
+  useEffect(() => {
+    const LoadData = async () => {
+      try {
+        const Response = await fetch(`http://localhost:3001/user/profileinfo/${user.username}`);
+
+        const UserData = await Response.json();
+
+        if (UserData.userExists !== "false") {
+                  
+          const FullNameArray = UserData.FullName.split(" ");
+
+          setFirstName(FullNameArray[0]);
+          setLastName(FullNameArray[1]);
+          setAddress1(UserData.Address1);
+          setAddress2(UserData.Address2);
+          setCity(UserData.City);
+          setState(UserData.State);
+          setZip(UserData.Zip);
+        }
+
+      } catch (Error) {
+        console.log(Error);
+      }
+    }
+
+    LoadData();
+
+  }, []);
 
   return (
     <>

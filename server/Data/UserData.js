@@ -9,6 +9,7 @@ const UserSchema = new Schema({
   City: { type: String, required: false },
   State: { type: String, required: false },
   Zip: { type: Number, required: false },
+  username: {type: String, required: false}
 });
 
 const UserData = Mongoose.model("Users", UserSchema, "Users");

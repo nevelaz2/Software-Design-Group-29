@@ -34,6 +34,17 @@ const FuelQuotes = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
 
+  useEffect(() => {
+    console.log(123)
+    setUserAddress({
+      address1: user.Address1,
+      address2: user.Address2,
+      city: user.City,
+      state: user.State,
+      zip: user.Zip,
+    });
+  }, [user])
+
   // Change Handlers
   const handleChange = (event) => {
     const { name, value } = event.target;

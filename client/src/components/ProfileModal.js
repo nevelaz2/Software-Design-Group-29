@@ -9,7 +9,7 @@ import '../styles/ProfileModal.css';
 import { useAuth } from "../contexts/AuthContext";
 
 function ProfileModal(Props) { 
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const [show, setShow] = useState(false);
   const [validated, setValidated] = useState(false);
   const [errorMessage, setErrorMessage] = useState(''); // State to handle error messages
@@ -37,6 +37,19 @@ function ProfileModal(Props) {
       Props.setCity(city);
       Props.setState(state);
       Props.setZip(zip);
+
+      const newUserData = {
+        ...user,
+        Address1: address1,
+        Address2: address2,
+        City: city,
+        State: state,
+        Zip: zip
+      }
+
+      console.log(newUserData);
+
+      setUser(newUserData)
     }
 
   const handleSubmit = async (event) => {

@@ -47,8 +47,6 @@ function ProfileModal(Props) {
         Zip: zip
       }
 
-      console.log(newUserData);
-
       setUser(newUserData)
     }
 

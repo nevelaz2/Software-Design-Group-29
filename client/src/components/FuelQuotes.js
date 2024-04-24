@@ -35,7 +35,6 @@ const FuelQuotes = () => {
   const [showErrorModal, setShowErrorModal] = useState(false);
 
   useEffect(() => {
-    console.log(123)
     setUserAddress({
       address1: user.Address1,
       address2: user.Address2,

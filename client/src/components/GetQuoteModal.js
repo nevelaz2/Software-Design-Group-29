@@ -52,6 +52,10 @@ function GetQuoteModal({ quoteDetails }) {
     })
     .catch((err) => {
       console.log("An error has occured:", err.message);
+      setPrices({
+        suggestedPrice: null,
+        totalDue: null
+      })
     })
 
   }, [quoteDetails])

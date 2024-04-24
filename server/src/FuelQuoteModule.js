@@ -1,3 +1,4 @@
+
 // Gleici Pereira
 // Includes fuel quote form, fuel quote history.
 
@@ -58,36 +59,5 @@ router.get("/user/quotes/history", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
-
-// // Quotes filtering
-// router.get("/quote/filter", async (req, res) => {
-//   try {
-//     // Filter parameters from query string
-//     const { userId, startDate, endDate, minGallons, maxGallons } = req.query;
-
-//     // Creates filter
-//     const filter = {};
-//     if (userId) {
-//       filter.UserID = userId;
-//     }
-
-//     if (startDate && endDate) {
-//       filter.DeliveryData = {
-//         $gte: new Date(startDate),
-//         $lte: new Date(endDate),
-//       };
-//     }
-//     if (minGallons && maxGallons) {
-//       filter.GallonsRequested = { $gte: minGallons, $lte: maxGallons };
-//     }
-
-//     // Performs query
-//     const fuelQuotes = await FuelQuoteData.find(filter);
-
-//     res.status(200).json(fuelQuotes);
-//   } catch (error) {
-//     res.status(500).send(error.message);
-//   }
-// });
 
 module.exports = router;

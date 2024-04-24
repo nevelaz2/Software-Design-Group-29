@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -5,6 +6,8 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import FuelQuoteModal from './GetQuoteModal';
+import SuccessModal from './SuccessModal';
+import ErrorModal from './ErrorModal';
 import '../styles/App.css';
 import '../styles/FuelQuotes.css';
 
@@ -12,7 +15,6 @@ const FuelQuotes = ({userId}) => {
 
   const [validated] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
   const [quoteFormData, setQuoteFormData] = useState({
     gallonsRequested: '',
     deliveryDate: '',
@@ -27,8 +29,14 @@ const FuelQuotes = ({userId}) => {
     zip: '',
   });
 
+  // Modals
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  // const [showPreviewModal, setShowPreviewModal] = useState(false);
+
   
-  // Fetch user's address
+
+  // Fetch User's address
   useEffect(() => {
     const fetchUserAddress = async () => {
       try {
@@ -48,14 +56,15 @@ const FuelQuotes = ({userId}) => {
   }, [userId]);
 
 
-  // Change handlers
+  // Change Handlers
   const handleChange = (event) => {
     const { name, value } = event.target;
+
     setQuoteFormData(prevData => {
       return name === 'existingCustomer'
         ? {
           ...prevData,
-          existingCustomer: value === 'Yes',
+          existingCustomer: value === 'Yes' ? true : false,
         }
         : {
           ...prevData,
@@ -64,7 +73,8 @@ const FuelQuotes = ({userId}) => {
     });
   };
 
-  // Submission handlers
+
+  // Submission Handler
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -74,9 +84,7 @@ const FuelQuotes = ({userId}) => {
       event.stopPropagation();
       return;
     }
-
     try {
-
       // Submit form data
       const response = await fetch(`http://localhost:3001/user/quotes?userId=${userId}`, {             
         method: 'POST',
@@ -92,12 +100,14 @@ const FuelQuotes = ({userId}) => {
       });
 
       if (response.ok) {
-        alert('Quote created successfully!');
+        // alert('Quote created successfully!');
+        setShowSuccessModal(true);
 
         // Redirect user to /quote page (display quote)
         // history.push('/quote')
 
       } else {
+          setShowErrorModal(true); 
           const errorMessage = await response.text();
           throw new Error(errorMessage);
       }
@@ -107,6 +117,9 @@ const FuelQuotes = ({userId}) => {
     }
   };
 
+  // const closeModal = () => {
+  //   setShowModal(false);
+  // };
 
   return (
     <Container fluid className='quote-form-container' >
@@ -120,12 +133,12 @@ const FuelQuotes = ({userId}) => {
 
       <Row className="justify-content-center mt-5 mx-3">
         <Col lg={8}>
-
           <div className='d-flex justify-content-between my-5'>
             <h4>New Quote</h4>
+            {/* <Button variant='primary' onClick={handleSubmit}>Preview Quote</Button> */}
             <FuelQuoteModal/>
           </div>
-            
+
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
 
             {/* Quote Details */}
@@ -175,7 +188,7 @@ const FuelQuotes = ({userId}) => {
             <Row className="mb-2">
                 <Col md="6">
                     <fieldset>
-                        <Form.Group controlId={"noCustomer"}>
+                        <Form.Group controlId='existingCustomer'>
                             <Form.Label>Existing Customer?</Form.Label>
                             <div className='mt-2'>
                                 <Form.Check inline type="radio" label="No" name="existingCustomer" value="No" id="noCustomer" checked={!quoteFormData.existingCustomer} onChange={handleChange} />
@@ -192,6 +205,16 @@ const FuelQuotes = ({userId}) => {
           </Form>
         </Col>
       </Row>
+      {/* <FuelQuoteModal
+        show={showModal}
+        closeModal={closeModal}
+        quoteFormData={quoteFormData}
+        userAddress={userAddress}
+      /> */}
+      <SuccessModal show={showSuccessModal} closeModal={() => setShowSuccessModal(false)} />
+      <ErrorModal show={showErrorModal}  closeModal={() => setShowErrorModal(false)} />
+
+
 
     </Container>
 )

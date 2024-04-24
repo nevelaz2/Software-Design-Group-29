@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -8,43 +9,36 @@ import '../styles/GetQuoteModal.css';
 
 function GetQuoteModal({userId}) {
 
-  // Modal
   const [show, setShow] = useState(false);
-  const [validated] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  // const [validated] = useState(false);
+  // const [errorMessage, setErrorMessage] = useState('');
 
-  // Form fields
   const [formData, setFormData] = useState({
     gallonsRequested: '',
     deliveryDate: '',
     existingCustomer: false,
   });
 
-  // userAddress state
-  const [userAddress, setUserAddress] = useState({
-    address1: '',
-    address2: '',
-    city: '',
-    state: '',
-    zip: '',
-  });
+  // // userAddress state
+  // const [userAddress, setUserAddress] = useState({
+  //   address1: '',
+  //   address2: '',
+  //   city: '',
+  //   state: '',
+  //   zip: '',
+  // });
 
 
   const handleClose = () => {
     setShow(false);
-    setErrorMessage('');
-
-    // Reset form data 
-    setFormData({
-      gallonsRequested: '',
-      deliveryDate: '',
-      existingCustomer: false,
-    });
+    // setErrorMessage('');
   };
 
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    setShow(true);
+  };
 
-  // Handle input submission
+  // Submit handler
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -55,36 +49,33 @@ function GetQuoteModal({userId}) {
       return;
     }
 
-    try {
+    // try {
 
       // Fetch user's address 
-      const fetchedUserAddress = await fetchUserAddress(userId);
-      setUserAddress(fetchedUserAddress);
+      // const fetchedUserAddress = await fetchUserAddress(userId);
+      // setUserAddress(fetchedUserAddress);
 
       // Submit form data
-      const response = await fetch('/api/quote', {             
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-      if (response.ok) {
-        alert('Quote created successfully!');
+    //   const response = await fetch('/api/quote', {             
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(formData)
+    //   });
+    //   if (response.ok) {
+    //     alert('Quote created successfully!');
 
-        handleClose();
+    //     handleClose();
 
-        // Redirect user to /quote page (display quote)
-        // history.push('/quote')
-
-      } else {
-          const errorMessage = await response.text();
-          throw new Error(errorMessage);
-      }
-    } catch (error) {
-      console.error('Error submitting quote:', error);
-      setErrorMessage('Error submitting quote: ' + error.message);
-    }
+    //   } else {
+    //       const errorMessage = await response.text();
+    //       throw new Error(errorMessage);
+    //   }
+    // } catch (error) {
+    //   console.error('Error submitting quote:', error);
+    //   setErrorMessage('Error submitting quote: ' + error.message);
+    // }
   };
 
   const handleChange = (event) => {
@@ -97,17 +88,17 @@ function GetQuoteModal({userId}) {
 
 
   // Fetch user's address
-  async function fetchUserAddress(userId) {
-    try {
-      const response = await fetch(`/api/user/${userId}/address`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch user address');
-      }
-      return await response.json();
-    } catch (error) {
-      throw error;
-    }
-  }
+  // async function fetchUserAddress(userId) {
+  //   try {
+  //     const response = await fetch(`/api/user/${userId}/address`);
+  //     if (!response.ok) {
+  //       throw new Error('Failed to fetch user address');
+  //     }
+  //     return await response.json();
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
 
 
   // Fuel Quote Form
@@ -122,25 +113,23 @@ function GetQuoteModal({userId}) {
 
         <Modal.Body>
 
-          {/* Error Message */}
+          {/* Error Message
           {errorMessage && 
             <div className="alert alert-danger">
               {errorMessage}
-            </div>}
+            </div>} */}
 
-          <Form noValidate validated={validated} onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit}>
 
             {/* Request Details */}
             <Row className="mb-3 mt-3 mx-3">
               <Form.Group as={Col} md="6" controlId="gallonsRequested">
                 <Form.Label>Gallons Requested</Form.Label>
                 <Form.Control required type="number" name="gallonsRequested" placeholder='Enter Amount' value={formData.gallonsRequested} onChange={handleChange} disabled />
-                <Form.Control.Feedback type="invalid">Please provide a valid gallons requested.</Form.Control.Feedback>
               </Form.Group>   
               <Form.Group as={Col} md="6" controlId="deliveryDate">
                 <Form.Label>Delivery Date</Form.Label>
                 <Form.Control type="date" name='deliveryDate' value={formData.deliveryDate} onChange={handleChange} disabled/>
-                <Form.Control.Feedback type="invalid">Please provide a valid date.</Form.Control.Feedback>
               </Form.Group>
             </Row>
 
@@ -155,7 +144,7 @@ function GetQuoteModal({userId}) {
                 <Form.Control type="text" name="location" value={formData.location} onChange={handleChange} placeholder='In-State/Out-of-State' disabled/>
               </Form.Group>
             </Row>
-            
+
 
             {/* Quote Details */}
             <Row className="mb-5 mx-3">

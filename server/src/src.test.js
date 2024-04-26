@@ -151,6 +151,8 @@ describe("LoginModule API", () => {
     });
   });
 
+ 
+  
   describe("Unsuccessful API Endpoints", () => {
     test("Testing POST Endpoint (/createuserdata): It should respond with Status 500", async () => {
       const response = await request(Server).post("/createuserdata").send({
@@ -176,8 +178,9 @@ describe("LoginModule API", () => {
 
 describe("ProfileModule API", () => {
   describe("Successful API Endpoints", () => {
+    
     test("Testing GET Endpoint (/profile/:username): It should respond with Status 404", async () => {
-      const response = await request(Server).get("/profile/billy123");
+      const response = await request(Server).get("/user/profile/billy123");
       expect(response.status).toBe(404);
     });
 
@@ -209,6 +212,20 @@ describe("ProfileModule API", () => {
       expect(response.status).toBe(200);
       expect(response.text).toBe("User profile updated successfully");
     });
+    test("GET /user/profileinfo/:username should retrieve user data successfully", async () => {
+        const mockUserData = {
+          username: "existingUser",
+          email: "user@example.com",
+          toObject: jest.fn(() => ({ username: "existingUser", email: "user@example.com" }))
+        };
+  
+        jest.spyOn(UserData, 'findOne').mockResolvedValue(mockUserData); // Simulate finding user data
+        const response = await request(Server).get("/user/profileinfo/existingUser");
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({ username: "existingUser", email: "user@example.com" });
+        expect(mockUserData.toObject).toHaveBeenCalled();  // Ensure toObject was called to simulate successful data retrieval
+        jest.clearAllMocks();  // Reset mocks after test
+      });
   });
 
   describe("Unsuccessful API Endpoints", () => {
@@ -249,7 +266,7 @@ describe("ProfileModule API", () => {
       expect(response.text).toBe("User profile updated successfully");
     });
 
-    test("Testing PUT Endpoint (/profile/:username) with non-existent user should return 404", async () => {
+    test("Testing PUT Endpoint (/user/profile/:username) with non-existent user should return 404", async () => {
       jest.spyOn(UserCred, 'findOne').mockResolvedValue(null); // Simulating user not found
       const profileData = {
         fullname: "Does Not Exist",
@@ -269,5 +286,145 @@ describe("ProfileModule API", () => {
       expect(response.status).toBe(500);
       expect(response.text).toContain("Database error");
     });
+    test("GET /user/profile/:username should handle database errors", async () => {
+        jest.spyOn(UserCred, 'findOne').mockRejectedValue(new Error("Database error"));
+        const response = await request(Server).get("/user/profile/nonexistentuser");
+        expect(response.status).toBe(500);
+        expect(response.text).toContain("Database error");
+        jest.clearAllMocks();  // Reset mocks after test
+      });
+  
+      test("GET /user/profileinfo/:username should handle database errors", async () => {
+        jest.spyOn(UserData, 'findOne').mockRejectedValue(new Error("Database error"));
+        const response = await request(Server).get("/user/profileinfo/existingUsername");
+        expect(response.status).toBe(500);
+        expect(response.text).toContain("Database error");
+        jest.clearAllMocks();  // Reset mocks after test
+      });
+  
+      test("PUT /user/profile/:username should handle missing user info", async () => {
+        jest.spyOn(UserCred, 'findOne').mockResolvedValue({
+          Username: "existingUsername",
+          UserID: "123",
+          toObject: () => ({ UserID: "123" })
+        });
+        jest.spyOn(UserData, 'findOne').mockResolvedValue(null);  // Simulate no user info found
+        const profileData = {
+          fullname: "Does Not Exist",
+          address1: "404 Not Found St",
+          city: "Nowhere",
+          state: "NO",
+          zip: "00000"
+        };
+        const response = await request(Server).put("/user/profile/existingUsername").send(profileData);
+        expect(response.status).toBe(404);
+        expect(response.text).toBe("User_Info not found");
+        jest.clearAllMocks();  // Reset mocks after test
+      });
+      //New test cases for 19-20
+      test("GET /user/profile/:username with no user found should return 404", async () => {
+        jest.spyOn(UserCred, 'findOne').mockResolvedValue(null);
+        const response = await request(Server).get("/user/profile/nonexistentusername");
+        expect(response.status).toBe(404);
+        expect(response.text).toBe("User not found");
+        jest.clearAllMocks();  // Reset mocks after test
+      });
+
+      //New test case for 35-36
+      test("GET /user/profileinfo/:username with no user data found should return userExists false", async () => {
+        jest.spyOn(UserData, 'findOne').mockResolvedValue(null);
+        const response = await request(Server).get("/user/profileinfo/nonexistentusername");
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({ userExists: "false" });
+        jest.clearAllMocks();  // Reset mocks after test
+      });
+      
+
+      //Test case for line 68
+      test("PUT /user/profile/:username should update user's full name when provided", async () => {
+        // Setting up mocks to simulate a successful user lookup and data update
+        const existingUser = {
+          Username: "testUser",
+          UserID: "user123",
+          toObject: () => ({ UserID: "user123" }),
+          save: jest.fn() // Mock save function since it's called in the code
+        };
+  
+        const existingUserInfo = {
+          FullName: '',
+          Address1: '',
+          Address2: '',
+          City: '',
+          State: '',
+          Zip: '',
+          username: 'testUser',
+          save: jest.fn() // Mock save function since it's called in the code
+        };
+  
+        // Mock the findOne call for UserCred and UserData
+        jest.spyOn(UserCred, 'findOne').mockResolvedValue(existingUser);
+        jest.spyOn(UserData, 'findOne').mockResolvedValue(existingUserInfo);
+  
+        // The data to send in the request
+        const updateData = {
+          fullname: "Updated Full Name", // This is the 'name' that should trigger the if block
+          address1: "123 New St",
+          city: "New City",
+          state: "NS",
+          zip: "10001"
+        };
+  
+        const response = await request(Server).put("/user/profile/testUser").send(updateData);
+  
+        expect(response.status).toBe(200);
+        expect(response.text).toBe("User profile updated successfully");
+        expect(existingUserInfo.FullName).toBe("Updated Full Name"); // Verify FullName was updated
+        expect(existingUserInfo.save).toHaveBeenCalled(); // Verify that save was called
+        jest.clearAllMocks();  // Reset mocks after test
+      });
   });
+
+  describe("PricingRouter API", () => {
+    describe("Successful API Endpoints", () => {
+      test("Testing GET Endpoint (/getpricing): It should calculate and return the pricing", async () => {
+        const response = await request(Server).get("/getpricing").query({
+          gallonsRequested: 500,
+          existingCustomer: true,
+          Location: "TX"
+        });
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('suggestedPrice');
+        expect(response.body).toHaveProperty('totalDue');
+      });
+    });
+  
+    describe("Unsuccessful API Endpoints", () => {
+      test("Testing GET Endpoint (/getpricing) with missing fields: It should return Status 400", async () => {
+        const response = await request(Server).get("/getpricing").query({
+          // Missing gallonsRequested and existingCustomer
+          Location: "TX"
+        });
+        expect(response.status).toBe(400);
+        expect(response.text).toBe("Missing required fields.");
+      });
+  
+      test("Testing GET Endpoint (/getpricing) with internal error: It should return Status 500", async () => {
+        // Mock calculateSuggestedPrice to throw an error
+        jest.spyOn(global, 'calculateSuggestedPrice').mockImplementation(() => {
+          throw new Error("Internal server error");
+        });
+  
+        const response = await request(Server).get("/getpricing").query({
+          gallonsRequested: 500,
+          existingCustomer: true,
+          Location: "TX"
+        });
+        expect(response.status).toBe(500);
+        expect(response.text).toBe("Internal server error");
+  
+        jest.restoreAllMocks(); // Restore original after test
+      });
+    });
+  });
+  
 });

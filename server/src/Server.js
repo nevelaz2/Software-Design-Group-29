@@ -6,6 +6,7 @@ const Mongoose = require("mongoose");
 const FuelQuoteModule = require("./FuelQuoteModule.js");
 const LoginRouter = require("./LoginModule.js");
 const ProfileRouter = require("./ProfileModule.js"); // Import the ProfileModule router
+const PricingRouter = require("./PricingRouter.js");
 
 const Server = Express();
 const Port = 3001;
@@ -30,3 +31,4 @@ Mongoose.connect(DataBaseURI)
 Server.use(FuelQuoteModule);
 Server.use(LoginRouter);
 Server.use(ProfileRouter); //  the ProfileModule router
+Server.use(PricingRouter);

@@ -1,18 +1,21 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 // import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import PublicView from '../views/PublicView';
-import UserPortal from '../views/UserPortal';
+import {BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import PublicView from "../views/PublicView";
+import UserPortal from "../views/UserPortal";
+import { useAuth } from "../contexts/AuthContext";
 // import '../styles/App.css';
 
-
 const App = () => {
+  const { isAuthenticated } = useAuth();
+
   return (
     <Router>
       <div>
         <Routes>
-          <Route path="*" element={<PublicView/>}/>
-          <Route path="/user/*" element={<UserPortal/>}/>
+          <Route path="*" element={<PublicView />} />
+          <Route path="/user/*" element={ isAuthenticated ? <UserPortal /> : <Navigate to="/login" /> }
+          />
         </Routes>
       </div>
     </Router>

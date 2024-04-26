@@ -1,88 +1,65 @@
-// Gleici Pereira 
+
+// Gleici Pereira
 // Includes fuel quote form, fuel quote history.
 
-const express = require('express');
+// const mongoose = require("mongoose");
+const express = require("express");
 const router = express.Router();
-const FuelQuoteData = require("../Data/FuelQuoteData.js"); 
 
+const UserData = require("../Data/UserData.js");
+const FuelQuoteData = require("../Data/FuelQuoteData.js");
+const calculateSuggestedPrice = require("./PricingModule.js");
+const { default: mongoose } = require("mongoose");
 
 // Creates a new Quote
-router.post('/quote', async (req, res) => {
-    try {
-        const { userId, gallonsRequested, deliveryDate, hasHistory} = req.body;
+router.post("/user/quotes", async (req, res) => {
+  try {
+    const userId = req.query.userId;
 
-        // Input data validation
-        if (!gallonsRequested || !deliveryDate || !hasHistory) {
-            return res.status(400).send('Missing required fields');
-        }
+    const { gallonsRequested, deliveryDate, location, hasHistory } = req.body;
 
-        // Call PricingModule with required parameters to calculate suggested pricePerGallon
-
-
-        // Total Price (suggested priceperGallon returned from PricingModule)
-        let totalPrice = (pricePerGallon * gallonsRequested);
-
-        // Saves fuel quote
-        const newFuelQuote = new FuelQuoteData({
-            UserID: userId,
-            GallonsRequested: gallonsRequested,
-            DeliveryDate: deliveryDate,
-            HasHistory: hasHistory,
-            TotalPrice: totalPrice,
-        });
-
-        await newFuelQuote.save();
-        res.status(200).send('Quote created successfully!');
-    } catch (error) {
-        res.status(500).send(error.message);
+    // Input data validation
+    if (!gallonsRequested || !deliveryDate || !location || hasHistory === null) {
+      return res.status(400).send("Missing required fields.");
     }
-});
 
+    // Call PricingModule
+    let suggestedPricePerGallon = calculateSuggestedPrice(gallonsRequested, location, hasHistory);
+    let totalPrice = suggestedPricePerGallon * gallonsRequested;
+
+
+    // Saves fuel quote
+    const newFuelQuote = new FuelQuoteData({
+      UserID: new mongoose.Types.ObjectId(userId),
+      GallonsRequested: gallonsRequested,
+      DeliveryDate: deliveryDate,
+      Location: location,
+      HasHistory: hasHistory,
+      SuggestedPrice: suggestedPricePerGallon,
+      TotalPrice: totalPrice,
+    });
+
+    await newFuelQuote.save();
+    res.status(200).send("Quote created successfully!");
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
 
 
 // Fuel Quote History
-router.get('/quote/history/:userId', async (req, res) => {
-    try {
+router.get("/user/quotes/history", async (req, res) => {
+  try {
+    // Displays quotes for userId
+    const userId = req.query.userId;
+    const fuelQuotes = await FuelQuoteData.find({
+      UserID: userId,
+    });
 
-        // Displays quotes for userId
-        const fuelQuotes = await FuelQuoteData.findOne({ UserID: req.params.userId });
-
-        res.status(200).json(fuelQuotes);
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
+    res.status(200).json(fuelQuotes);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 });
-
-
-
-// // Quotes filtering 
-// router.get('/quote/filter', async (req, res) => {
-//     try {
-
-//         // Filter parameters from query string
-//         const { userId, startDate, endDate, minGallons, maxGallons } = req.query;
-
-//         // Creates filter
-//         const filter = {};
-//         if (userId) {
-//             filter.UserID = userId;
-//         }
-        
-//         if (startDate && endDate) {
-//             filter.DeliveryData = { $gte: new Date(startDate), $lte: new Date(endDate) };
-//         }
-//         if (minGallons && maxGallons) {
-//             filter.GallonsRequested = { $gte: minGallons, $lte: maxGallons };
-//         }
-
-//         // Performs query
-//         const fuelQuotes = await FuelQuoteData.find(filter);
-
-//         res.status(200).json(fuelQuotes);
-//     } catch (error) {
-//         res.status(500).send(error.message);
-//     }
-// });
-
 
 module.exports = router;

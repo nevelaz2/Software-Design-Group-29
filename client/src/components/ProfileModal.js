@@ -6,7 +6,10 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import '../styles/ProfileModal.css';
 
-function ProfileModal({ username, fetchProfile }) {  // Added props for username and fetchProfile
+import { useAuth } from "../contexts/AuthContext";
+
+function ProfileModal(Props) { 
+  const { user, setUser } = useAuth();
   const [show, setShow] = useState(false);
   const [validated, setValidated] = useState(false);
   const [errorMessage, setErrorMessage] = useState(''); // State to handle error messages
@@ -26,6 +29,27 @@ function ProfileModal({ username, fetchProfile }) {  // Added props for username
   };
   const handleShow = () => setShow(true);
 
+  const updateProfile = () => {
+      Props.setFirstName(firstName);
+      Props.setLastName(lastName);
+      Props.setAddress1(address1);
+      Props.setAddress2(address2);
+      Props.setCity(city);
+      Props.setState(state);
+      Props.setZip(zip);
+
+      const newUserData = {
+        ...user,
+        Address1: address1,
+        Address2: address2,
+        City: city,
+        State: state,
+        Zip: zip
+      }
+
+      setUser(newUserData)
+    }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -42,7 +66,9 @@ function ProfileModal({ username, fetchProfile }) {  // Added props for username
       };
 
       try {
-        const response = await fetch(`http://localhost:3001/profile/${username}`, {
+        console.log(user);
+
+        const response = await fetch(`http://localhost:3001/user/profile/${user.username}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -55,10 +81,8 @@ function ProfileModal({ username, fetchProfile }) {  // Added props for username
           throw new Error(errorData.message || 'Failed to update profile');
         }
 
-        // Reset form fields
-
-        // Re-fetch profile data to update the UI
-        fetchProfile();
+        // Re-render profile data to update the UI
+        updateProfile();
         setShow(false);  // Close the modal on success
       } catch (error) {
         console.error('Error updating profile:', error);

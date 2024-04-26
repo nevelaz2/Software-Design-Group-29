@@ -11,7 +11,6 @@ import { useAuth } from "../contexts/AuthContext";
 function ProfileModal(Props) { 
   const { user, setUser } = useAuth();
   const [show, setShow] = useState(false);
-  const [validated, setValidated] = useState(false);
   const [errorMessage, setErrorMessage] = useState(''); // State to handle error messages
 
   // State hooks for form fields
@@ -30,31 +29,75 @@ function ProfileModal(Props) {
   const handleShow = () => setShow(true);
 
   const updateProfile = () => {
-      Props.setFirstName(firstName);
-      Props.setLastName(lastName);
-      Props.setAddress1(address1);
-      Props.setAddress2(address2);
-      Props.setCity(city);
-      Props.setState(state);
-      Props.setZip(zip);
+    Props.setFirstName(firstName);
+    Props.setLastName(lastName);
+    Props.setAddress1(address1);
+    Props.setAddress2(address2);
+    Props.setCity(city);
+    Props.setState(state);
+    Props.setZip(zip);
 
-      const newUserData = {
-        ...user,
-        Address1: address1,
-        Address2: address2,
-        City: city,
-        State: state,
-        Zip: zip
-      }
-
-      setUser(newUserData)
+    const newUserData = {
+      ...user,
+      Address1: address1,
+      Address2: address2,
+      City: city,
+      State: state,
+      Zip: zip
     }
 
+    setUser(newUserData)
+  }
+
+  // Regular expressions for input validation
+  const nameRegex = /^[A-Za-z]{2,25}$/;
+  const address1Regex = /^(?=.*[A-Za-z]{2,})(?=.*\d)[A-Za-z0-9\s]{2,100}$/;
+  const address2Regex = /^[A-Za-z0-9\s]{2,100}$/;
+  const cityRegex = /^[A-Za-z\s]{2,100}$/;
+  const zipCodeRegex = /^\d{5}(?:-\d{4})?$/;
+
+
+  // Input constraints
+  const validateForm = () => {
+    if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
+      setErrorMessage("Please enter a valid first or last name.");
+      return false;
+    }
+
+    if (!address1Regex.test(address1)){
+      setErrorMessage("Please enter a valid address.");
+      return false;
+    }
+
+    if (!address2Regex.test(address2)){
+      setErrorMessage("Please enter a valid address.");
+      return false;
+    }
+
+    if (!cityRegex.test(city)){
+      setErrorMessage("Please enter a valid city.");
+      return false;
+    }
+
+    if (!zipCodeRegex.test(zip)){
+      setErrorMessage("Please enter a valid zip code.");
+      return false;
+    }
+
+    setErrorMessage('');
+
+    return true;
+  }
+
+
+
+  // Submission handler
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const form = event.currentTarget;
-    if (!form.checkValidity()) {
+    // const form = event.currentTarget;
+    if (!validateForm()) {
       event.stopPropagation();
+
     } else {
       const profileData = {
         fullname: `${firstName} ${lastName}`,
@@ -89,7 +132,6 @@ function ProfileModal(Props) {
         setErrorMessage(error.message);
       }
     }
-    setValidated(true);
   };
 
   return (
@@ -101,8 +143,9 @@ function ProfileModal(Props) {
           <Modal.Title>Edit Profile</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-          <Form noValidate validated={validated} onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit}>
+
+            {/* First name input */}
             <Row className="mb-3">
               <Form.Group as={Col} controlId="firstName">
                 <Form.Label>First name</Form.Label>
@@ -112,8 +155,12 @@ function ProfileModal(Props) {
                   placeholder="First name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
+                  isInvalid={errorMessage && (!nameRegex.test(firstName))}
                 />
+                <Form.Control.Feedback type="invalid">Please enter a valid first name (2-25 characters consisting of letters only).</Form.Control.Feedback>
               </Form.Group>
+
+              {/* Last name input */}
               <Form.Group as={Col} controlId="lastName">
                 <Form.Label>Last name</Form.Label>
                 <Form.Control
@@ -122,9 +169,13 @@ function ProfileModal(Props) {
                   placeholder="Last name"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
+                  isInvalid={errorMessage && (!nameRegex.test(lastName))}
                 />
+                <Form.Control.Feedback type="invalid">Please enter a valid last name (2-25 characters consisting of letters only).</Form.Control.Feedback>
               </Form.Group>
             </Row>
+
+            {/* Address 1 input */}
             <Row className="mb-3">
               <Form.Group as={Col} controlId="address1">
                 <Form.Label>Address 1</Form.Label>
@@ -134,8 +185,12 @@ function ProfileModal(Props) {
                   placeholder="Address 1"
                   value={address1}
                   onChange={(e) => setAddress1(e.target.value)}
+                  isInvalid={errorMessage && (!address1Regex.test(address1))}
                 />
+                <Form.Control.Feedback type="invalid">Please enter a valid address.</Form.Control.Feedback>
               </Form.Group>
+
+              {/* Address 2 input */}
               <Form.Group as={Col} controlId="address2">
                 <Form.Label>Address 2</Form.Label>
                 <Form.Control
@@ -143,9 +198,13 @@ function ProfileModal(Props) {
                   placeholder="Address 2 (Optional)"
                   value={address2}
                   onChange={(e) => setAddress2(e.target.value)}
+                  isInvalid={errorMessage && (!address2Regex.test(address2))}
                 />
+                <Form.Control.Feedback type="invalid">Please enter a valid address.</Form.Control.Feedback>
               </Form.Group>
             </Row>
+
+            {/* City input */}
             <Row className="mb-3">
               <Form.Group as={Col} controlId="city">
                 <Form.Label>City</Form.Label>
@@ -155,8 +214,12 @@ function ProfileModal(Props) {
                   placeholder="City"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
+                  isInvalid={errorMessage && (!cityRegex.test(city))}
                 />
+                <Form.Control.Feedback type="invalid">Please enter a valid city.</Form.Control.Feedback>
               </Form.Group>
+
+              {/* State input */}
               <Form.Group as={Col} controlId="state">
                 <Form.Label>State</Form.Label>
                 <Form.Control
@@ -167,17 +230,23 @@ function ProfileModal(Props) {
                   onChange={(e) => setState(e.target.value)}
                 />
               </Form.Group>
+
+              {/* Zipcode input */}
               <Form.Group as={Col} controlId="zip">
                 <Form.Label>Zip</Form.Label>
                 <Form.Control
                   required
-                  type="text"
+                  type="number"
                   placeholder="Zip"
                   value={zip}
                   onChange={(e) => setZip(e.target.value)}
+                  isInvalid={errorMessage && (!zipCodeRegex.test(zip))}
                 />
+                <Form.Control.Feedback type="invalid">Please enter a valid zipcode with at least 5 digits.</Form.Control.Feedback>
               </Form.Group>
             </Row>
+
+
             <div className="text-center">
               <Button variant='secondary' className="rounded-pill" onClick={handleClose}>Cancel</Button>
               <Button type="submit" variant="success" className="rounded-pill">Save Changes</Button>

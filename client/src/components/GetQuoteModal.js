@@ -11,8 +11,6 @@ import { useAuth } from '../contexts/AuthContext';
 function GetQuoteModal({ quoteDetails }) {
   const { user } = useAuth()
   const [show, setShow] = useState(false);
-  // const [validated] = useState(false);
-  // const [errorMessage, setErrorMessage] = useState('');
   const [prices, setPrices] = useState({
     suggestedPrice: 0,
     totalDue: 0
@@ -79,34 +77,6 @@ function GetQuoteModal({ quoteDetails }) {
       event.stopPropagation();
       return;
     }
-
-    // try {
-
-      // Fetch user's address 
-      // const fetchedUserAddress = await fetchUserAddress(userId);
-      // setUserAddress(fetchedUserAddress);
-
-      // Submit form data
-    //   const response = await fetch('/api/quote', {             
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(formData)
-    //   });
-    //   if (response.ok) {
-    //     alert('Quote created successfully!');
-
-    //     handleClose();
-
-    //   } else {
-    //       const errorMessage = await response.text();
-    //       throw new Error(errorMessage);
-    //   }
-    // } catch (error) {
-    //   console.error('Error submitting quote:', error);
-    //   setErrorMessage('Error submitting quote: ' + error.message);
-    // }
   };
 
   const handleChange = (event) => {
@@ -128,12 +98,6 @@ function GetQuoteModal({ quoteDetails }) {
         </Modal.Header>
 
         <Modal.Body>
-
-          {/* Error Message
-          {errorMessage && 
-            <div className="alert alert-danger">
-              {errorMessage}
-            </div>} */}
 
           <Form onSubmit={handleSubmit}>
 

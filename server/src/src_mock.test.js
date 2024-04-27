@@ -5,6 +5,7 @@ const request = require("supertest");
 const FuelQuoteModule = require("./FuelQuoteModule");
 const LoginModule = require("./LoginModule");
 const ProfileModule = require("./ProfileModule");
+const PricingRouter = require("./PricingRouter");
 const { default: mongoose } = require("mongoose");
 
 const Server = express();
@@ -48,16 +49,23 @@ afterAll(async () => {
 Server.use(FuelQuoteModule);
 Server.use(LoginModule);
 Server.use(ProfileModule);
+Server.use(PricingRouter);
 
 jest.mock("../Data/UserCredentialsData.js", () => ({
   findOne: jest.fn(() => {
-    throw new Error("Intentional error in finduser route");
+    throw new Error("Intentional error route");
   }),
 }));
 
 jest.mock("../Data/FuelQuoteData.js", () => ({
   findOne: jest.fn(() => {
-    throw new Error("Intentional error in finduser route");
+    throw new Error("Intentional error route");
+  }),
+}));
+
+jest.mock("../src/PricingModule.js", () => ({
+  findOne: jest.fn(() => {
+    throw new Error("Intentional error route");
   }),
 }));
 
@@ -86,7 +94,7 @@ describe("LoginModule API", () => {
 });
 
 describe("ProfileModule API", () => {
-  test("Testing GET Endpoint(/user/profile/:username): It should respond with Status 500 and error message", async () => {
+  test("Testing GET Endpoint (/user/profile/:username): It should respond with Status 500 and error message", async () => {
     const response = await request(Server).get("/user/profile/CoogsLover");
     expect(response.status).toBe(500);
     expect(() => {
@@ -102,3 +110,17 @@ describe("ProfileModule API", () => {
     }).toThrow();
   });
 });
+
+describe("PricingRouter API", () => {
+  test("Testing GET Endpoint (/getpricing): It should respond with Status 500 and error message", async () => {
+    const response = await request(Server).get("/getpricing").query({
+      gallonsRequested: 1500,
+      existingCustomer: true,
+      Location: "TX",
+    });
+    expect(response.status).toBe(500);
+    expect(() => {
+      if (response.error) throw new Error("Error occurred: " + response.error);
+    }).toThrow();
+  })
+})

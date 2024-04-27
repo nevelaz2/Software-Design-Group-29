@@ -471,5 +471,38 @@ describe("ProfileModule API", () => {
       });
     });
   });
+  describe('PricingModule API', () => {
+    test('should calculate pricing with location TX, has history, and gallons over 1000', async () => {
+      const response = await request(Server).get('/getpricing').query({
+        gallonsRequested: 1500,
+        existingCustomer: true,
+        Location: 'TX'
+      });
+      expect(response.status).toBe(200);
+      expect(response.body.suggestedPrice).toBeDefined();
+      expect(response.body.totalDue).toBeGreaterThan(0);
+    });
+  
+    test('should calculate pricing with non-TX location, no history, and gallons under 1000', async () => {
+      const response = await request(Server).get('/getpricing').query({
+        gallonsRequested: 500,
+        existingCustomer: false,
+        Location: 'OK'
+      });
+      expect(response.status).toBe(200);
+      expect(response.body.suggestedPrice).toBeDefined();
+      expect(response.body.totalDue).toBeGreaterThan(0);
+    });
+  
+    test('should handle missing required fields', async () => {
+      const response = await request(Server).get('/getpricing').query({
+        gallonsRequested: 500,
+        // existingCustomer not provided
+        Location: 'TX'
+      });
+      expect(response.status).toBe(400);
+      expect(response.text).toBe("Missing required fields.");
+    });
+  });
   
 });

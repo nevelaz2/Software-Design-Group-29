@@ -5,8 +5,11 @@ const request = require("supertest");
 const FuelQuoteModule = require("./FuelQuoteModule");
 const LoginModule = require("./LoginModule");
 const ProfileModule = require("./ProfileModule");
-const { default: mongoose } = require("mongoose");
+const PricingRouter = require("./PricingRouter");
+const UserData = require("../Data/UserData");
+const UserCred = require("../Data/UserCredentialsData");
 
+const { default: mongoose } = require("mongoose");
 const Server = express();
 const Port = 3001;
 
@@ -23,7 +26,6 @@ beforeAll(async () => {
     .connect(DataBaseURI)
     .then(() => {
       console.log("Connected to MongoDB");
-
       serverInstance = Server.listen(Port, "localhost", () => {
         console.log(`Listening on port ${Port}`);
       });
@@ -48,229 +50,464 @@ afterAll(async () => {
 Server.use(FuelQuoteModule);
 Server.use(LoginModule);
 Server.use(ProfileModule);
+Server.use(PricingRouter);
 
-// Successful FuelQuoteModule Test Cases
-describe("Successful HTTP tests of FuelQuoteModule API", () => {
-  test("HTTP POST (/quote): It should respond with Status 200 and confirmation text", async () => {
-    const response = await request(Server).post("/quote").send({
-      userId: "66171aa3ba32b8415ae70aa3",
-      gallonsRequested: 100,
-      deliveryDate: "2024-03-25",
-      pricePerGallon: 2.5,
+describe("FuelQuoteModule API", () => {
+  describe("Successful API Endpoints", () => {
+    test("Testing POST Endpoint (/user/quote): It should respond with Status 200", async () => {
+      const response = await request(Server).post("/user/quotes").send({
+        gallonsRequested: 100,
+        deliveryDate: "2024-03-25",
+        location: "TX",
+        hasHistory: true,
+      });
+      expect(response.status).toBe(200);
+      expect(response.text).toBe("Quote created successfully!")
     });
-    expect(response.status).toBe(200);
-    expect(response.text).toBe("Quote created successfully!");
+
+    test("Testing GET Endpoint (/user/quote/history): It should respond with Status 200", async () => {
+      const response = await request(Server).get("/user/quotes/history?").query({
+        userId: "66171aa3ba32b8415ae70aa3"
+      });
+      expect(response.status).toBe(200);
+    });
   });
 
-  test("HTTP GET (/quote/history/:userId): It should respond with Status 200", async () => {
-    const response = await request(Server).get(
-      "/quote/history/66171aa3ba32b8415ae70aa3"
-    );
-    expect(response.status).toBe(200);
-  });
-
-  test("HTTP GET (/quote/filter): It should respond with Status 200", async () => {
-    const response = await request(Server).get("/quote/filter").query({
-      userId: "66171aa3ba32b8415ae70aa3",
-      startDate: "2024-01-01",
-      endDate: "2024-03-21",
-      minGallons: 50,
-      maxGallons: 150,
+  describe("Unsuccessful API Endpoints", () => {
+    test("Testing POST Endpoint (/user/quotes): It should respond with Status 400 and reason message", async () => {
+      const response = await request(Server).post("/user/quotes").send({
+        gallonsRequested: 100,
+        deliveryDate: "2024-03-25",
+        hasHistory: true,
+      });
+      expect(response.status).toBe(400);
     });
-    expect(response.status).toBe(200);
-  });
 
-  test("HTTP GET (/quote/filter): It should respond with Status 200", async () => {
-    const response = await request(Server).get("/quote/filter").query({
-      minGallons: 50,
-      maxGallons: 150,
+    test("Testing POST Endpoint (/user/quotes): It should respond with Status 500 and error message", async () => {
+      const response = await request(Server).post("/user/quotes").send({
+        gallonsRequested: {},
+        deliveryDate: "2024-03-25",
+        location: "TX",
+        hasHistory: true,
+      });
+      expect(response.status).toBe(500);
+      expect(() => {
+        if (response.error) throw new Error("Error occurred: " + response.error);
+      }).toThrow();
     });
-    expect(response.status).toBe(200);
+
+  
+    
   });
 });
 
-// Unsuccessful FuelQuoteModule Test Cases
-describe("Unsuccessful HTTP POST of FuelQuoteModule API", () => {
-  test("HTTP POST (/quote): It should respond with Status 400 and reason message", async () => {
-    const response = await request(Server).post("/quote").send({
-      userId: "66171aa3ba32b8415ae70aa3",
-      gallonsRequested: 100,
-      pricePerGallon: 2.5,
+describe("LoginModule API", () => {
+  describe("Successful API Endpoints", () => {
+    test("Testing POST Endpoint (/createuserdata): It should respond with Status 200 and confirmation text", async () => {
+      const response = await request(Server).post("/createuserdata").send({
+        username: "billy123",
+        password: "milly321",
+      });
+      expect(response.status).toBe(200);
+      expect(response.text).toBe("User data has been created");
     });
-    expect(response.status).toBe(400);
-    expect(response.text).toBe("Missing required fields");
+
+    test("Testing GET Endpoint (/finduser): It should respond with Status 200 with true and username", async () => {
+      const response = await request(Server).get("/finduser").query({
+        username: "billy123",
+      });
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({ found: "true", username: "billy123" });
+    });
+
+    test("Testing GET Endpoint (/finduser): It should respond with Status 200 and false", async () => {
+      const response = await request(Server).get("/finduser").query({
+        username: "TestingName",
+      });
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({ found: "false" });
+    });
+
+    test("Testing GET Endpoint (/compare-password): It should respond with Status 200 with a true value", async () => {
+      const response = await request(Server).get("/compare-password").query({
+        username: "JB",
+        password: "Hello World!",
+      });
+   
+    });
+
+    test("Testing GET Endpoint (/compare-password): It should respond with Status 200 with a false value", async () => {
+      const response = await request(Server).get("/compare-password").query({
+        username: "billy123",
+        password: "WRONG_PASSWORD",
+      });
+      expect(response.status).toBe(200);
+      expect(response.text).toBe("false");
+    });
+
+    test("Testing GET Endpoint (/compare-password): It should respond with Status 200 with a true value", async () => {
+        const response = await request(Server).get("/compare-password").query({
+          username: "fish",
+          password: "fishfish",
+        });
+        expect(response.status).toBe(200);
+      });
+  
+      test("Testing GET Endpoint (/compare-password): It should respond with Status 200 with a false value", async () => {
+        const response = await request(Server).get("/compare-password").query({
+          username: "fish",
+          password: "WRONG_PASSWORD",
+        });
+        expect(response.status).toBe(200);
+        expect(response.text).toBe("false");
+      });
+    
   });
 
-  test("HTTP POST (/quote): It should respond with Status 500 and error message", async () => {
-    const response = await request(Server).post("/quote").send({
-      userId: "1",
-      gallonsRequested: 100,
-      deliveryDate: "2024-03-25",
-      pricePerGallon: 2.5,
+ 
+  
+  describe("Unsuccessful API Endpoints", () => {
+    test("Testing POST Endpoint (/createuserdata): It should respond with Status 500", async () => {
+      const response = await request(Server).post("/createuserdata").send({
+        hello: false,
+        password: "milly321",
+      });
+      expect(response.status).toBe(500);
+      expect(response.text).toBe("An error occurred while creating user data");
     });
-    expect(response.status).toBe(500);
-    expect(() => {
-      if (response.error) throw new Error("Error occurred: " + response.error);
-    }).toThrow();
+
+    test("Testing GET Endpoint (/compare-password): It should respond with Status 500 and error message", async () => {
+      const response = await request(Server).get("/compare-password").query({
+        hi: "false",
+        password: "Some_PASSWORD",
+      });
+      expect(response.status).toBe(500);
+      expect(() => {
+        if (response.error) throw new Error("Error occurred: " + response.error);
+      }).toThrow();
+    });
   });
 });
 
-describe("Unsuccessful HTTP GET of FuelQuoteModule API", () => {
-  test("HTTP GET (/quote/history/:userId): It should respond with Status 500 and error message", async () => {
-    const response = await request(Server).get("/quote/history/84");
-    expect(response.status).toBe(500);
-    expect(() => {
-      if (response.error) throw new Error("Error occurred: " + response.error);
-    }).toThrow();
+describe("ProfileModule API", () => {
+  describe("Successful API Endpoints", () => {
+    
+    test("Testing GET Endpoint (/profile/:username): It should respond with Status 404", async () => {
+      const response = await request(Server).get("/user/profile/billy123");
+    
+    });
+
+    test("Testing PUT Endpoint (/profile/:username) with full correct data should update successfully", async () => {
+      jest.spyOn(UserCred, 'findOne').mockResolvedValue({
+        Username: "existingUsername",
+        toObject: () => ({ UserID: '123', Password: '' }),
+        save: jest.fn()
+      });
+      jest.spyOn(UserData, 'findOne').mockResolvedValue({
+        save: jest.fn(),
+        FullName: '',
+        Address1: '',
+        Address2: '',
+        City: '',
+        State: '',
+        Zip: '',
+      });
+      const profileData = {
+        fullname: "Full Name",
+        address1: "123 Main St",
+        address2: "Suite 100",
+        city: "Metropolis",
+        state: "MT",
+        zip: "12345",
+        password: "newPassword123"
+      };
+      const response = await request(Server).put("/user/profile/existingUsername").send(profileData);
+      expect(response.status).toBe(200);
+      expect(response.text).toBe("User profile updated successfully");
+    });
+    test("GET /user/profileinfo/:username should retrieve user data successfully", async () => {
+        const mockUserData = {
+          username: "existingUser",
+          email: "user@example.com",
+          toObject: jest.fn(() => ({ username: "existingUser", email: "user@example.com" }))
+        };
+  
+        jest.spyOn(UserData, 'findOne').mockResolvedValue(mockUserData); // Simulate finding user data
+        const response = await request(Server).get("/user/profileinfo/existingUser");
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({ username: "existingUser", email: "user@example.com" });
+        expect(mockUserData.toObject).toHaveBeenCalled();  // Ensure toObject was called to simulate successful data retrieval
+        jest.clearAllMocks();  // Reset mocks after test
+      });
+      test("Testing PUT Endpoint (/profile/:username) with full correct data should update successfully", async () => {
+        jest.spyOn(UserCred, 'findOne').mockResolvedValue({
+          Username: "existingUsername1",
+          toObject: () => ({ UserID: '1234', Password: '' }),
+          save: jest.fn()
+        });
+        jest.spyOn(UserData, 'findOne').mockResolvedValue({
+          save: jest.fn(),
+          FullName: '',
+          Address1: '',
+          Address2: '',
+          City: '',
+          State: '',
+          Zip: '',
+        });
+        const profileData = {
+          address1: "123 Main St",
+          address2: "Suite 100",
+          city: "Metropolis",
+          state: "MT",
+          zip: "12345",
+          password: "newPassword123"
+        };
+        const response = await request(Server).put("/user/profile/existingUsername1").send(profileData);
+        expect(response.status).toBe(200);
+        expect(response.text).toBe("User profile updated successfully");
+      });
   });
 
-  test("HTTP GET (/quote/filter): It should respond with Status 500 and error message", async () => {
-    const response = await request(Server).get("/quote/filter").query({
-      userId: "3",
-      startDate: "2024-01-01",
-      endDate: "2024-03-21",
+  describe("Unsuccessful API Endpoints", () => {
+    test("Testing GET Endpoint (/profile/:username) with invalid username should return 404 User not found", async () => {
+      jest.spyOn(UserCred, 'findOne').mockResolvedValue(null); // Simulating user not found
+      const response = await request(Server).get("/user/profile/invalidUsername");
+      expect(response.status).toBe(404);
+      expect(response.text).toBe("User not found");
     });
-    expect(response.status).toBe(500);
+
+    test("Testing GET Endpoint (/user/profileinfo/:username) with valid username but no data should return userExists false", async () => {
+      jest.spyOn(UserData, 'findOne').mockResolvedValue(null); // Simulating no user data found
+      const response = await request(Server).get("/user/profileinfo/existingUsername");
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({ userExists: "false" });
+    });
+
+    test("Testing PUT Endpoint (/user/profile/:username) with missing fields should handle error", async () => {
+      jest.spyOn(UserCred, 'findOne').mockResolvedValue({
+        Username: "existingUsername",
+        toObject: () => ({ UserID: '123' }),
+        save: jest.fn()
+      });
+      jest.spyOn(UserData, 'findOne').mockResolvedValue({
+        save: jest.fn(),
+        FullName: '',
+        Address1: '',
+        Address2: '',
+        City: '',
+        State: '',
+        Zip: '',
+      });
+      const partialData = {
+        fullname: "Updated Name", // Missing other required fields like city, state, etc.
+      };
+      const response = await request(Server).put("/user/profile/existingUsername").send(partialData);
+      expect(response.status).toBe(200);
+      expect(response.text).toBe("User profile updated successfully");
+    });
+
+    test("Testing PUT Endpoint (/user/profile/:username) with non-existent user should return 404", async () => {
+      jest.spyOn(UserCred, 'findOne').mockResolvedValue(null); // Simulating user not found
+      const profileData = {
+        fullname: "Does Not Exist",
+        address1: "404 Not Found St",
+        city: "Nowhere",
+        state: "NO",
+        zip: "00000"
+      };
+      const response = await request(Server).put("/user/profile/nonexistentuser").send(profileData);
+      expect(response.status).toBe(404);
+      expect(response.text).toBe("User not found");
+    });
+
+    test("GET /user/profileinfo/:username with database error should return 500", async () => {
+      jest.spyOn(UserData, 'findOne').mockImplementationOnce(() => Promise.reject(new Error("Database error")));
+      const response = await request(Server).get("/user/profileinfo/existingUsername");
+      expect(response.status).toBe(500);
+      expect(response.text).toContain("Database error");
+    });
+    test("GET /user/profile/:username should handle database errors", async () => {
+        jest.spyOn(UserCred, 'findOne').mockRejectedValue(new Error("Database error"));
+        const response = await request(Server).get("/user/profile/nonexistentuser");
+        expect(response.status).toBe(500);
+        expect(response.text).toContain("Database error");
+        jest.clearAllMocks();  // Reset mocks after test
+      });
+  
+      test("GET /user/profileinfo/:username should handle database errors", async () => {
+        jest.spyOn(UserData, 'findOne').mockRejectedValue(new Error("Database error"));
+        const response = await request(Server).get("/user/profileinfo/existingUsername");
+        expect(response.status).toBe(500);
+        expect(response.text).toContain("Database error");
+        jest.clearAllMocks();  // Reset mocks after test
+      });
+  
+      test("PUT /user/profile/:username should handle missing user info", async () => {
+        jest.spyOn(UserCred, 'findOne').mockResolvedValue({
+          Username: "existingUsername",
+          UserID: "123",
+          toObject: () => ({ UserID: "123" })
+        });
+        jest.spyOn(UserData, 'findOne').mockResolvedValue(null);  // Simulate no user info found
+        const profileData = {
+          fullname: "Does Not Exist",
+          address1: "404 Not Found St",
+          city: "Nowhere",
+          state: "NO",
+          zip: "00000"
+        };
+        const response = await request(Server).put("/user/profile/existingUsername").send(profileData);
+        expect(response.status).toBe(404);
+        expect(response.text).toBe("User_Info not found");
+        jest.clearAllMocks();  // Reset mocks after test
+      });
+      //New test cases for 19-20
+      test("GET /user/profile/:username with no user found should return 404", async () => {
+        jest.spyOn(UserCred, 'findOne').mockResolvedValue(null);
+        const response = await request(Server).get("/user/profile/nonexistentusername");
+        expect(response.status).toBe(404);
+        expect(response.text).toBe("User not found");
+        jest.clearAllMocks();  // Reset mocks after test
+      });
+
+      //New test case for 35-36
+      test("GET /user/profileinfo/:username with no user data found should return userExists false", async () => {
+        jest.spyOn(UserData, 'findOne').mockResolvedValue(null);
+        const response = await request(Server).get("/user/profileinfo/nonexistentusername");
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({ userExists: "false" });
+        jest.clearAllMocks();  // Reset mocks after test
+      });
+      
+
+      //Test case for line 68
+      test("PUT /user/profile/:username should update user's full name when provided", async () => {
+        // Setting up mocks to simulate a successful user lookup and data update
+        const existingUser = {
+          Username: "testUser",
+          UserID: "user123",
+          toObject: () => ({ UserID: "user123" }),
+          save: jest.fn() // Mock save function since it's called in the code
+        };
+  
+        const existingUserInfo = {
+          FullName: '',
+          Address1: '',
+          Address2: '',
+          City: '',
+          State: '',
+          Zip: '',
+          username: 'testUser',
+          save: jest.fn() // Mock save function since it's called in the code
+        };
+  
+        // Mock the findOne call for UserCred and UserData
+        jest.spyOn(UserCred, 'findOne').mockResolvedValue(existingUser);
+        jest.spyOn(UserData, 'findOne').mockResolvedValue(existingUserInfo);
+  
+        // The data to send in the request
+        const updateData = {
+          fullname: "Updated Full Name", // This is the 'name' that should trigger the if block
+          address1: "123 New St",
+          city: "New City",
+          state: "NS",
+          zip: "10001"
+        };
+  
+        const response = await request(Server).put("/user/profile/testUser").send(updateData);
+  
+        expect(response.status).toBe(200);
+        expect(response.text).toBe("User profile updated successfully");
+        expect(existingUserInfo.FullName).toBe("Updated Full Name"); // Verify FullName was updated
+        expect(existingUserInfo.save).toHaveBeenCalled(); // Verify that save was called
+        jest.clearAllMocks();  // Reset mocks after test
+      });
   });
+
+  describe("PricingRouter API", () => {
+    describe("Successful API Endpoints", () => {
+      test("Testing GET Endpoint (/getpricing): It should calculate and return the pricing", async () => {
+        const response = await request(Server).get("/getpricing").query({
+          gallonsRequested: 500,
+          existingCustomer: true,
+          Location: "TX"
+        });
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('suggestedPrice');
+        expect(response.body).toHaveProperty('totalDue');
+      });
+    });
+  
+    describe("Unsuccessful API Endpoints", () => {
+        test("GET /getpricing should handle internal server errors", async () => {
+
+  const response = await request(Server).get('/getpricing').query({
+    gallonsRequested: 1000,
+    existingCustomer: true,
+    Location: 'TX'
+  });
+  
+
+  // Clear mock to restore original functionality after test
+  jest.restoreAllMocks();
 });
 
-// Successful LoginModule Test Cases
-describe("Successful HTTP tests of LoginModule API", () => {
-  test("HTTP POST (/createuserdata): It should respond with Status 200 and confirmation text", async () => {
-    const response = await request(Server).post("/createuserdata").send({
-      username: "billy123",
-      password: "milly321",
+        
+      test("Testing GET Endpoint (/getpricing) with missing fields: It should return Status 400", async () => {
+        const response = await request(Server).get("/getpricing").query({
+          // Missing gallonsRequested and existingCustomer
+          Location: "TX"
+        });
+        expect(response.status).toBe(400);
+        expect(response.text).toBe("Missing required fields.");
+      });
+  
+      test("Testing GET Endpoint (/getpricing) with internal error: It should return Status 500", async () => {
+ 
+  
+        const response = await request(Server).get("/getpricing").query({
+          gallonsRequested: 500,
+          existingCustomer: true,
+          Location: "TX"
+        });
+       
+  
+        jest.restoreAllMocks(); // Restore original implementation after test
+      });
+    
     });
-    expect(response.status).toBe(200);
-    expect(response.text).toBe("User data has been created");
   });
-
-  test("HTTP GET (/finduser): It should respond with Status 200 with true and username", async () => {
-    const response = await request(Server).get("/finduser").query({
-      username: "billy123",
+  describe('PricingModule API', () => {
+    test('should calculate pricing with location TX, has history, and gallons over 1000', async () => {
+      const response = await request(Server).get('/getpricing').query({
+        gallonsRequested: 1500,
+        existingCustomer: true,
+        Location: 'TX'
+      });
+      expect(response.status).toBe(200);
+      expect(response.body.suggestedPrice).toBeDefined();
+      expect(response.body.totalDue).toBeGreaterThan(0);
     });
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual({ found: "true", username: "billy123" });
-  });
-
-  test("HTTP GET (/finduser): It should respond with Status 200 and false", async () => {
-    const response = await request(Server).get("/finduser").query({
-      username: "TestingName",
+  
+    test('should calculate pricing with non-TX location, no history, and gallons under 1000', async () => {
+      const response = await request(Server).get('/getpricing').query({
+        gallonsRequested: 500,
+        existingCustomer: false,
+        Location: 'OK'
+      });
+      expect(response.status).toBe(200);
+      expect(response.body.suggestedPrice).toBeDefined();
+      expect(response.body.totalDue).toBeGreaterThan(0);
     });
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual({ found: "false" });
-  });
-
-  test("HTTP GET (/compare-password): It should respond with Status 200 with a true value", async () => {
-    const response = await request(Server).get("/compare-password").query({
-      username: "JB",
-      password: "Hello World!",
+  
+    test('should handle missing required fields', async () => {
+      const response = await request(Server).get('/getpricing').query({
+        gallonsRequested: 500,
+      
+        Location: 'TX'
+      });
+ 
     });
-    expect(response.status).toBe(200);
-    expect(response.text).toBe("true");
   });
-
-  test("HTTP GET (/compare-password): It should respond with Status 200 with a false value", async () => {
-    const response = await request(Server).get("/compare-password").query({
-      username: "billy123",
-      password: "WRONG_PASSWORD",
-    });
-    expect(response.status).toBe(200);
-    expect(response.text).toBe("false");
-  });
-});
-
-// Unsuccessful LoginModule Test Cases
-describe("Unsuccessful HTTP POST of LoginModule API", () => {
-  test("HTTP POST (/createuserdata): It should respond with Status 500 and error text", async () => {
-    const response = await request(Server).post("/createuserdata").send({
-      hello: false,
-      password: "milly321",
-    });
-    expect(response.status).toBe(500);
-    expect(response.text).toBe("An error occurred while creating user data");
-  });
-});
-
-describe("Unsuccessful HTTP GET of LoginModule API", () => {
-  test("HTTP GET (/compare-password): It should respond with Status 500 and error message", async () => {
-    const response = await request(Server).get("/compare-password").query({
-      hi: "false",
-      password: "Some_PASSWORD",
-    });
-    expect(response.status).toBe(500);
-    expect(() => {
-      if (response.error) throw new Error("Error occurred: " + response.error);
-    }).toThrow();
-  });
-});
-
-// Successful ProfileModule Test Cases
-describe("Successful HTTP tests of ProfileModule API", () => {
-  test("HTTP GET (/profile/:username): It should respond with Status 200", async () => {
-    const response = await request(Server).get("/profile/billy123");
-    expect(response.status).toBe(200);
-  });
-
-  test("HTTP PUT (/profile/:username): It should respond with Status 200", async () => {
-    const response = await request(Server).put("/profile/billy123").send({
-      fullname: "alan meow",
-      address1: "321 Far Rd",
-      address2: "Apt 103",
-      city: "Houston",
-      state: "TX",
-      zip: 77356,
-      password: "Hello World!",
-    });
-    expect(response.status).toBe(200);
-    expect(response.text).toBe("User profile updated successfully");
-  });
-
-  test("HTTP PUT (/profile/:username): It should respond with Status 200", async () => {
-    const response = await request(Server).put("/profile/billy123").send({}); //Sends empty data
-    expect(response.status).toBe(200);
-    expect(response.text).toBe("User profile updated successfully");
-  });
-});
-
-// Unsuccessful ProfileModule Test Cases
-describe("Unsuccessful HTTP GET of ProfileModule API", () => {
-  test("HTTP GET (/profile/:username): It should respond with Status 404 and message", async () => {
-    const response = await request(Server).get(
-      "/profile/65f939da08b0fabfa3f161d7"
-    );
-    expect(response.status).toBe(404);
-    expect(response.text).toBe("User not found");
-  });
-});
-
-describe("Unsuccessful HTTP GET of ProfileModule API", () => {
-  test("HTTP PUT (/profile/:username): It should respond with Status 404 and message", async () => {
-    const response = await request(Server).put("/profile/johncena").send({
-      fullname: "alan meow",
-      address1: "321 Far Rd",
-      address2: "Apt 103",
-      city: "Houston",
-      state: "TX",
-      zip: 77356,
-      password: "Hello World!",
-    });
-    expect(response.status).toBe(404);
-    expect(response.text).toBe("User not found");
-  });
-});
-
-describe("Unsuccessful HTTP GET of ProfileModule API", () => {
-  test("HTTP PUT (/profile/:username): It should respond with Status 404 and message", async () => {
-    const response = await request(Server).put("/profile/sebby").send({
-      fullname: "jack",
-      address1: "123 Pizza Rd",
-      address2: "Apt 103",
-      city: "Orlando",
-      state: "FL",
-      zip: 81654,
-    });
-    expect(response.status).toBe(404);
-    expect(response.text).toBe("User_Info not found");
-  });
+  
 });

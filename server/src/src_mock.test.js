@@ -5,6 +5,7 @@ const request = require("supertest");
 const FuelQuoteModule = require("./FuelQuoteModule");
 const LoginModule = require("./LoginModule");
 const ProfileModule = require("./ProfileModule");
+const PricingRouter = require("./PricingRouter");
 const { default: mongoose } = require("mongoose");
 
 const Server = express();
@@ -48,15 +49,40 @@ afterAll(async () => {
 Server.use(FuelQuoteModule);
 Server.use(LoginModule);
 Server.use(ProfileModule);
+Server.use(PricingRouter);
 
-jest.mock("../Data/UserCredentialsData", () => ({
+jest.mock("../Data/UserCredentialsData.js", () => ({
   findOne: jest.fn(() => {
-    throw new Error("Intentional error in finduser route");
+    throw new Error("Intentional error route");
   }),
 }));
 
-describe("Unsuccessful HTTP GET of LoginModule API", () => {
-  test("HTTP GET (/finduser): It should respond with Status 500 and error message", async () => {
+jest.mock("../Data/FuelQuoteData.js", () => ({
+  findOne: jest.fn(() => {
+    throw new Error("Intentional error route");
+  }),
+}));
+
+jest.mock("../src/PricingModule.js", () => ({
+  findOne: jest.fn(() => {
+    throw new Error("Intentional error route");
+  }),
+}));
+
+describe("FuelQuoteModule API", () => {
+  test("Testing GET Endpoint (/user/quotes/history/): It should respond with Status 500 and error message", async () => {
+    const response = await request(Server).get("/user/quotes/history/").query({
+      userId: "123"
+    });
+    expect(response.status).toBe(500);
+    expect(() => {
+      if (response.error) throw new Error("Error occurred: " + response.error);
+    }).toThrow();
+  });
+});
+
+describe("LoginModule API", () => {
+  test("Testing GET Endpoint (/finduser): It should respond with Status 500 and error message", async () => {
     const response = await request(Server).get("/finduser").query({
       username: "billy123",
     });
@@ -67,9 +93,17 @@ describe("Unsuccessful HTTP GET of LoginModule API", () => {
   });
 });
 
-describe("Unsuccessful HTTP GET of ProfileModule API", () => {
-  test("HTTP GET (/profile/:username): It should respond with Status 500 and error message", async () => {
-    const response = await request(Server).get("/profile/CoogsLover");
+describe("ProfileModule API", () => {
+  test("Testing GET Endpoint (/user/profile/:username): It should respond with Status 500 and error message", async () => {
+    const response = await request(Server).get("/user/profile/CoogsLover");
+    expect(response.status).toBe(500);
+    expect(() => {
+      if (response.error) throw new Error("Error occurred: " + response.error);
+    }).toThrow();
+  });
+
+  test("Testing PUT Endpoint (/user/profile/:username): It should respond with Status 500 and error message", async () => {
+    const response = await request(Server).put("/user/profile/TestingName");
     expect(response.status).toBe(500);
     expect(() => {
       if (response.error) throw new Error("Error occurred: " + response.error);
@@ -77,12 +111,16 @@ describe("Unsuccessful HTTP GET of ProfileModule API", () => {
   });
 });
 
-describe("Unsuccessful HTTP PUT of ProfileModule API", () => {
-  test("HTTP PUT (/profile/:username): It should respond with Status 500 and error message", async () => {
-    const response = await request(Server).put("/profile/TestingName");
+describe("PricingRouter API", () => {
+  test("Testing GET Endpoint (/getpricing): It should respond with Status 500 and error message", async () => {
+    const response = await request(Server).get("/getpricing").query({
+      gallonsRequested: 1500,
+      existingCustomer: true,
+      Location: "TX",
+    });
     expect(response.status).toBe(500);
     expect(() => {
       if (response.error) throw new Error("Error occurred: " + response.error);
     }).toThrow();
-  });
-});
+  })
+})

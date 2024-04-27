@@ -52,6 +52,10 @@ router.get("/user/quotes/history", async (req, res) => {
   try {
     // Displays quotes for userId
     const userId = req.query.userId;
+
+    if(!userId)
+      res.status(404).send("Missing required field")
+
     const fuelQuotes = await FuelQuoteData.find({
       UserID: userId,
     });

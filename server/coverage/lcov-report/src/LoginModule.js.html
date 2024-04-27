@@ -133,7 +133,12 @@
 <a name='L68'></a><a href='#L68'>68</a>
 <a name='L69'></a><a href='#L69'>69</a>
 <a name='L70'></a><a href='#L70'>70</a>
-<a name='L71'></a><a href='#L71'>71</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -157,6 +162,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -186,25 +192,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span></td><td class="text"><pre class="prettyprint lang-js">const Mongoose = require("mongoose");
-const Express = require('express');
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const Mongoose = require("mongoose");
+const Express = require("express");
 &nbsp;
 const Bcrypt = require("bcrypt");
 const SaltRounds = 10; // For Bcrypt - hashing passwords
@@ -215,72 +225,77 @@ const UserData = require("../Data/UserData.js");
 const UserCred = require("../Data/UserCredentialsData.js");
 &nbsp;
 Router.post("/createuserdata", async (Request, Response) =&gt; {
-    try {
-        const {username, password} = Request.body;
+  try {
+    const { username, password } = Request.body;
 &nbsp;
-        const HashedPassword = await Bcrypt.hash(password, SaltRounds);
+    const HashedPassword = await Bcrypt.hash(password, SaltRounds);
 &nbsp;
-        const NewUser = new UserCred({
-            UserID: new Mongoose.Types.ObjectId(),
-            Username: username,
-            Password: HashedPassword
-        })
+    const NewUser = new UserCred({
+      UserID: new Mongoose.Types.ObjectId(),
+      Username: username,
+      Password: HashedPassword,
+    });
 &nbsp;
-        const newUserInfo = new UserData({
-            _id: NewUser.UserID
-        })
+    const newUserInfo = new UserData({
+      _id: NewUser.UserID,
+      username: username,
+    });
 &nbsp;
-        await NewUser.save();
-        await newUserInfo.save();
+    await NewUser.save();
+    await newUserInfo.save();
 &nbsp;
-        Response.status(200).send("User data has been created");
-    } catch (Error) {
-        // console.log(Error);
-        Response.status(500).send("An error occurred while creating user data");
-    }
-})
+    Response.status(200).send("User data has been created");
+  } catch (Error) {
+    // console.log(Error);
+    Response.status(500).send("An error occurred while creating user data");
+  }
+});
 &nbsp;
 Router.get("/finduser", async (Request, Response) =&gt; {
-    try {
-        const User = await UserCred.findOne({Username: Request.query.username});
+  try {
+    const User = await UserCred.findOne({ Username: Request.query.username });
 &nbsp;
-        if (User) {
-            Response.status(200).send({found: "true", username: User.Username});
-        } else {
-            Response.status(200).send({found: "false"});
-        }
-    } catch (Error) {
-        // console.log("Error occurred in finduser");
-        Response.status(500).send(Error.message);
+    if (User) {
+      Response.status(200).send({ found: "true", username: User.Username });
+    } else {
+      Response.status(200).send({ found: "false" });
     }
-})
+  } catch (Error) {
+    // console.log("Error occurred in finduser");
+    Response.status(500).send(Error.message);
+  }
+});
 &nbsp;
-Router.get(("/compare-password"), async (Request, Response) =&gt; {
-    try {
-        const User = await UserCred.findOne({Username: Request.query.username});
+Router.get("/compare-password", async (Request, Response) =&gt; {
+  try {
+    const User = await UserCred.findOne({ Username: Request.query.username });
 &nbsp;
-        const PasswordMatches = await Bcrypt.compare(Request.query.password, User.Password);
+    const PasswordMatches = await Bcrypt.compare(
+      Request.query.password,
+      User.Password
+    );
 &nbsp;
-        // console.log(Request.query.password, User.Password);
+    // console.log(Request.query.password, User.Password);
 &nbsp;
-        if (PasswordMatches) {
-            Response.status(200).send("true");
-        } else {
-            Response.status(200).send("false");
-        }
-    } catch (Error) {
-        Response.status(500).send(Error.message);
+    if (PasswordMatches) {
+      Response.status(200).send("true");
+    } else {
+      Response.status(200).send("false");
     }
-})
+  } catch (Error) {
+    Response.status(500).send(Error.message);
+  }
+});
 &nbsp;
-module.exports = Router;</pre></td></tr></table></pre>
+module.exports = Router;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-04-11T02:08:39.119Z
+                at 2024-04-27T02:28:24.943Z
             </div>
         <script src="../prettify.js"></script>
         <script>

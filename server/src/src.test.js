@@ -149,6 +149,24 @@ describe("LoginModule API", () => {
       expect(response.status).toBe(200);
       expect(response.text).toBe("false");
     });
+
+    test("Testing GET Endpoint (/compare-password): It should respond with Status 200 with a true value", async () => {
+        const response = await request(Server).get("/compare-password").query({
+          username: "fish",
+          password: "fishfish",
+        });
+        expect(response.status).toBe(200);
+      });
+  
+      test("Testing GET Endpoint (/compare-password): It should respond with Status 200 with a false value", async () => {
+        const response = await request(Server).get("/compare-password").query({
+          username: "fish",
+          password: "WRONG_PASSWORD",
+        });
+        expect(response.status).toBe(200);
+        expect(response.text).toBe("false");
+      });
+    
   });
 
  

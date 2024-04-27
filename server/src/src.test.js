@@ -226,6 +226,33 @@ describe("ProfileModule API", () => {
         expect(mockUserData.toObject).toHaveBeenCalled();  // Ensure toObject was called to simulate successful data retrieval
         jest.clearAllMocks();  // Reset mocks after test
       });
+      test("Testing PUT Endpoint (/profile/:username) with full correct data should update successfully", async () => {
+        jest.spyOn(UserCred, 'findOne').mockResolvedValue({
+          Username: "existingUsername1",
+          toObject: () => ({ UserID: '1234', Password: '' }),
+          save: jest.fn()
+        });
+        jest.spyOn(UserData, 'findOne').mockResolvedValue({
+          save: jest.fn(),
+          FullName: '',
+          Address1: '',
+          Address2: '',
+          City: '',
+          State: '',
+          Zip: '',
+        });
+        const profileData = {
+          address1: "123 Main St",
+          address2: "Suite 100",
+          city: "Metropolis",
+          state: "MT",
+          zip: "12345",
+          password: "newPassword123"
+        };
+        const response = await request(Server).put("/user/profile/existingUsername1").send(profileData);
+        expect(response.status).toBe(200);
+        expect(response.text).toBe("User profile updated successfully");
+      });
   });
 
   describe("Unsuccessful API Endpoints", () => {
@@ -422,7 +449,7 @@ describe("ProfileModule API", () => {
         expect(response.status).toBe(500);
         expect(response.text).toBe("Internal server error");
   
-        jest.restoreAllMocks(); // Restore original after test
+        jest.restoreAllMocks(); // Restore original implementation after test
       });
     });
   });
